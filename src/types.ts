@@ -1,3 +1,8 @@
+export interface IModuleRegistrationVariables {
+    moduleName: string;
+    license: string|null;
+}
+
 export interface IClassVariables {
     namespace: string;
     dependencies: string[];

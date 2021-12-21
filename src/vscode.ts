@@ -1,9 +1,10 @@
 import { OpenDialogOptions, Uri, window, workspace } from 'vscode';
 
-export async function openTextDialog(prompt: string, placeHolder?: string){
+export async function openTextDialog(prompt: string, placeHolder?: string, value?: string){
     const result = await window.showInputBox({
         prompt,
-        placeHolder
+        placeHolder,
+        value
     });
 
     return result;

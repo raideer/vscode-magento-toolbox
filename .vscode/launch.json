@@ -10,6 +10,7 @@
 			"type": "extensionHost",
 			"request": "launch",
 			"args": [
+				"/var/www/external/ukmeds/magento",
 				"--extensionDevelopmentPath=${workspaceFolder}"
 			],
 			"outFiles": [
