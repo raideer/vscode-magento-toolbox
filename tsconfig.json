@@ -5,6 +5,8 @@
 		"lib": [
 			"ES2020"
 		],
+		"jsx": "react-jsx",
+		"jsxImportSource": "preact",
 		"sourceMap": true,
 		"rootDir": "src",
 		"strict": true   /* enable all strict type-checking options */
