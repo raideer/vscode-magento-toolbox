@@ -9,7 +9,7 @@ const Form: React.FunctionComponent<Props> = ({ children, ...rest }) => {
   const { formController, render, userProps } = useForm(rest);
 
   return render(
-    <form noValidate {...userProps} onSubmit={formController.submitForm}>
+    <form {...userProps} onSubmit={formController.submitForm}>
       {children}
     </form>
   );

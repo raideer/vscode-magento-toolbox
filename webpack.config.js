@@ -29,11 +29,14 @@ const extensionConfig = {
   resolve: {
     // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader
     extensions: ['.ts', '.js', '.tsx'],
-    "alias": { 
+    alias: { 
       "react": "preact/compat",
       "react-dom/test-utils": "preact/test-utils",
       "react-dom": "preact/compat",     // Must be below test-utils
     },
+    modules: [
+      path.resolve(__dirname, 'src'),
+    ]
   },
   plugins: [
     new webpack.DefinePlugin({

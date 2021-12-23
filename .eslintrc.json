@@ -3,20 +3,37 @@
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaVersion": 6,
-        "sourceType": "module"
+        "sourceType": "module",
+        "project": "./tsconfig.json"
     },
     "plugins": [
-        "@typescript-eslint"
+      "@typescript-eslint"
     ],
     "extends": [
-        "prettier"
+      "airbnb",
+      "airbnb-typescript",
+      "eslint:recommended",
+      "plugin:react/recommended", // Uses the recommended rules from @eslint-plugin-react
+      "plugin:@typescript-eslint/recommended", // Uses the recommended rules from @typescript-eslint/eslint-plugin
+      "plugin:prettier/recommended"
     ],
     "rules": {
-        "@typescript-eslint/semi": "warn",
         "curly": "warn",
         "eqeqeq": "warn",
         "no-throw-literal": "warn",
-        "semi": "off"
+        "semi": "off",
+        "no-console": ["warn", { "allow": ["warn", "error"] }],
+        "react/react-in-jsx-scope": "off",
+        "react/prop-types": "off",
+        "react/jsx-props-no-spreading": "off",
+        "react/function-component-definition": [
+            "warn",
+            {
+                "namedComponents": "arrow-function",
+                "unnamedComponents": "arrow-function"
+            }
+        ],
+        "@typescript-eslint/no-explicit-any": "off"
     },
     "ignorePatterns": [
         "out",
