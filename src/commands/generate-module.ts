@@ -2,25 +2,30 @@ import * as fs from 'fs';
 import * as vscode from 'vscode';
 import { Builder } from 'xml2js';
 import { openDirectoryDialog, openWebview } from 'utils/vscode';
-import { resolveAppCode } from 'utils/magento';
+import { resolveAppCode, resolveLoadedModules } from 'utils/magento';
 import { generateModuleRegistration } from 'generator';
 
 export default async function (context: vscode.ExtensionContext) {
-  const data: any = await openWebview(context, 'NewModule');
-
-  const moduleName = `${data.vendor}_${data.module}`;
-
-  let targetLocation = await resolveAppCode();
+  let targetLocation = resolveAppCode();
 
   if (!targetLocation) {
-    targetLocation = await openDirectoryDialog('Select module directory (app/code)');
+    const directory = await openDirectoryDialog('Select module directory (app/code)');
+    targetLocation = directory.path;
   }
 
   if (!targetLocation) {
     return;
   }
 
-  const moduleDirectory = `${targetLocation.fsPath}/${data.vendor}/${data.module}`;
+  const loadedModules = await resolveLoadedModules(targetLocation);
+
+  const data: any = await openWebview(context, 'NewModule', 'Generate Module', {
+    loadedModules,
+  });
+
+  const moduleName = `${data.vendor}_${data.module}`;
+
+  const moduleDirectory = `${targetLocation}/${data.vendor}/${data.module}`;
 
   const moduleXmlObject: any = {
     config: {
@@ -40,9 +45,24 @@ export default async function (context: vscode.ExtensionContext) {
     moduleXmlObject.config.module.$.setup_version = data.version;
   }
 
+  if (data.sequence) {
+    moduleXmlObject.config.module.sequence = {
+      module: data.sequence.map((item: string) => ({
+        $: {
+          name: item,
+        },
+      })),
+    };
+  }
+
   const xmlBuilder = new Builder({
     xmldec: {
       version: '1.0',
+    },
+    renderOpts: {
+      pretty: true,
+      indent: '    ',
+      newline: '\n',
     },
   });
 

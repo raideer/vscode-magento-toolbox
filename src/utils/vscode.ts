@@ -3,7 +3,12 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 
-export function openWebview(context: vscode.ExtensionContext, componentName: string) {
+export function openWebview(
+  context: vscode.ExtensionContext,
+  componentName: string,
+  title: string,
+  data: any = {}
+) {
   return new Promise((resolve, reject) => {
     const scriptPath = Uri.file(path.join(context.extensionPath, 'dist', 'webview.js'));
     let template = fs.readFileSync(`${context.extensionPath}/templates/webview/index.html`, 'utf8');
@@ -12,14 +17,9 @@ export function openWebview(context: vscode.ExtensionContext, componentName: str
       scriptPath.with({ scheme: 'vscode-resource' }).toString()
     );
 
-    const panel = window.createWebviewPanel(
-      'magentoToolboxDialog',
-      'Generate Module',
-      vscode.ViewColumn.One,
-      {
-        enableScripts: true,
-      }
-    );
+    const panel = window.createWebviewPanel('magentoToolboxDialog', title, vscode.ViewColumn.One, {
+      enableScripts: true,
+    });
 
     panel.webview.html = template;
 
@@ -31,7 +31,7 @@ export function openWebview(context: vscode.ExtensionContext, componentName: str
         case 'loaded':
           loaded = true;
           clearInterval(it);
-          panel.webview.postMessage({ command: `render${componentName}` });
+          panel.webview.postMessage({ command: `render${componentName}`, payload: data });
           break;
         case 'form':
           panel.dispose();

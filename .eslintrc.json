@@ -22,6 +22,10 @@
         "eqeqeq": "warn",
         "no-throw-literal": "warn",
         "semi": "off",
+        "func-names": "off",
+        "no-await-in-loop": "off",
+        "guard-for-in": "off",
+        "no-restricted-syntax": "off",
         "no-console": ["warn", { "allow": ["warn", "error"] }],
         "react/react-in-jsx-scope": "off",
         "react/prop-types": "off",
@@ -33,6 +37,7 @@
                 "unnamedComponents": "arrow-function"
             }
         ],
+        "import/prefer-default-export": "off",
         "@typescript-eslint/no-explicit-any": "off"
     },
     "ignorePatterns": [

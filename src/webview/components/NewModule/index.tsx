@@ -5,6 +5,7 @@ import Wrapper from 'webview/components/common/Wrapper/index';
 import formClasses from 'webview/components/common/Form/styles.module.scss';
 import classNames from 'classnames';
 import { useState } from 'preact/hooks';
+import { Webview } from 'webview';
 import classes from './styles.module.scss';
 
 interface Props {
@@ -35,38 +36,52 @@ const NewModule: React.FunctionComponent<Props> = ({ vscode }) => {
   };
 
   return (
-    <Wrapper title="Create new Magento module">
-      <Form onSubmit={onSubmit} onChange={onChange}>
-        <div>{error}</div>
-        <div className={classes.form}>
-          <Input
-            required
-            name="vendor"
-            label="Vendor*"
-            placeholder="Vendor"
-            validator={nameValidator}
-          />
-          <Input
-            required
-            name="module"
-            label="Module*"
-            placeholder="Module"
-            validator={nameValidator}
-          />
-          <Input name="version" label="Setup Version" placeholder="Version" />
-          <Input name="sequence" label="Sequence" placeholder="Sequence" />
-          <Select name="license" label="License">
-            <option value="none">No license</option>
-            <option value="gplv3">GPL V3</option>
-            <option value="mit">MIT</option>
-          </Select>
-          <Input name="copyright" label="Copyright" placeholder="Copyright" />
-        </div>
-        <button className={classNames([formClasses.button, classes.button])} type="submit">
-          Submit
-        </button>
-      </Form>
-    </Wrapper>
+    <Webview.Consumer>
+      {(data) => {
+        return (
+          <Wrapper title="Create new Magento module">
+            <Form onSubmit={onSubmit} onChange={onChange}>
+              <div>{error}</div>
+              <div className={classes.form}>
+                <Input
+                  required
+                  name="vendor"
+                  label="Vendor*"
+                  placeholder="Vendor"
+                  validator={nameValidator}
+                />
+                <Input
+                  required
+                  name="module"
+                  label="Module*"
+                  placeholder="Module"
+                  validator={nameValidator}
+                />
+                <Input name="version" label="Setup Version" placeholder="Version" />
+                <Select name="sequence" label="Dependencies" multiple>
+                  {data.loadedModules.map((mod: string) => {
+                    return (
+                      <option key={mod} value={mod}>
+                        {mod}
+                      </option>
+                    );
+                  })}
+                </Select>
+                <Select name="license" label="License">
+                  <option value="none">No license</option>
+                  <option value="gplv3">GPL V3</option>
+                  <option value="mit">MIT</option>
+                </Select>
+                <Input name="copyright" label="Copyright" placeholder="Copyright" />
+              </div>
+              <button className={classNames([formClasses.button, classes.button])} type="submit">
+                Submit
+              </button>
+            </Form>
+          </Wrapper>
+        );
+      }}
+    </Webview.Consumer>
   );
 };
 
