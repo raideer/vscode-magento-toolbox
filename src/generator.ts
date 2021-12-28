@@ -1,6 +1,6 @@
 import { renderFile } from 'ejs';
 import { resolve } from 'path';
-import { IClassVariables, IModuleRegistrationVariables } from 'types';
+import { IClassVariables, ILicenseVariables, IModuleRegistrationVariables, License } from 'types';
 
 export async function renderTemplate(filename: string, variables: any): Promise<string> {
   return renderFile(filename, variables);
@@ -16,6 +16,15 @@ export async function generateModuleRegistration(
 
 export async function generateClass(variables: IClassVariables): Promise<string> {
   const location = resolve(__dirname, '../templates/class.ejs');
+  const template = await renderTemplate(location, variables);
+  return template;
+}
+
+export async function generateLicense(
+  type: License,
+  variables: ILicenseVariables
+): Promise<string> {
+  const location = resolve(__dirname, `../templates/license/${type}.ejs`);
   const template = await renderTemplate(location, variables);
   return template;
 }

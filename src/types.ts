@@ -12,3 +12,15 @@ export interface IClassVariables {
   data: string;
   license: string | null;
 }
+
+export interface ILicenseVariables {
+  year: number;
+  copyright: string;
+}
+
+export enum License {
+  APACHE2 = 'apache2',
+  MIT = 'mit',
+  GPL_V3 = 'gplv3',
+  OSL_V3 = 'oslv3',
+}

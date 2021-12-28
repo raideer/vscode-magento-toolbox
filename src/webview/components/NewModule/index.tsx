@@ -70,7 +70,9 @@ const NewModule: React.FunctionComponent<Props> = ({ vscode }) => {
                 <Select name="license" label="License">
                   <option value="none">No license</option>
                   <option value="gplv3">GPL V3</option>
+                  <option value="oslv3">OSL V3</option>
                   <option value="mit">MIT</option>
+                  <option value="apache2">Apache2</option>
                 </Select>
                 <Input name="copyright" label="Copyright" placeholder="Copyright" />
               </div>

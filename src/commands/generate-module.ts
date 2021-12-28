@@ -3,7 +3,7 @@ import * as vscode from 'vscode';
 import { Builder } from 'xml2js';
 import { openDirectoryDialog, openWebview } from 'utils/vscode';
 import { resolveAppCode, resolveLoadedModules } from 'utils/magento';
-import { generateModuleRegistration } from 'generator';
+import { generateLicense, generateModuleRegistration } from 'generator';
 
 export default async function (context: vscode.ExtensionContext) {
   let targetLocation = resolveAppCode();
@@ -76,6 +76,15 @@ export default async function (context: vscode.ExtensionContext) {
   fs.mkdirSync(`${moduleDirectory}/etc`, { recursive: true });
   fs.writeFileSync(`${moduleDirectory}/registration.php`, Buffer.from(registration, 'utf-8'));
   fs.writeFileSync(`${moduleDirectory}/etc/module.xml`, Buffer.from(moduleXml, 'utf-8'));
+
+  if (data.license && data.license !== 'none') {
+    const license = await generateLicense(data.license, {
+      year: new Date().getFullYear(),
+      copyright: data.copyright || data.vendor,
+    });
+
+    fs.writeFileSync(`${moduleDirectory}/LICENSE.txt`, Buffer.from(license, 'utf-8'));
+  }
 
   vscode.window.showInformationMessage(`Generated module: ${moduleName}`);
 }
