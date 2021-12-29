@@ -3,7 +3,7 @@ import * as vscode from 'vscode';
 import { Builder } from 'xml2js';
 import { openDirectoryDialog, openWebview } from 'utils/vscode';
 import { resolveAppCode, resolveLoadedModules } from 'utils/magento';
-import { generateLicense, generateModuleRegistration } from 'generator';
+import { generateComposerJson, generateLicense, generateModuleRegistration } from 'generator';
 
 export default async function (context: vscode.ExtensionContext) {
   let targetLocation = resolveAppCode();
@@ -26,6 +26,28 @@ export default async function (context: vscode.ExtensionContext) {
   const moduleName = `${data.vendor}_${data.module}`;
 
   const moduleDirectory = `${targetLocation}/${data.vendor}/${data.module}`;
+
+  // Set up directories
+  fs.mkdirSync(`${moduleDirectory}/etc`, { recursive: true });
+
+  // Generate registration.php
+  const registration = await generateModuleRegistration({
+    moduleName,
+    license: null,
+  });
+  fs.writeFileSync(`${moduleDirectory}/registration.php`, Buffer.from(registration, 'utf-8'));
+
+  // Generate module.xml
+  const xmlBuilder = new Builder({
+    xmldec: {
+      version: '1.0',
+    },
+    renderOpts: {
+      pretty: true,
+      indent: '    ',
+      newline: '\n',
+    },
+  });
 
   const moduleXmlObject: any = {
     config: {
@@ -54,29 +76,10 @@ export default async function (context: vscode.ExtensionContext) {
       })),
     };
   }
-
-  const xmlBuilder = new Builder({
-    xmldec: {
-      version: '1.0',
-    },
-    renderOpts: {
-      pretty: true,
-      indent: '    ',
-      newline: '\n',
-    },
-  });
-
   const moduleXml = xmlBuilder.buildObject(moduleXmlObject);
-
-  const registration = await generateModuleRegistration({
-    moduleName,
-    license: null,
-  });
-
-  fs.mkdirSync(`${moduleDirectory}/etc`, { recursive: true });
-  fs.writeFileSync(`${moduleDirectory}/registration.php`, Buffer.from(registration, 'utf-8'));
   fs.writeFileSync(`${moduleDirectory}/etc/module.xml`, Buffer.from(moduleXml, 'utf-8'));
 
+  // Generate LICENSE.txt
   if (data.license && data.license !== 'none') {
     const license = await generateLicense(data.license, {
       year: new Date().getFullYear(),
@@ -84,6 +87,19 @@ export default async function (context: vscode.ExtensionContext) {
     });
 
     fs.writeFileSync(`${moduleDirectory}/LICENSE.txt`, Buffer.from(license, 'utf-8'));
+  }
+
+  // Generate composer.json
+  if (data.composer) {
+    const json = generateComposerJson({
+      vendor: data.vendor,
+      module: data.module,
+      name: data.composerName,
+      description: data.description,
+      license: data.license,
+    });
+
+    fs.writeFileSync(`${moduleDirectory}/composer.json`, Buffer.from(json, 'utf-8'));
   }
 
   vscode.window.showInformationMessage(`Generated module: ${moduleName}`);

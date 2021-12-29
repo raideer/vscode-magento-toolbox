@@ -1,6 +1,12 @@
 import { renderFile } from 'ejs';
 import { resolve } from 'path';
-import { IClassVariables, ILicenseVariables, IModuleRegistrationVariables, License } from 'types';
+import {
+  IClassVariables,
+  IComposerVariables,
+  ILicenseVariables,
+  IModuleRegistrationVariables,
+  License,
+} from 'types';
 
 export async function renderTemplate(filename: string, variables: any): Promise<string> {
   return renderFile(filename, variables);
@@ -27,4 +33,31 @@ export async function generateLicense(
   const location = resolve(__dirname, `../templates/license/${type}.ejs`);
   const template = await renderTemplate(location, variables);
   return template;
+}
+
+export function generateComposerJson({
+  name,
+  description,
+  license,
+  vendor,
+  module,
+}: IComposerVariables) {
+  return JSON.stringify(
+    {
+      name,
+      description,
+      type: 'magento2-module',
+      license,
+      'minimum-stability': 'dev',
+      require: {},
+      autoload: {
+        files: ['registration.php'],
+        psr4: {
+          [`${vendor}\\${module}\\`]: '',
+        },
+      },
+    },
+    null,
+    4
+  );
 }

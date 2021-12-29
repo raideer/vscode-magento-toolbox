@@ -29,6 +29,11 @@ const webviewConfig = {
     },
     modules: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'node_modules')],
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+    }),
+  ],
   module: {
     rules: [
       {

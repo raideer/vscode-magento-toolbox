@@ -2,9 +2,14 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 10px;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .button {
   width: 100px;
+}
+
+.checkbox {
+  margin-bottom: 10px;
 }

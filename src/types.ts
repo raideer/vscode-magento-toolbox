@@ -24,3 +24,11 @@ export enum License {
   GPL_V3 = 'gplv3',
   OSL_V3 = 'oslv3',
 }
+
+export interface IComposerVariables {
+  vendor: string;
+  module: string;
+  name: string;
+  description: string;
+  license: License;
+}
