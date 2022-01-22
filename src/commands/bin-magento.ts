@@ -27,16 +27,12 @@ export default async function (context: vscode.ExtensionContext) {
 
   const command = await openTextDialog('Enter command (eg. cache:flush)');
 
-  exec(
-    `php ${binaryLocation.fsPath} ${command}`,
-    { cwd: magentoRoot.fsPath },
-    (err, stdout, stderr) => {
-      if (err) {
-        vscode.window.showErrorMessage(`Error running command: ${err}`);
-        return;
-      }
-
-      vscode.window.showInformationMessage(stdout);
+  exec(`php bin/magento ${command}`, { cwd: magentoRoot.fsPath }, (err, stdout) => {
+    if (err) {
+      vscode.window.showErrorMessage(`Error running command: ${err}`);
+      return;
     }
-  );
+
+    vscode.window.showInformationMessage(stdout);
+  });
 }
