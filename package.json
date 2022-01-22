@@ -10,7 +10,8 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:magento-toolbox.generateModule"
+		"onCommand:magento-toolbox.generateModule",
+    "onCommand:magento-toolbox.binMagento"
 	],
 	"repository": {
 		"type": "git",
@@ -22,6 +23,10 @@
 			{
 				"command": "magento-toolbox.generateModule",
 				"title": "Magento Toolbox: Generate Module"
+			},
+      {
+				"command": "magento-toolbox.binMagento",
+				"title": "Magento Toolbox: Run bin/magento command"
 			}
 		]
 	},
@@ -69,7 +74,6 @@
 	"dependencies": {
 		"classnames": "^2.3.1",
 		"ejs": "^3.1.6",
-		"fast-glob": "^3.2.7",
 		"informed": "^4.0.17",
 		"lodash-es": "^4.17.21",
 		"php-writer": "^3.0.0",
