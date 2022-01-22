@@ -1,5 +1,6 @@
 import { render } from 'preact';
-import NewModule from './components/NewModule';
+import Module from './components/Module';
+import SystemConfig from './components/SystemConfig';
 
 const vscode = window.acquireVsCodeApi();
 const root = document.getElementById('root');
@@ -9,8 +10,11 @@ if (root) {
     const message = event.data;
 
     switch (message.command) {
-      case 'renderNewModule':
-        render(<NewModule vscode={vscode} data={message.payload} />, root);
+      case 'renderModule':
+        render(<Module vscode={vscode} data={message.payload} />, root);
+        break;
+      case 'renderSystemConfig':
+        render(<SystemConfig vscode={vscode} data={message.payload} />, root);
         break;
       default:
         console.warn('Unknown command: ', message.command);

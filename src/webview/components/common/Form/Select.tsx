@@ -1,5 +1,4 @@
 import { useField } from 'informed';
-import classnames from 'classnames';
 import styles from './styles.module.scss';
 
 const Select = (props: any) => {
@@ -9,17 +8,11 @@ const Select = (props: any) => {
   });
   const { label, id, children, className, ...rest } = userProps as any;
   return render(
-    <div>
+    <div className={className}>
       <label className={styles.label} htmlFor={id}>
         {label}
       </label>
-      <select
-        className={classnames([className, styles.input])}
-        id={id}
-        ref={ref}
-        {...informed}
-        {...rest}
-      >
+      <select className={styles.input} id={id} ref={ref} {...informed} {...rest}>
         {children}
       </select>
     </div>

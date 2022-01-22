@@ -10,6 +10,7 @@
 		"Other"
 	],
 	"activationEvents": [
+    "onCommand:magento-toolbox.generateSystemConfig",
 		"onCommand:magento-toolbox.generateModule",
     "onCommand:magento-toolbox.binMagento"
 	],
@@ -23,6 +24,10 @@
 			{
 				"command": "magento-toolbox.generateModule",
 				"title": "Magento Toolbox: Generate Module"
+			},
+      {
+				"command": "magento-toolbox.generateSystemConfig",
+				"title": "Magento Toolbox: Generate System Config"
 			},
       {
 				"command": "magento-toolbox.binMagento",

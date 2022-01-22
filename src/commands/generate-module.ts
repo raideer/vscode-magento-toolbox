@@ -16,7 +16,7 @@ export default async function (context: vscode.ExtensionContext) {
 
   const loadedModules = await resolveLoadedModules(magentoRoot);
 
-  const data: any = await openWebview(context, 'NewModule', 'Generate Module', {
+  const data: any = await openWebview(context, 'Module', 'Generate Module', {
     loadedModules,
   });
 
