@@ -1,35 +1,60 @@
-import { FileType, workspace } from 'vscode';
-import * as fs from 'fs';
-import { stream } from 'fast-glob';
+import { workspace, Uri, ExtensionContext, RelativePattern } from 'vscode';
 import get from 'lodash-es/get';
 import { parseXml } from './xml';
 
-export function resolveAppCode() {
-  for (const i in workspace.workspaceFolders) {
-    const {
-      uri: { path },
-    } = workspace.workspaceFolders[Number(i)];
+export const MAGENTO_ROOT_KEY = 'magentoToolbox/magentoRoot';
 
-    const directory = `${path}/app/code`;
+export async function resolveMagentoRoot(context: ExtensionContext | null = null) {
+  if (!workspace.workspaceFolders) return null;
 
-    if (fs.existsSync(directory)) {
-      return directory;
+  if (context) {
+    const root = context.workspaceState.get(MAGENTO_ROOT_KEY);
+    if (root) return Uri.parse(root as string);
+  }
+
+  const folders = workspace.workspaceFolders;
+
+  for (const folder of folders) {
+    const { uri } = folder;
+
+    const testPaths = [
+      Uri.joinPath(uri, 'app/etc'),
+      Uri.joinPath(uri, 'bin'),
+      Uri.joinPath(uri, 'var'),
+    ];
+
+    try {
+      const status = await Promise.all(testPaths.map((test) => workspace.fs.stat(test)));
+
+      if (status.every((exists) => exists)) {
+        if (context) {
+          context.workspaceState.update(MAGENTO_ROOT_KEY, uri.toString());
+        }
+
+        return uri;
+      }
+    } catch (e) {
+      // Do nothing
     }
   }
 
   return null;
 }
 
-export async function resolveLoadedModules(appCode: string) {
+export async function resolveLoadedModules(uri: Uri) {
   const loadedModules: string[] = [];
 
-  if (appCode) {
-    const modules = stream(`${appCode}/**/module.xml`);
-    for await (const entry of modules) {
-      const xml = fs.readFileSync(entry, 'utf8');
-      const magentoModule = await parseXml(xml);
-      const name = get(magentoModule, 'config.module[0].$.name');
-      loadedModules.push(name);
+  const pattern = new RelativePattern(uri, '**/etc/module.xml');
+  const files = await workspace.findFiles(pattern);
+
+  const fileData = await Promise.all(files.map((file) => workspace.fs.readFile(file)));
+  const xmls = await Promise.all(fileData.map((xml) => parseXml(xml.toString())));
+
+  for (const xml of xmls) {
+    const module = get(xml, 'config.module[0].$.name');
+
+    if (module) {
+      loadedModules.push(module);
     }
   }
 
