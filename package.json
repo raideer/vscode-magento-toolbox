@@ -11,7 +11,7 @@
 	],
 	"activationEvents": [
 		"onCommand:magento-toolbox.generateModule",
-    "onCommand:magento-toolbox.binMagento"
+		"onCommand:magento-toolbox.binMagento"
 	],
 	"repository": {
 		"type": "git",
@@ -24,7 +24,7 @@
 				"command": "magento-toolbox.generateModule",
 				"title": "Magento Toolbox: Generate Module"
 			},
-      {
+			{
 				"command": "magento-toolbox.binMagento",
 				"title": "Magento Toolbox: Run bin/magento command"
 			}
@@ -38,13 +38,16 @@
 		"lint": "eslint src --ext ts"
 	},
 	"devDependencies": {
+		"@githubocto/tailwind-vscode": "^1.0.4",
 		"@types/ejs": "^3.1.0",
 		"@types/glob": "^7.1.4",
 		"@types/lodash-es": "^4.17.5",
 		"@types/mocha": "^9.0.0",
 		"@types/node": "14.x",
 		"@types/react": "^17.0.37",
-		"@types/react-dom": "^17.0.11",
+		"@types/react-dom": "^18.0.9",
+		"@types/to-json-schema": "^0.2.1",
+		"@types/validatorjs": "^3.15.0",
 		"@types/vscode": "^1.63.0",
 		"@types/vscode-webview": "^1.57.0",
 		"@types/xml2js": "^0.4.9",
@@ -62,24 +65,27 @@
 		"eslint-plugin-react": "^7.28.0",
 		"eslint-plugin-react-hooks": "^4.3.0",
 		"mocha": "^9.1.3",
+		"postcss": "^8.4.19",
+		"postcss-loader": "^7.0.2",
+		"postcss-preset-env": "^7.8.3",
 		"prettier": "^2.5.1",
-		"sass": "^1.45.1",
-		"sass-loader": "^12.4.0",
 		"style-loader": "^3.3.1",
+		"tailwindcss": "^3.2.4",
 		"ts-loader": "^9.2.5",
 		"typescript": "^4.4.4",
 		"webpack": "^5.52.1",
 		"webpack-cli": "^4.8.0"
 	},
 	"dependencies": {
-		"classnames": "^2.3.1",
+		"clsx": "^1.2.1",
 		"ejs": "^3.1.6",
+		"formik": "^2.2.9",
 		"informed": "^4.0.17",
 		"lodash-es": "^4.17.21",
 		"php-writer": "^3.0.0",
-		"preact": "^10.6.4",
-		"react": "npm:@preact/compat",
-		"react-dom": "npm:@preact/compat",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"validatorjs": "^3.22.1",
 		"xml2js": "^0.4.23"
 	}
 }

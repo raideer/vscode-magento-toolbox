@@ -20,13 +20,7 @@ const webviewConfig = {
     filename: '[name].js',
   },
   resolve: {
-    // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader
     extensions: ['.ts', '.js', '.tsx'],
-    alias: {
-      react: 'preact/compat',
-      'react-dom/test-utils': 'preact/test-utils',
-      'react-dom': 'preact/compat', // Must be below test-utils
-    },
     modules: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'node_modules')],
   },
   plugins: [
@@ -46,17 +40,15 @@ const webviewConfig = {
         ],
       },
       {
-        test: /\.s[ac]ss$/i,
-        use: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              modules: true,
-            },
-          },
-          'sass-loader',
-        ],
+        test: /\.css$/i,
+        include: path.resolve(__dirname, 'src/webview'),
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
+      },
+      {
+        test: /\.m?js/,
+        resolve: {
+          fullySpecified: false,
+        },
       },
     ],
   },

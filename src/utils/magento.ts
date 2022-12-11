@@ -1,5 +1,6 @@
 import { workspace, Uri, ExtensionContext, RelativePattern } from 'vscode';
 import get from 'lodash-es/get';
+import { uniq } from 'lodash-es';
 import { parseXml } from './xml';
 
 export const MAGENTO_ROOT_KEY = 'magentoToolbox/magentoRoot';
@@ -58,5 +59,5 @@ export async function resolveLoadedModules(uri: Uri) {
     }
   }
 
-  return loadedModules;
+  return uniq(loadedModules);
 }

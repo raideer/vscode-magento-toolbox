@@ -1,21 +1,48 @@
-export interface IModuleRegistrationVariables {
-  moduleName: string;
-  license: string | null;
+import { ErrorMessages, Rules } from 'validatorjs';
+
+export interface IWizard {
+  title: string;
+  description?: string;
+  fields: IWizardField[];
+  validationSchema?: any;
+  validation?: Rules;
+  validationMessages?: ErrorMessages;
 }
 
-export interface IClassVariables {
-  namespace: string;
-  dependencies: string[];
-  className: string;
-  classExtends: string | null;
-  classImplements: string | null;
-  data: string;
-  license: string | null;
+export type IWizardField = IWizardTextField | IWizardSelectField | IWizardCheckboxField;
+
+export interface IWizardTextField extends IWizardGenericField {
+  type: WizardInput.Text;
+  placeholder?: string;
 }
 
-export interface ILicenseVariables {
-  year: number;
-  copyright: string;
+export interface IWizardSelectField extends IWizardGenericField {
+  type: WizardInput.Select;
+  options: IWizardSelectOption[];
+  multiple?: boolean;
+}
+
+export interface IWizardCheckboxField extends IWizardGenericField {
+  type: WizardInput.Checkbox;
+}
+
+export interface IWizardGenericField {
+  id: string;
+  label: string;
+  description?: string;
+  initialValue?: string;
+  dependsOn?: string;
+}
+
+export enum WizardInput {
+  Text = 'text',
+  Select = 'select',
+  Checkbox = 'checkbox',
+}
+
+export interface IWizardSelectOption {
+  label: string;
+  value: string;
 }
 
 export enum License {
@@ -23,12 +50,4 @@ export enum License {
   MIT = 'mit',
   GPL_V3 = 'gplv3',
   OSL_V3 = 'oslv3',
-}
-
-export interface IComposerVariables {
-  vendor: string;
-  module: string;
-  name: string;
-  description: string;
-  license: License;
 }

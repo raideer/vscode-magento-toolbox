@@ -1,22 +1,28 @@
-import { render } from 'preact';
-import NewModule from './components/NewModule';
+import { createRoot } from 'react-dom/client';
+import { Renderer } from './components/Wizard/Renderer';
+
+import './styles.css';
 
 const vscode = window.acquireVsCodeApi();
-const root = document.getElementById('root');
+const container = document.getElementById('root');
 
-if (root) {
-  window.addEventListener('message', (event) => {
-    const message = event.data;
-
-    switch (message.command) {
-      case 'renderNewModule':
-        render(<NewModule vscode={vscode} data={message.payload} />, root);
-        break;
-      default:
-        console.warn('Unknown command: ', message.command);
-    }
-  });
-
-  render(<div>Loading...</div>, root);
-  vscode.postMessage({ command: 'loaded' });
+if (!container) {
+  throw new Error('Container not found');
 }
+
+const root = createRoot(container);
+
+window.addEventListener('message', (event) => {
+  const message = event.data;
+
+  switch (message.command) {
+    case 'render-wizard':
+      root.render(<Renderer vscode={vscode} wizard={message.payload} />);
+      break;
+    default:
+      console.warn('Unknown command: ', message.command);
+  }
+});
+
+root.render(<div>Loading...</div>);
+vscode.postMessage({ command: 'loaded' });

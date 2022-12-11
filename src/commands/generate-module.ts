@@ -1,8 +1,12 @@
 import * as vscode from 'vscode';
 import { Builder } from 'xml2js';
-import { openWebview } from 'utils/vscode';
+import { openWizard } from 'utils/vscode';
 import { resolveLoadedModules, resolveMagentoRoot } from 'utils/magento';
-import { generateComposerJson, generateLicense, generateModuleRegistration } from 'generator';
+import { generateModuleRegistration } from 'generators/moduleRegistration';
+import { generateLicense } from 'generators/license';
+import { generateComposerJson } from 'generators/composerJson';
+import { WizardInput } from 'types';
+import { generateModuleXml } from 'generators/moduleXml';
 
 export default async function (context: vscode.ExtensionContext) {
   const magentoRoot = await resolveMagentoRoot(context);
@@ -16,8 +20,89 @@ export default async function (context: vscode.ExtensionContext) {
 
   const loadedModules = await resolveLoadedModules(magentoRoot);
 
-  const data: any = await openWebview(context, 'NewModule', 'Generate Module', {
-    loadedModules,
+  const data: any = await openWizard(context, {
+    title: 'Generate a new module',
+    description: 'Generates the basic structure of a Magento2 module.',
+    fields: [
+      {
+        id: 'vendor',
+        label: 'Vendor*',
+        placeholder: 'Vendor name',
+        type: WizardInput.Text,
+      },
+      {
+        id: 'module',
+        label: 'Module*',
+        placeholder: 'Module name',
+        type: WizardInput.Text,
+      },
+      {
+        id: 'sequence',
+        label: 'Dependencies',
+        type: WizardInput.Select,
+        options: loadedModules.map((module) => ({ label: module, value: module })),
+        multiple: true,
+      },
+      {
+        id: 'license',
+        label: 'License',
+        type: WizardInput.Select,
+        options: [
+          {
+            label: 'No license',
+            value: 'none',
+          },
+          {
+            label: 'GPL V3',
+            value: 'gplv3',
+          },
+          {
+            label: 'OSL V3',
+            value: 'oslv3',
+          },
+          {
+            label: 'MIT',
+            value: 'mit',
+          },
+          {
+            label: 'Apache2',
+            value: 'apache2',
+          },
+        ],
+      },
+      {
+        id: 'copyright',
+        label: 'Copyright',
+        placeholder: 'Copyright',
+        type: WizardInput.Text,
+      },
+      {
+        id: 'composer',
+        label: 'Generate composer.json?',
+        type: WizardInput.Checkbox,
+      },
+      {
+        dependsOn: 'composer',
+        id: 'composerName',
+        label: 'Package name*',
+        placeholder: 'module/name',
+        type: WizardInput.Text,
+      },
+      {
+        dependsOn: 'composer',
+        id: 'composerDescription',
+        label: 'Package description',
+        type: WizardInput.Text,
+      },
+    ],
+    validation: {
+      vendor: 'required|min:1',
+      module: 'required|min:1',
+      composerName: [{ required_if: ['composer', true] }],
+    },
+    validationMessages: {
+      'required_if.composerName': 'Package name is required',
+    },
   });
 
   const moduleName = `${data.vendor}_${data.module}`;
@@ -36,45 +121,8 @@ export default async function (context: vscode.ExtensionContext) {
   );
 
   // Generate module.xml
-  const xmlBuilder = new Builder({
-    xmldec: {
-      version: '1.0',
-    },
-    renderOpts: {
-      pretty: true,
-      indent: '    ',
-      newline: '\n',
-    },
-  });
+  const moduleXml = generateModuleXml({ ...data, moduleName });
 
-  const moduleXmlObject: any = {
-    config: {
-      $: {
-        'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
-        'xsi:noNamespaceSchemaLocation': 'urn:magento:framework:Module/etc/module.xsd',
-      },
-      module: {
-        $: {
-          name: moduleName,
-        },
-      },
-    },
-  };
-
-  if (data.version) {
-    moduleXmlObject.config.module.$.setup_version = data.version;
-  }
-
-  if (data.sequence) {
-    moduleXmlObject.config.module.sequence = {
-      module: data.sequence.map((item: string) => ({
-        $: {
-          name: item,
-        },
-      })),
-    };
-  }
-  const moduleXml = xmlBuilder.buildObject(moduleXmlObject);
   await vscode.workspace.fs.writeFile(
     vscode.Uri.joinPath(moduleDirectory, 'etc/module.xml'),
     Buffer.from(moduleXml, 'utf-8')
@@ -99,7 +147,7 @@ export default async function (context: vscode.ExtensionContext) {
       vendor: data.vendor,
       module: data.module,
       name: data.composerName,
-      description: data.description,
+      description: data.composerDescription,
       license: data.license,
     });
 

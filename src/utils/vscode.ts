@@ -2,24 +2,26 @@ import { OpenDialogOptions, Uri, window, workspace } from 'vscode';
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
+import { IWizard } from 'types';
 
-export function openWebview(
-  context: vscode.ExtensionContext,
-  componentName: string,
-  title: string,
-  data: any = {}
-) {
+export function openWizard(context: vscode.ExtensionContext, wizard: IWizard) {
   return new Promise((resolve, reject) => {
     const scriptPath = Uri.file(path.join(context.extensionPath, 'dist', 'webview.js'));
-    let template = fs.readFileSync(`${context.extensionPath}/templates/webview/index.html`, 'utf8');
+
+    const panel = window.createWebviewPanel(
+      'magentoToolboxDialog',
+      wizard.title,
+      vscode.ViewColumn.One,
+      {
+        enableScripts: true,
+      }
+    );
+
+    let template = fs.readFileSync(`${context.extensionPath}/src/webview/index.html`, 'utf8');
     template = template.replace(
       '{{APP_SCRIPT}}',
       scriptPath.with({ scheme: 'vscode-resource' }).toString()
     );
-
-    const panel = window.createWebviewPanel('magentoToolboxDialog', title, vscode.ViewColumn.One, {
-      enableScripts: true,
-    });
 
     panel.webview.html = template;
 
@@ -31,9 +33,15 @@ export function openWebview(
         case 'loaded':
           loaded = true;
           clearInterval(it);
-          panel.webview.postMessage({ command: `render${componentName}`, payload: data });
+          panel.webview.postMessage({
+            command: 'render-wizard',
+            payload: {
+              ...wizard,
+              validationSchema: JSON.stringify(wizard.validationSchema),
+            },
+          });
           break;
-        case 'form':
+        case 'submit':
           panel.dispose();
           resolve(message.payload);
           break;
