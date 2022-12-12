@@ -15,12 +15,11 @@ const root = createRoot(container);
 window.addEventListener('message', (event) => {
   const message = event.data;
 
+  // eslint-disable-next-line default-case
   switch (message.command) {
     case 'render-wizard':
       root.render(<Renderer vscode={vscode} wizard={message.payload} />);
       break;
-    default:
-      console.warn('Unknown command: ', message.command);
   }
 });
 

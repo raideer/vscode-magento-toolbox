@@ -1,0 +1,15 @@
+/** <% if (description) {%>
+* <%= description %>
+* <% } %>
+<% for (const param in docParams) { -%>
+* @param <%= docParams[param].type %> $<%= docParams[param].name -%>
+<% } %>
+* @return <%= returnType %>
+*/
+<%= visibility %> function <%= name -%>(
+<% for (const param in params) { -%>
+    <%= params[param].type %> $<%= params[param].name -%>
+<% } %>
+) {
+<%- data %>
+}

@@ -35,10 +35,7 @@ export function openWizard(context: vscode.ExtensionContext, wizard: IWizard) {
           clearInterval(it);
           panel.webview.postMessage({
             command: 'render-wizard',
-            payload: {
-              ...wizard,
-              validationSchema: JSON.stringify(wizard.validationSchema),
-            },
+            payload: wizard,
           });
           break;
         case 'submit':

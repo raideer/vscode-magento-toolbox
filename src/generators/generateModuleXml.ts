@@ -35,10 +35,6 @@ export function generateModuleXml(variables: IModuleXmlVariables) {
     },
   };
 
-  if (variables.version) {
-    moduleXmlObject.config.module.$.setup_version = variables.version;
-  }
-
   if (variables.sequence && variables.sequence.length > 0) {
     moduleXmlObject.config.module.sequence = {
       module: variables.sequence.map((item: string) => ({

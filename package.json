@@ -11,6 +11,7 @@
 	],
 	"activationEvents": [
 		"onCommand:magento-toolbox.generateModule",
+		"onCommand:magento-toolbox.generateObserver",
 		"onCommand:magento-toolbox.binMagento"
 	],
 	"repository": {
@@ -23,6 +24,10 @@
 			{
 				"command": "magento-toolbox.generateModule",
 				"title": "Magento Toolbox: Generate Module"
+			},
+			{
+				"command": "magento-toolbox.generateObserver",
+				"title": "Magento Toolbox: Generate Observer"
 			},
 			{
 				"command": "magento-toolbox.binMagento",
@@ -80,6 +85,7 @@
 		"clsx": "^1.2.1",
 		"ejs": "^3.1.6",
 		"formik": "^2.2.9",
+		"indent-string": "^5.0.0",
 		"informed": "^4.0.17",
 		"lodash-es": "^4.17.21",
 		"php-writer": "^3.0.0",

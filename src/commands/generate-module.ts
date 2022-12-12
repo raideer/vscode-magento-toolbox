@@ -1,12 +1,11 @@
 import * as vscode from 'vscode';
-import { Builder } from 'xml2js';
 import { openWizard } from 'utils/vscode';
 import { resolveLoadedModules, resolveMagentoRoot } from 'utils/magento';
-import { generateModuleRegistration } from 'generators/moduleRegistration';
-import { generateLicense } from 'generators/license';
-import { generateComposerJson } from 'generators/composerJson';
 import { WizardInput } from 'types';
-import { generateModuleXml } from 'generators/moduleXml';
+import { generateModuleRegistration } from 'generators/generateModuleRegistration';
+import { generateModuleXml } from 'generators/generateModuleXml';
+import { generateLicense } from 'generators/generateLicense';
+import { generateComposerJson } from 'generators/generateComposerJson';
 
 export default async function (context: vscode.ExtensionContext) {
   const magentoRoot = await resolveMagentoRoot(context);
@@ -69,6 +68,12 @@ export default async function (context: vscode.ExtensionContext) {
             value: 'apache2',
           },
         ],
+      },
+      {
+        id: 'version',
+        label: 'Version',
+        initialValue: '1.0.0',
+        type: WizardInput.Text,
       },
       {
         id: 'copyright',
@@ -149,6 +154,7 @@ export default async function (context: vscode.ExtensionContext) {
       name: data.composerName,
       description: data.composerDescription,
       license: data.license,
+      version: data.version,
     });
 
     await vscode.workspace.fs.writeFile(
