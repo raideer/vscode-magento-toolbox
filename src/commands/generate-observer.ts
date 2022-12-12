@@ -60,11 +60,11 @@ export default async function (context: vscode.ExtensionContext) {
           },
           {
             label: 'Backend',
-            value: 'backend',
+            value: 'adminhtml',
           },
           {
             label: 'Webapi',
-            value: 'webapi',
+            value: 'webapi_rest',
           },
           {
             label: 'GraphQL',
@@ -87,14 +87,16 @@ export default async function (context: vscode.ExtensionContext) {
   const variables = {
     eventName: data.eventName,
     observerName: snakeCase(data.observerName),
-    observerInstance: `${vendor}/${module}/Observer/${data.observerName}`,
+    observerInstance: `/${vendor}/${module}/Observer/${data.observerName}`,
   };
+
+  const configLocation = data.scope === 'all' ? 'etc/events.xml' : `etc/${data.scope}/events.xml`;
 
   let existing: any = {};
 
   try {
     existing = await workspace.fs
-      .readFile(vscode.Uri.joinPath(moduleDirectory, 'etc/events.xml'))
+      .readFile(vscode.Uri.joinPath(moduleDirectory, configLocation))
       .then((buffer) => parseXml(buffer.toString()));
   } catch (e) {
     // File does not exist
@@ -103,7 +105,7 @@ export default async function (context: vscode.ExtensionContext) {
   const eventsXml = generateEventsXml(variables, existing);
 
   await vscode.workspace.fs.writeFile(
-    vscode.Uri.joinPath(moduleDirectory, 'etc/events.xml'),
+    vscode.Uri.joinPath(moduleDirectory, configLocation),
     Buffer.from(eventsXml, 'utf-8')
   );
 
