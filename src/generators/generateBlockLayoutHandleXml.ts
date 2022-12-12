@@ -34,20 +34,26 @@ export function generateBlockLayoutHandleXml(
         'xsi:noNamespaceSchemaLocation':
           'urn:magento:framework:View/Layout/etc/page_configuration.xsd',
       },
-      body: {
-        [variables.referenceType]: {
-          $: {
-            name: variables.referenceName,
-          },
-          block: {
-            $: {
-              class: variables.blockClass,
-              name: variables.blockName,
-              template: variables.blockTemplate,
+      body: [
+        {
+          [variables.referenceType]: [
+            {
+              $: {
+                name: variables.referenceName,
+              },
+              block: [
+                {
+                  $: {
+                    class: variables.blockClass,
+                    name: variables.blockName,
+                    template: variables.blockTemplate,
+                  },
+                },
+              ],
             },
-          },
+          ],
         },
-      },
+      ],
     },
   });
 

@@ -11,6 +11,7 @@
 	],
 	"activationEvents": [
     "onCommand:magento-toolbox.generateBlock",
+    "onCommand:magento-toolbox.generateController",
     "onCommand:magento-toolbox.generateObserver",
 		"onCommand:magento-toolbox.generateModule",
 		"onCommand:magento-toolbox.binMagento"
@@ -25,6 +26,10 @@
 			{
 				"command": "magento-toolbox.generateModule",
 				"title": "Magento Toolbox: Generate Module"
+			},
+      {
+				"command": "magento-toolbox.generateController",
+				"title": "Magento Toolbox: Generate Controller"
 			},
 			{
 				"command": "magento-toolbox.generateObserver",

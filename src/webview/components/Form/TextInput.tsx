@@ -3,7 +3,7 @@ import { useField } from 'formik';
 
 interface Props {
   name: string;
-  description?: string;
+  description?: string[];
   placeholder?: string;
 }
 
@@ -26,7 +26,13 @@ export const TextInput: React.FC<Props> = ({ description, children, ...props }) 
           {meta.error}
         </div>
       )}
-      {description && <span className="mt-1 opacity-60">{description}</span>}
+      {description &&
+        description?.length > 0 &&
+        description.map((line) => (
+          <span key={line} className="block mt-1 opacity-60">
+            {line}
+          </span>
+        ))}
     </div>
   );
 };

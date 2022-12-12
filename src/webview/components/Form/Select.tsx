@@ -4,7 +4,7 @@ import { IWizardSelectOption } from 'types';
 
 interface Props {
   name: string;
-  description?: string;
+  description?: string[];
   options: IWizardSelectOption[];
   multiple?: boolean;
 }
@@ -34,7 +34,13 @@ export const Select: React.FC<Props> = ({ description, children, options, ...pro
           {meta.error}
         </div>
       )}
-      {description && <span className="mt-1 opacity-60">{description}</span>}
+      {description &&
+        description?.length > 0 &&
+        description.map((line) => (
+          <span key={line} className="block mt-1 opacity-60">
+            {line}
+          </span>
+        ))}
     </div>
   );
 };

@@ -37,7 +37,7 @@ export default async function (context: vscode.ExtensionContext) {
         label: 'Event*',
         placeholder: 'event_name',
         type: WizardInput.Text,
-        description: 'The event name to observe',
+        description: ['The event name to observe'],
       },
       {
         id: 'observerName',

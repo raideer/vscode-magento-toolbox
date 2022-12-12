@@ -58,7 +58,7 @@ export default async function (context: vscode.ExtensionContext) {
         label: 'Block name*',
         placeholder: 'eg. Info',
         type: WizardInput.Text,
-        description: 'Note: consider using a view model instead of a block if possible',
+        description: ['Note: consider using a view model instead of a block if possible'],
       },
       {
         id: 'referenceHandle',

@@ -29,7 +29,7 @@ export interface IWizardCheckboxField extends IWizardGenericField {
 export interface IWizardGenericField {
   id: string;
   label: string;
-  description?: string;
+  description?: string[];
   initialValue?: string;
   dependsOn?: string;
 }

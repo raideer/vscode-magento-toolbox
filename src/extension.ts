@@ -4,6 +4,7 @@ import binMagento from './commands/bin-magento';
 import generateModule from './commands/generate-module';
 import generateObserver from './commands/generate-observer';
 import generateBlock from './commands/generate-block';
+import generateController from './commands/generate-controller';
 
 export function activate(context: vscode.ExtensionContext) {
   const binMagentoCommand = vscode.commands.registerCommand('magento-toolbox.binMagento', () => {
@@ -31,8 +32,21 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
 
+  const generateControllerCommand = vscode.commands.registerCommand(
+    'magento-toolbox.generateController',
+    () => {
+      return generateController(context);
+    }
+  );
+
   context.subscriptions.push(
-    ...[generateModuleCommand, generateObserverCommand, binMagentoCommand, generateBlockCommand]
+    ...[
+      generateModuleCommand,
+      generateObserverCommand,
+      binMagentoCommand,
+      generateBlockCommand,
+      generateControllerCommand,
+    ]
   );
 }
 
