@@ -3,9 +3,11 @@
 declare(strict_types=1);
 
 namespace <%= namespace %>;
-<% for (const key in dependencies) {%>
-use <%= dependencies[key] %>;
-<% } %>
+
+<% for (const key in dependencies) {-%>
+use <%= dependencies[key] -%>;
+<% } -%>
+
 class <%= className %><% if (classExtends) {%> extends <%= classExtends%><% } %><% if (classImplements) {%> implements <%= classImplements%><% } %>
 {
 <%- data %>

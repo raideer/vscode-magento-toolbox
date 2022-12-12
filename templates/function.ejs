@@ -1,15 +1,23 @@
 /** <% if (description) {%>
-* <%= description %>
-* <% } %>
-<% for (const param in docParams) { -%>
-* @param <%= docParams[param].type %> $<%= docParams[param].name -%>
-<% } %>
-* @return <%= returnType %>
-*/
+  * <%= description %>
+  * <% } %>
+<% for (const i in docParams) { -%>
+  * @param <%= docParams[i].type %> $<%= docParams[i].name %>
+<% } -%>
+<% if (docParams.length > 0) {-%>
+  *
+<% } -%>
+  * @return <%= returnType %>
+  */
+<% if (params.length > 0) {-%>
 <%= visibility %> function <%= name -%>(
-<% for (const param in params) { -%>
-    <%= params[param].type %> $<%= params[param].name -%>
-<% } %>
+<% for (const i in params) { -%>
+    <%= params[i].type %> $<%= params[i].name %><% if (i < params.length - 1) {%>,<% } %>
+<% } -%>
 ) {
+<% } else { -%>
+<%= visibility %> function <%= name -%>()
+{
+<% } -%>
 <%- data %>
 }

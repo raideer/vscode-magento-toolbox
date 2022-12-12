@@ -11,6 +11,7 @@ import { generateFunction } from 'generators/generateFunction';
 import indentString from 'indent-string';
 import { generateBlockLayoutHandleXml } from 'generators/generateBlockLayoutHandleXml';
 import { generateBlockTemplate } from 'generators/generateBlockTemplate';
+import { generateClassParameter } from 'generators/generateClassParameter';
 
 interface ControllerWizardData {
   module: string;
@@ -20,6 +21,20 @@ interface ControllerWizardData {
   scope: string;
   method: string;
   inheritAction: boolean;
+  generateTemplate: boolean;
+}
+
+function getMethodClass(method: string) {
+  switch (method) {
+    case 'POST':
+      return 'HttpPostActionInterface';
+    case 'DELETE':
+      return 'HttpDeleteActionInterface';
+    case 'PUT':
+      return 'HttpPutActionInterface';
+    default:
+      return 'HttpGetActionInterface';
+  }
 }
 
 export default async function (context: vscode.ExtensionContext) {
@@ -112,6 +127,11 @@ export default async function (context: vscode.ExtensionContext) {
         type: WizardInput.Checkbox,
         description: ['Deprecated since 100.0.2'],
       },
+      {
+        id: 'generateTemplate',
+        label: 'Generate a block and a template',
+        type: WizardInput.Checkbox,
+      },
     ],
     validation: {
       module: 'required',
@@ -123,6 +143,102 @@ export default async function (context: vscode.ExtensionContext) {
   const [vendor, module] = data.module.split('_');
 
   const moduleDirectory = vscode.Uri.joinPath(appCodeUri, `${vendor}/${module}`);
+
+  const actionPath = capitalize(data.actionPath);
+  const actionName = capitalize(data.actionName);
+  const methodClass = getMethodClass(data.method);
+  const dependencies = [
+    `Magento\\Framework\\App\\Action\\${methodClass}`,
+    `Magento\\Framework\\App\\ResponseInterface`,
+    `Magento\\Framework\\Controller\\ResultInterface`,
+  ];
+
+  if (data.inheritAction) {
+    dependencies.push(`\\Magento\\Framework\\App\\Action\\Action`);
+    dependencies.push(`\\Magento\\Framework\\App\\Action\\Context`);
+  }
+
+  let classInner = '';
+  let executeFunctionInner = `// TODO: Implement action`;
+
+  if (data.generateTemplate) {
+    const constructorParams = [];
+    const constructorData = [];
+
+    const pageResultFactoryParameter = await generateClassParameter({
+      description: null,
+      type: 'PageFactory',
+      visibility: 'private',
+      name: 'resultPageFactory',
+    });
+
+    classInner += pageResultFactoryParameter;
+    classInner += '\n\n';
+
+    if (data.inheritAction) {
+      constructorParams.push({
+        name: 'context',
+        type: 'Context',
+      });
+      constructorData.push('parent::__construct($context);');
+    }
+
+    constructorParams.push({
+      name: 'resultPageFactory',
+      type: 'PageFactory',
+    });
+    constructorData.push('$this->resultPageFactory = $resultPageFactory;');
+
+    const constructorFunction = await generateFunction({
+      name: '__construct',
+      visibility: 'public',
+      description: 'Constructor',
+      params: constructorParams,
+      docParams: constructorParams,
+      data: indentString(constructorData.join('\n'), 4),
+      returnType: 'ResultInterface|ResponseInterface',
+    });
+
+    classInner += constructorFunction;
+    classInner += '\n\n';
+  }
+
+  if (data.generateTemplate) {
+    executeFunctionInner = `return $this->resultPageFactory->create();`;
+  }
+
+  const executeFunction = await generateFunction({
+    name: 'execute',
+    visibility: 'public',
+    description: 'Execute action based on request and return result',
+    params: [],
+    docParams: [],
+    data: indentString(executeFunctionInner, 4),
+    returnType: 'ResultInterface|ResponseInterface',
+  });
+
+  classInner += executeFunction;
+
+  const controllerClass = await generateClass({
+    namespace: `${vendor}\\${module}\\Controller\\${actionPath}`,
+    dependencies,
+    className: actionName,
+    classExtends: data.inheritAction ? `Action` : null,
+    classImplements: methodClass,
+    data: indentString(classInner, 4),
+    license: null,
+  });
+
+  await vscode.workspace.fs.writeFile(
+    vscode.Uri.joinPath(moduleDirectory, `Controller/${actionPath}/${actionName}.php`),
+    Buffer.from(controllerClass, 'utf-8')
+  );
+
+  if (data.generateTemplate) {
+    // await generateBlockFiles(appCodeUri, {
+    //   module,
+    // })
+  }
 
   vscode.commands.executeCommand('workbench.files.action.refreshFilesExplorer');
 }
