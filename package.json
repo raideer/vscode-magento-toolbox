@@ -10,8 +10,9 @@
 		"Other"
 	],
 	"activationEvents": [
+    "onCommand:magento-toolbox.generateBlock",
+    "onCommand:magento-toolbox.generateObserver",
 		"onCommand:magento-toolbox.generateModule",
-		"onCommand:magento-toolbox.generateObserver",
 		"onCommand:magento-toolbox.binMagento"
 	],
 	"repository": {
@@ -28,6 +29,10 @@
 			{
 				"command": "magento-toolbox.generateObserver",
 				"title": "Magento Toolbox: Generate Observer"
+			},
+      {
+				"command": "magento-toolbox.generateBlock",
+				"title": "Magento Toolbox: Generate Block"
 			},
 			{
 				"command": "magento-toolbox.binMagento",

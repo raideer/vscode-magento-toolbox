@@ -144,5 +144,6 @@ export default async function (context: vscode.ExtensionContext) {
     Buffer.from(observerClass, 'utf-8')
   );
 
+  vscode.window.showInformationMessage(`Generated an Observer: ${data.observerName}`);
   vscode.commands.executeCommand('workbench.files.action.refreshFilesExplorer');
 }

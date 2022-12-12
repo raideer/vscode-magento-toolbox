@@ -4,7 +4,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { IWizard } from 'types';
 
-export function openWizard(context: vscode.ExtensionContext, wizard: IWizard) {
+export function openWizard<T = any>(context: vscode.ExtensionContext, wizard: IWizard): Promise<T> {
   return new Promise((resolve, reject) => {
     const scriptPath = Uri.file(path.join(context.extensionPath, 'dist', 'webview.js'));
 

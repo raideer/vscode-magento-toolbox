@@ -3,6 +3,7 @@ import * as vscode from 'vscode';
 import binMagento from './commands/bin-magento';
 import generateModule from './commands/generate-module';
 import generateObserver from './commands/generate-observer';
+import generateBlock from './commands/generate-block';
 
 export function activate(context: vscode.ExtensionContext) {
   const binMagentoCommand = vscode.commands.registerCommand('magento-toolbox.binMagento', () => {
@@ -23,8 +24,15 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
 
+  const generateBlockCommand = vscode.commands.registerCommand(
+    'magento-toolbox.generateBlock',
+    () => {
+      return generateBlock(context);
+    }
+  );
+
   context.subscriptions.push(
-    ...[generateModuleCommand, generateObserverCommand, binMagentoCommand]
+    ...[generateModuleCommand, generateObserverCommand, binMagentoCommand, generateBlockCommand]
   );
 }
 

@@ -1,3 +1,4 @@
+import { mergeWith } from 'lodash-es';
 import { parseString } from 'xml2js';
 
 export async function parseXml(xml: string) {
@@ -10,4 +11,20 @@ export async function parseXml(xml: string) {
       }
     });
   });
+}
+
+export function mergeXml(initial: any, target: any) {
+  return mergeWith(
+    { ...initial },
+    {
+      ...target,
+    },
+    (objValue, srcValue) => {
+      if (Array.isArray(objValue)) {
+        return objValue.concat(srcValue);
+      }
+
+      return undefined;
+    }
+  );
 }
