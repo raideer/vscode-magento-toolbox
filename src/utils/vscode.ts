@@ -2,7 +2,7 @@ import { OpenDialogOptions, Uri, window, workspace } from 'vscode';
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
-import { IWizard } from 'types';
+import { IWizard } from 'types/wizard';
 
 export function openWizard<T = any>(context: vscode.ExtensionContext, wizard: IWizard): Promise<T> {
   return new Promise((resolve, reject) => {

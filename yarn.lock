@@ -2654,6 +2654,11 @@ php-parser@^2.1.0:
   resolved "https://registry.npmjs.org/php-parser/-/php-parser-2.2.0.tgz#67384f0a5933dbbef40beab0ab31d0b8c582ff88"
   integrity sha1-ZzhPClkz2770C+qwqzHQuMWC/4g=
 
+php-parser@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/php-parser/-/php-parser-3.1.2.tgz#db704c584ea4085142fc5d3c33218b207d5f9a09"
+  integrity sha512-RRCMK/bCKYPLRhlpfMlVVVsaIesuW+X6UxRqWjm7dTAmTZk8PvD6hCmG/RVeDzse7iqYWJwLJeqEbaGLC+aHeQ==
+
 "php-unparser@git+https://github.com/Sevavietl/php-unparser.git":
   version "0.2.3"
   resolved "git+https://github.com/Sevavietl/php-unparser.git#c18e3c7cf230df7e2a1c655df4db56c10d0ca75b"
