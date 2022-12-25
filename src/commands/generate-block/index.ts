@@ -27,10 +27,10 @@ export default async function (context: vscode.ExtensionContext) {
 
   // Generate block class
   const blockName = `${capitalize(data.blockName.replace('Block', ''))}Block`;
-  const blockClass = await generateBlockClass(data);
-
+  const blockClass = await generateBlockClass(data, blockName);
+  const blockPath = data.scope === 'frontend' ? `Block` : 'Block/Adminhtml';
   await vscode.workspace.fs.writeFile(
-    vscode.Uri.joinPath(moduleDirectory, `Block/${blockName}.php`),
+    vscode.Uri.joinPath(moduleDirectory, `${blockPath}/${blockName}.php`),
     Buffer.from(blockClass, 'utf-8')
   );
 
@@ -48,7 +48,7 @@ export default async function (context: vscode.ExtensionContext) {
     await vscode.workspace.fs.writeFile(layoutHandleUri, Buffer.from(eventsXml, 'utf-8'));
 
     // Generate block template
-    const template = await generateBlockLayoutTemplate(data, blockName);
+    const template = await generateBlockLayoutTemplate(data.module, blockName);
 
     await vscode.workspace.fs.writeFile(
       vscode.Uri.joinPath(

@@ -46,11 +46,8 @@ export const generateBlockLayoutHandle = async (
   return eventsXml;
 };
 
-export const generateBlockLayoutTemplate = async (
-  data: BlockWizardLayoutHandleData,
-  blockName: string
-) => {
-  const [vendor, module] = data.module.split('_');
+export const generateBlockLayoutTemplate = async (moduleName: string, blockName: string) => {
+  const [vendor, module] = moduleName.split('_');
 
   const blockClassNamespace = `${vendor}\\${module}\\Block\\${blockName}`;
 

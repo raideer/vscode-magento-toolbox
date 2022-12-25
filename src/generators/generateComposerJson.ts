@@ -1,4 +1,4 @@
-import { License } from 'types';
+import { License } from 'types/wizard';
 
 export interface IComposerVariables {
   vendor: string;

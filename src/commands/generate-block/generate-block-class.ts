@@ -1,17 +1,22 @@
-import { capitalize } from 'lodash-es';
 import { generateClass } from 'generators/generateClass';
 import { BlockWizardBlockData, BlockWizardLayoutHandleData } from './block-wizard';
 
 export const generateBlockClass = async (
-  data: BlockWizardBlockData | BlockWizardLayoutHandleData
+  data: BlockWizardBlockData | BlockWizardLayoutHandleData,
+  blockName: string
 ) => {
   const [vendor, module] = data.module.split('_');
 
-  const blockName = `${capitalize(data.blockName.replace('Block', ''))}Block`;
-
   const blockClass = await generateClass({
-    namespace: `${vendor}\\${module}\\Block`,
-    dependencies: [`Magento\\Framework\\View\\Element\\Template`],
+    namespace:
+      data.scope === 'frontend'
+        ? `${vendor}\\${module}\\Block`
+        : `${vendor}\\${module}\\Block\\Adminhtml`,
+    dependencies: [
+      data.scope === 'frontend'
+        ? `Magento\\Framework\\View\\Element\\Template`
+        : `Magento\\Backend\\Block\\Template`,
+    ],
     className: blockName,
     classExtends: 'Template',
     classImplements: null,

@@ -1,8 +1,8 @@
 import { Form, Formik, FormikValues } from 'formik';
 import { useCallback } from 'react';
-import { IWizard, WizardInput } from 'types';
 import { WebviewApi } from 'vscode-webview';
 import Validator from 'validatorjs';
+import { IWizard, WizardInput } from 'types/wizard';
 import { FieldRenderer } from './FieldRenderer';
 import { Button } from '../Form/Button';
 

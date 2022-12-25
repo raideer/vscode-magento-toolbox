@@ -7,6 +7,7 @@ interface BlockWizardBaseData {
   module: string;
   blockName: string;
   referenceHandle: boolean;
+  scope: string;
 }
 
 export interface BlockWizardBlockData extends BlockWizardBaseData {
@@ -16,7 +17,6 @@ export interface BlockWizardBlockData extends BlockWizardBaseData {
 export interface BlockWizardLayoutHandleData extends BlockWizardBaseData {
   referenceHandle: true;
   layoutHandle: string;
-  scope: string;
   referenceType: string;
   referenceName: string;
 }
@@ -41,22 +41,10 @@ export const blockWizard = async (context: ExtensionContext, modules: string[]) 
         description: ['Note: consider using a view model instead of a block if possible'],
       },
       {
-        id: 'referenceHandle',
-        label: 'Reference a layout handle',
-        type: WizardInput.Checkbox,
-      },
-      {
-        dependsOn: 'referenceHandle',
-        id: 'layoutHandle',
-        label: 'Layout handle*',
-        placeholder: 'eg. checkout_index_index',
-        type: WizardInput.Text,
-      },
-      {
-        dependsOn: 'referenceHandle',
         id: 'scope',
         label: 'Scope',
         type: WizardInput.Select,
+        initialValue: 'frontend',
         options: [
           {
             label: 'Frontend',
@@ -68,6 +56,19 @@ export const blockWizard = async (context: ExtensionContext, modules: string[]) 
           },
         ],
       },
+      {
+        id: 'referenceHandle',
+        label: 'Reference a layout handle',
+        type: WizardInput.Checkbox,
+      },
+      {
+        dependsOn: 'referenceHandle',
+        id: 'layoutHandle',
+        label: 'Layout handle*',
+        placeholder: 'eg. checkout_index_index',
+        type: WizardInput.Text,
+      },
+
       {
         dependsOn: 'referenceHandle',
         id: 'referenceType',

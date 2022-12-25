@@ -1,6 +1,6 @@
 import { useFormikContext } from 'formik';
 import { useMemo } from 'react';
-import { IWizardField, WizardInput } from 'types';
+import { IWizardField, WizardInput } from 'types/wizard';
 import { Checkbox } from '../Form/Checkbox';
 import { Select } from '../Form/Select';
 import { TextInput } from '../Form/TextInput';

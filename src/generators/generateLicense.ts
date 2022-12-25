@@ -1,6 +1,6 @@
 import { renderTemplate } from 'generator';
 import { resolve } from 'path';
-import { License } from 'types';
+import { License } from 'types/wizard';
 
 export interface ILicenseVariables {
   year: number;

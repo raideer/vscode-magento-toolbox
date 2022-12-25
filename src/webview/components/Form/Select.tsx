@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { useField } from 'formik';
-import { IWizardSelectOption } from 'types';
+import { IWizardSelectOption } from 'types/wizard';
 
 interface Props {
   name: string;

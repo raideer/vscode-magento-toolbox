@@ -53,6 +53,7 @@ export const controllerWizard = async (context: ExtensionContext, modules: strin
         id: 'scope',
         label: 'Scope',
         type: WizardInput.Select,
+        initialValue: 'frontend',
         options: [
           {
             label: 'Frontend',
@@ -68,6 +69,7 @@ export const controllerWizard = async (context: ExtensionContext, modules: strin
         id: 'method',
         label: 'HTTP Method',
         type: WizardInput.Select,
+        initialValue: 'GET',
         options: [
           {
             label: 'GET',
