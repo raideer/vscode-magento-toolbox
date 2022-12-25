@@ -94,5 +94,6 @@ export const astToPhpClass = (ast: Program) => {
 
   consumeFile(ast, phpClass);
 
+  console.log(ast);
   return phpClass;
 };

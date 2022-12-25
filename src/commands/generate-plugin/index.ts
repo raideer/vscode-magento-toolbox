@@ -1,10 +1,10 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import * as vscode from 'vscode';
-import { Engine } from 'php-parser';
-import { astToPhpClass } from 'utils/ast';
-import { openWizard } from 'utils/vscode';
 import { resolveLoadedModules, resolveMagentoRoot } from 'utils/magento';
-import { WizardInput } from 'types/wizard';
-import { capitalize, first, upperFirst } from 'lodash-es';
+import { upperFirst } from 'lodash-es';
+import { resolvePluginClass, resolvePluginMethod } from './resolve-plugin-method';
+import { pluginWizard } from './plugin-wizard';
+import { generatePluginClass } from './generate-plugin-class';
 
 export default async function (context: vscode.ExtensionContext) {
   const magentoRoot = await resolveMagentoRoot(context);
@@ -14,56 +14,16 @@ export default async function (context: vscode.ExtensionContext) {
     return;
   }
 
-  const editor = vscode.window.activeTextEditor;
-
-  if (!editor) {
-    vscode.window.showErrorMessage('No active editor');
-    return;
-  }
-  const selection = editor?.selection;
-  if (!editor || !selection) {
-    vscode.window.showErrorMessage('No selection');
+  const phpClass = resolvePluginClass();
+  if (!phpClass) {
+    // Error message already shown by resolvePluginClass
     return;
   }
 
-  const wordRange = editor.document.getWordRangeAtPosition(selection.active);
-  const word = editor.document.getText(wordRange);
-  const fullText = editor.document.getText();
-
-  const parser = new Engine({});
-  const ast = parser.parseCode(fullText, 'file.php');
-
-  const phpClass = astToPhpClass(ast);
-
-  if (phpClass.isFinal) {
-    vscode.window.showErrorMessage('Cannot generate plugin for final class');
-    return;
-  }
-
-  if (
-    phpClass.implements &&
-    phpClass.implements.includes('Magento\\Framework\\ObjectManager\\NoninterceptableInterface')
-  ) {
-    vscode.window.showErrorMessage(
-      'Cannot generate plugin for a class that implements NoninterceptableInterface'
-    );
-    return;
-  }
-
-  const method = (phpClass.methods || []).find((m) => m.name === word);
+  const method = resolvePluginMethod(phpClass);
 
   if (!method) {
-    vscode.window.showErrorMessage(`Method ${word} not found in class ${phpClass.name}`);
-    return;
-  }
-
-  if (method.visibility !== 'public') {
-    vscode.window.showErrorMessage('Cannot generate plugin for a private method');
-    return;
-  }
-
-  if (method.name === '__construct' || method.name === '__destruct') {
-    vscode.window.showErrorMessage('Cannot generate plugin for a constructor or destructor');
+    // Error message already shown by resolvePluginMethod
     return;
   }
 
@@ -71,49 +31,22 @@ export default async function (context: vscode.ExtensionContext) {
 
   const modules = await resolveLoadedModules(appCodeUri);
 
-  const data: any = await openWizard(context, {
-    title: 'Generate a new plugin',
-    fields: [
-      {
-        id: 'module',
-        label: 'Module*',
-        type: WizardInput.Select,
-        options: modules.map((module) => ({ label: module, value: module })),
-        initialValue: first(modules),
-      },
-      {
-        id: 'name',
-        label: 'Plugin name*',
-        type: WizardInput.Text,
-        initialValue: `${capitalize(phpClass.name)}Plugin`,
-      },
-      {
-        id: 'type',
-        label: 'Plugin type',
-        type: WizardInput.Select,
-        options: [
-          {
-            label: 'Before',
-            value: 'before',
-          },
-          {
-            label: 'After',
-            value: 'after',
-          },
-          {
-            label: 'Around',
-            value: 'around',
-          },
-        ],
-        initialValue: 'before',
-      },
-    ],
-    validation: {
-      module: 'required',
-      name: 'required',
-      type: 'required',
-    },
-  });
+  // Open plugin wizard
+  const data = await pluginWizard(context, modules, phpClass.name!);
+  const [vendor, module] = data.module.split('_');
 
-  const pluginMethodName = `${data.type}${upperFirst(method.name)}`;
+  // Module directory to generate plugin in
+  const moduleDirectory = vscode.Uri.joinPath(appCodeUri, `${vendor}/${module}`);
+
+  const pluginClass = await generatePluginClass(data, phpClass, method);
+
+  if (!pluginClass) {
+    vscode.window.showWarningMessage(`Failed to generate plugin class.`);
+    return;
+  }
+
+  await vscode.workspace.fs.writeFile(
+    vscode.Uri.joinPath(moduleDirectory, `Plugin/${data.name}.php`),
+    Buffer.from(pluginClass, 'utf-8')
+  );
 }

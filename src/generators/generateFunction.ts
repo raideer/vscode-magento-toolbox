@@ -1,18 +1,18 @@
 import { renderTemplate } from 'generator';
 import { resolve } from 'path';
 
-interface IParam {
+export interface IFunctionParam {
   name: string;
-  type: string;
+  type: string | null;
 }
 
 export interface IFunctionVariables {
   description: string | null;
   name: string;
-  docParams: IParam[];
-  returnType: string;
+  docParams: IFunctionParam[];
+  returnType: string | null;
   visibility: 'public' | 'private' | 'protected';
-  params: IParam[];
+  params: IFunctionParam[];
   data: string;
 }
 
