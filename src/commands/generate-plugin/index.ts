@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import * as vscode from 'vscode';
 import { resolveLoadedModules, resolveMagentoRoot } from 'utils/magento';
-import { upperFirst } from 'lodash-es';
 import { resolvePluginClass, resolvePluginMethod } from './resolve-plugin-method';
 import { pluginWizard } from './plugin-wizard';
 import { generatePluginClass } from './generate-plugin-class';

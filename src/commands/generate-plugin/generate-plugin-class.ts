@@ -68,11 +68,7 @@ export const generatePluginClass = async (
 ) => {
   const [vendor, module] = data.module.split('_');
   const nameParts = data.name.split(/[\\/]+/);
-  const pluginName = nameParts.pop();
-  if (!pluginName) {
-    // Just for type safety
-    return null;
-  }
+  const pluginName = nameParts.pop() as string;
   const namespace = [vendor, module, 'Plugin', ...nameParts].join('\\');
 
   const pluginClassInner = await generatePluginClassInner(data, methodClass, method);

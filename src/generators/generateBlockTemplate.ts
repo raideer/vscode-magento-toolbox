@@ -1,4 +1,4 @@
-import { renderTemplate } from 'generator';
+import { renderTemplate } from 'utils/generator';
 import { resolve } from 'path';
 
 export interface IBlockTemplateVariables {

@@ -1,4 +1,4 @@
-import { generateFunction } from 'generators/generateFunction';
+import { IFunctionParam, generateFunction } from 'generators/generateFunction';
 import indentString from 'indent-string';
 import { generateClassParameter } from 'generators/generateClassParameter';
 import { generateClass } from 'generators/generateClass';
@@ -37,8 +37,8 @@ async function generateClassParameters() {
 }
 
 async function generateClassConstructor(data: ControllerWizardData) {
-  const constructorParams = [];
-  const constructorData = [];
+  const constructorParams: IFunctionParam[] = [];
+  const constructorData: string[] = [];
 
   if (data.inheritAction) {
     constructorParams.push({

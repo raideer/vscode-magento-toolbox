@@ -1,4 +1,4 @@
-import { WizardInput } from 'types/wizard';
+import { License, WizardInput } from 'types/wizard';
 import { openWizard } from 'utils/vscode';
 import { ExtensionContext } from 'vscode';
 
@@ -6,7 +6,7 @@ interface ModuleWizardBaseData {
   vendor: string;
   module: string;
   sequence: string[];
-  license: string;
+  license: License;
   version: string;
   copyright: string;
   composer: boolean;
