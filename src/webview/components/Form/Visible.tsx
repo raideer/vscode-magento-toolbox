@@ -7,8 +7,6 @@ interface Props {
 export const Visible: React.FC<Props> = ({ children, when }) => {
   const formik = useFormikContext();
 
-  console.log(formik.values);
-
   if (when(formik.values)) {
     // eslint-disable-next-line react/jsx-no-useless-fragment
     return <>{children}</>;

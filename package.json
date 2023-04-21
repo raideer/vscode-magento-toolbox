@@ -1,134 +1,135 @@
 {
-	"name": "magento-toolbox",
-	"displayName": "Magento Toolbox",
-	"description": "Tools for working with Magento 2",
-	"version": "0.0.1",
-	"engines": {
-		"vscode": "^1.63.0"
-	},
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-		"onCommand:magento-toolbox.generateBlock",
-		"onCommand:magento-toolbox.generateController",
-		"onCommand:magento-toolbox.generateObserver",
-		"onCommand:magento-toolbox.generateModule",
-		"onCommand:magento-toolbox.binMagento",
-		"onCommand:magento-toolbox.generatePlugin"
-	],
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/raideer/vscode-magento-toolbox.git"
-	},
-	"main": "./dist/extension.js",
-	"contributes": {
-		"commands": [
-			{
-				"command": "magento-toolbox.generateModule",
-				"title": "Magento Toolbox: Generate Module"
-			},
-			{
-				"command": "magento-toolbox.generateController",
-				"title": "Magento Toolbox: Generate Controller"
-			},
-			{
-				"command": "magento-toolbox.generateObserver",
-				"title": "Magento Toolbox: Generate Observer"
-			},
-			{
-				"command": "magento-toolbox.generateBlock",
-				"title": "Magento Toolbox: Generate Block"
-			},
-			{
-				"command": "magento-toolbox.binMagento",
-				"title": "Magento Toolbox: Run bin/magento command"
-			},
-			{
-				"command": "magento-toolbox.generatePlugin",
-				"title": "Magento Toolbox: Generate Plugin"
-			}
-		],
-		"menus": {
-			"commandPalette": [
-				{
-					"command": "magento-toolbox.generatePlugin",
-					"when": "false"
-				}
-			],
-			"editor/context": [
-				{
-					"command": "magento-toolbox.generatePlugin",
-					"when": "editorLangId == php && editorTextFocus"
-				}
-			]
-		}
-	},
-	"scripts": {
-		"vscode:prepublish": "yarn run package",
-		"compile": "webpack",
-		"watch": "webpack --watch",
-		"package": "webpack --mode production --devtool hidden-source-map",
-		"lint": "eslint src --ext ts",
-		"compile-tests": "tsc -p . --outDir out",
+  "name": "magento-toolbox",
+  "displayName": "Magento Toolbox",
+  "description": "Tools for working with Magento 2",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.63.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:magento-toolbox.generateBlock",
+    "onCommand:magento-toolbox.generateController",
+    "onCommand:magento-toolbox.generateObserver",
+    "onCommand:magento-toolbox.generateModule",
+    "onCommand:magento-toolbox.binMagento",
+    "onCommand:magento-toolbox.generatePlugin"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/raideer/vscode-magento-toolbox.git"
+  },
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "magento-toolbox.generateModule",
+        "title": "Magento Toolbox: Generate Module"
+      },
+      {
+        "command": "magento-toolbox.generateController",
+        "title": "Magento Toolbox: Generate Controller"
+      },
+      {
+        "command": "magento-toolbox.generateObserver",
+        "title": "Magento Toolbox: Generate Observer"
+      },
+      {
+        "command": "magento-toolbox.generateBlock",
+        "title": "Magento Toolbox: Generate Block"
+      },
+      {
+        "command": "magento-toolbox.binMagento",
+        "title": "Magento Toolbox: Run bin/magento command"
+      },
+      {
+        "command": "magento-toolbox.generatePlugin",
+        "title": "Magento Toolbox: Generate Plugin"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "magento-toolbox.generatePlugin",
+          "when": "false"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "magento-toolbox.generatePlugin",
+          "when": "editorLangId == php && editorTextFocus"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "yarn run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "lint": "eslint src --ext ts",
+    "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
+    "prettier:fix": "prettier --write .",
     "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
     "test": "node ./out/test/runTest.js"
-	},
-	"devDependencies": {
-		"@githubocto/tailwind-vscode": "^1.0.4",
-		"@types/ejs": "^3.1.0",
-		"@types/glob": "^8.0.0",
-		"@types/lodash-es": "^4.17.5",
-		"@types/mocha": "^10.0.1",
-		"@types/node": "14.x",
-		"@types/react": "^17.0.37",
-		"@types/react-dom": "^18.0.9",
-		"@types/to-json-schema": "^0.2.1",
-		"@types/validatorjs": "^3.15.0",
-		"@types/vscode": "^1.63.0",
-		"@types/vscode-webview": "^1.57.0",
-		"@types/xml2js": "^0.4.9",
-		"@typescript-eslint/eslint-plugin": "^5.1.0",
-		"@typescript-eslint/parser": "^5.1.0",
-		"@vscode/test-electron": "^2.2.0",
-		"css-loader": "^6.5.1",
-		"eslint": "^8.1.0",
-		"eslint-config-airbnb": "^19.0.2",
-		"eslint-config-airbnb-typescript": "^16.1.0",
-		"eslint-config-prettier": "^8.3.0",
-		"eslint-plugin-import": "^2.25.3",
-		"eslint-plugin-jsx-a11y": "^6.5.1",
-		"eslint-plugin-prettier": "^4.0.0",
-		"eslint-plugin-react": "^7.28.0",
-		"eslint-plugin-react-hooks": "^4.3.0",
-		"glob": "^8.0.3",
-		"mocha": "^10.1.0",
-		"postcss": "^8.4.19",
-		"postcss-loader": "^7.0.2",
-		"postcss-preset-env": "^7.8.3",
-		"prettier": "^2.5.1",
-		"style-loader": "^3.3.1",
-		"tailwindcss": "^3.2.4",
-		"ts-loader": "^9.2.5",
-		"typescript": "^4.4.4",
-		"webpack": "^5.52.1",
-		"webpack-cli": "^4.8.0"
-	},
-	"dependencies": {
-		"clsx": "^1.2.1",
-		"ejs": "^3.1.7",
-		"formik": "^2.2.9",
-		"indent-string": "^5.0.0",
-		"informed": "^4.0.17",
-		"lodash-es": "^4.17.21",
-		"php-parser": "^3.1.2",
-		"php-writer": "^3.0.0",
-		"react": "^18.2.0",
-		"react-dom": "^18.2.0",
-		"validatorjs": "^3.22.1",
-		"xml2js": "^0.4.23"
-	},
+  },
+  "devDependencies": {
+    "@githubocto/tailwind-vscode": "^1.0.4",
+    "@types/ejs": "^3.1.0",
+    "@types/glob": "^8.0.0",
+    "@types/lodash-es": "^4.17.5",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "14.x",
+    "@types/react": "^17.0.37",
+    "@types/react-dom": "^18.0.9",
+    "@types/to-json-schema": "^0.2.1",
+    "@types/validatorjs": "^3.15.0",
+    "@types/vscode": "^1.63.0",
+    "@types/vscode-webview": "^1.57.0",
+    "@types/xml2js": "^0.4.9",
+    "@typescript-eslint/eslint-plugin": "^5.1.0",
+    "@typescript-eslint/parser": "^5.1.0",
+    "@vscode/test-electron": "^2.2.0",
+    "css-loader": "^6.5.1",
+    "eslint": "^8.1.0",
+    "eslint-config-airbnb": "^19.0.2",
+    "eslint-config-airbnb-typescript": "^16.1.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "glob": "^8.0.3",
+    "mocha": "^10.1.0",
+    "postcss": "^8.4.19",
+    "postcss-loader": "^7.0.2",
+    "postcss-preset-env": "^7.8.3",
+    "prettier": "^2.5.1",
+    "style-loader": "^3.3.1",
+    "tailwindcss": "^3.2.4",
+    "ts-loader": "^9.2.5",
+    "typescript": "^4.4.4",
+    "webpack": "^5.52.1",
+    "webpack-cli": "^4.8.0"
+  },
+  "dependencies": {
+    "clsx": "^1.2.1",
+    "ejs": "^3.1.7",
+    "formik": "^2.2.9",
+    "indent-string": "^5.0.0",
+    "informed": "^4.0.17",
+    "lodash-es": "^4.17.21",
+    "php-parser": "^3.1.2",
+    "php-writer": "^3.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "validatorjs": "^3.22.1",
+    "xml2js": "^0.4.23"
+  },
   "resolutions": {
     "@types/react": "^17.0.37"
   }

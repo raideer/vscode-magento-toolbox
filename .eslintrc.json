@@ -1,53 +1,47 @@
 {
-    "root": true,
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "ecmaVersion": 6,
-        "sourceType": "module",
-        "project": "./tsconfig.json"
-    },
-    "plugins": [
-      "@typescript-eslint"
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "airbnb",
+    "airbnb-typescript",
+    "eslint:recommended",
+    "plugin:react/recommended", // Uses the recommended rules from @eslint-plugin-react
+    "plugin:@typescript-eslint/recommended", // Uses the recommended rules from @typescript-eslint/eslint-plugin
+    "plugin:prettier/recommended"
+  ],
+  "rules": {
+    "curly": "warn",
+    "eqeqeq": "warn",
+    "no-throw-literal": "warn",
+    "semi": "off",
+    "func-names": "off",
+    "no-await-in-loop": "off",
+    "guard-for-in": "off",
+    "no-restricted-syntax": "off",
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/function-component-definition": [
+      "warn",
+      {
+        "namedComponents": "arrow-function",
+        "unnamedComponents": "arrow-function"
+      }
     ],
-    "extends": [
-      "airbnb",
-      "airbnb-typescript",
-      "eslint:recommended",
-      "plugin:react/recommended", // Uses the recommended rules from @eslint-plugin-react
-      "plugin:@typescript-eslint/recommended", // Uses the recommended rules from @typescript-eslint/eslint-plugin
-      "plugin:prettier/recommended"
-    ],
-    "rules": {
-        "curly": "warn",
-        "eqeqeq": "warn",
-        "no-throw-literal": "warn",
-        "semi": "off",
-        "func-names": "off",
-        "no-await-in-loop": "off",
-        "guard-for-in": "off",
-        "no-restricted-syntax": "off",
-        "no-console": ["warn", { "allow": ["warn", "error"] }],
-        "react/react-in-jsx-scope": "off",
-        "react/prop-types": "off",
-        "react/jsx-props-no-spreading": "off",
-        "react/function-component-definition": [
-            "warn",
-            {
-                "namedComponents": "arrow-function",
-                "unnamedComponents": "arrow-function"
-            }
-        ],
-        "import/prefer-default-export": "off",
-        "import/no-extraneous-dependencies": ["error", {"devDependencies": ["src/test/**/*.ts"]}],
-        "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/no-non-null-assertion": "off",
-        "@typescript-eslint/explicit-module-boundary-types": "off",
-        "@typescript-eslint/no-unused-vars": "off",
-        "consistent-return": "off"
-    },
-    "ignorePatterns": [
-        "out",
-        "dist",
-        "**/*.d.ts"
-    ]
+    "import/prefer-default-export": "off",
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": ["src/test/**/*.ts"] }],
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "consistent-return": "off"
+  },
+  "ignorePatterns": ["out", "dist", "**/*.d.ts"]
 }

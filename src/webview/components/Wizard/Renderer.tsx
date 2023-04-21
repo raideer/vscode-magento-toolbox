@@ -23,7 +23,6 @@ export const Renderer: React.FC<Props> = ({ wizard, vscode }) => {
   }, {});
 
   const handleSubmit = useCallback((values) => {
-    console.log('submit', values);
     vscode.postMessage({ command: 'submit', payload: values });
   }, []);
 
