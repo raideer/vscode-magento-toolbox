@@ -9,6 +9,7 @@
   "categories": [
     "Other"
   ],
+  "publisher": "raideer",
   "activationEvents": [
     "onCommand:magento-toolbox.generateBlock",
     "onCommand:magento-toolbox.generateController",

@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 // @ts-check
 
-const webpack = require('webpack');
 const path = require('path');
 
 // @ts-check
@@ -23,11 +22,6 @@ const webviewConfig = {
     extensions: ['.ts', '.js', '.tsx'],
     modules: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'node_modules')],
   },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-    }),
-  ],
   module: {
     rules: [
       {

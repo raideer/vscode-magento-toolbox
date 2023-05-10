@@ -17,7 +17,7 @@ export function openWizard<T = any>(context: vscode.ExtensionContext, wizard: IW
       }
     );
 
-    let template = fs.readFileSync(`${context.extensionPath}/src/webview/index.html`, 'utf8');
+    let template = fs.readFileSync(`${context.extensionPath}/templates/webview/index.html`, 'utf8');
     template = template.replace(
       '{{APP_SCRIPT}}',
       scriptPath.with({ scheme: 'vscode-resource' }).toString()
