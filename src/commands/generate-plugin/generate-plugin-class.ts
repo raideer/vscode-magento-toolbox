@@ -31,7 +31,7 @@ const generatePluginClassInner = async (
   if (data.type === 'before') {
     if (args.length > 0) {
       pluginFunctionParams.push(...args);
-      functionData = `return [${args.map((arg) => `$${arg.name}`).join(', ')}]`;
+      functionData = `return [${args.map((arg) => `$${arg.name}`).join(', ')}];`;
     }
   } else if (data.type === 'after') {
     pluginFunctionParams.push({
