@@ -11,7 +11,7 @@ export const generateObserverEvents = async (data: ObserverWizardData, appCodeUr
   const variables = {
     eventName: data.eventName,
     observerName: snakeCase(data.observerName),
-    observerInstance: `/${vendor}/${module}/Observer/${data.observerName}`,
+    observerInstance: `\\${vendor}\\${module}\\Observer\\${data.observerName}`,
   };
 
   const configLocation = data.scope === 'all' ? 'etc/events.xml' : `etc/${data.scope}/events.xml`;

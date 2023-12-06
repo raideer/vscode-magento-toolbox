@@ -2,7 +2,8 @@ export interface IPhpMethodArgument {
   name?: string;
   nullable?: boolean;
   readonly?: boolean;
-  value?: string;
+  value?: any;
+  valueRaw?: string;
   type?: string;
 }
 

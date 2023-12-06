@@ -11,7 +11,8 @@
     "baseUrl": "src",
     "esModuleInterop": true,
     "noImplicitReturns": false,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "moduleResolution": "node",
   },
   "exclude": ["node_modules", ".vscode-test"]
 }

@@ -32,6 +32,8 @@ const consumeMethod = (node: Method, phpClass: IPhpClass) => {
       argument.nullable = item.nullable;
       argument.readonly = item.readonly;
       argument.type = item.type?.name;
+      argument.value = (item.value as any)?.value;
+      argument.valueRaw = (item.value as any)?.raw;
 
       return argument;
     });

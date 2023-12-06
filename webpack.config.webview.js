@@ -2,14 +2,16 @@
 // @ts-check
 
 const path = require('path');
+// eslint-disable-next-line import/no-extraneous-dependencies
+const webpack = require('webpack');
 
 // @ts-check
 /** @typedef {import('webpack').Configuration} WebpackConfig * */
 
 /** @type WebpackConfig */
 const webviewConfig = {
-  target: 'node', // vscode extensions run in a Node.js-context 📖 -> https://webpack.js.org/configuration/node/
-  mode: 'none', // this leaves the source code as close as possible to the original (when packaging we set this to 'production')
+  target: 'node',
+  mode: 'none',
 
   entry: {
     webview: './src/webview/index.tsx',
@@ -22,6 +24,11 @@ const webviewConfig = {
     extensions: ['.ts', '.js', '.tsx'],
     modules: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'node_modules')],
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+    }),
+  ],
   module: {
     rules: [
       {
@@ -30,6 +37,11 @@ const webviewConfig = {
         use: [
           {
             loader: 'ts-loader',
+            options: {
+              compilerOptions: {
+                module: 'es6', // override `tsconfig.json` so that TypeScript emits native JavaScript modules.
+              },
+            },
           },
         ],
       },

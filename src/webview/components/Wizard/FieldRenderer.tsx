@@ -34,6 +34,7 @@ export const FieldRenderer: React.FC<Props> = ({ field, className }) => {
             options={field.options}
             description={field.description}
             name={field.id}
+            search={field.search}
           >
             {field.label}
           </Select>

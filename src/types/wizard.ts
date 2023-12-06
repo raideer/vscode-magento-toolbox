@@ -20,6 +20,7 @@ export interface IWizardSelectField extends IWizardGenericField {
   type: WizardInput.Select;
   options: IWizardSelectOption[];
   multiple?: boolean;
+  search?: boolean;
 }
 
 export interface IWizardCheckboxField extends IWizardGenericField {

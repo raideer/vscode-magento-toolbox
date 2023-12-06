@@ -43,8 +43,14 @@ export default async function (context: vscode.ExtensionContext) {
     return;
   }
 
+  const path = vscode.Uri.joinPath(moduleDirectory, `Plugin/${data.name}.php`);
+
   await vscode.workspace.fs.writeFile(
-    vscode.Uri.joinPath(moduleDirectory, `Plugin/${data.name}.php`),
+    path,
     Buffer.from(pluginClass, 'utf-8')
   );
+
+  await vscode.workspace.openTextDocument(path).then(doc => {
+    vscode.window.showTextDocument(doc);
+  });
 }

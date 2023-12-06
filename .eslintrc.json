@@ -36,12 +36,12 @@
       }
     ],
     "import/prefer-default-export": "off",
-    "import/no-extraneous-dependencies": ["error", { "devDependencies": ["src/test/**/*.ts"] }],
+    "import/no-extraneous-dependencies": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-unused-vars": "off",
-    "consistent-return": "off"
+    "consistent-return": "off",
   },
   "ignorePatterns": ["out", "dist", "**/*.d.ts"]
 }

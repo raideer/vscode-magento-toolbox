@@ -3,7 +3,9 @@ import { resolve } from 'path';
 
 export interface IFunctionParam {
   name: string;
-  type: string | null;
+  type?: string;
+  value?: string;
+  nullable?: boolean;
 }
 
 export interface IFunctionVariables {

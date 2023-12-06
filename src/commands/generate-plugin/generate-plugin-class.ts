@@ -23,6 +23,8 @@ const generatePluginClassInner = async (
     return {
       name: argument.name!,
       type: argument.type!,
+      value: argument.valueRaw,
+      nullable: argument.nullable,
     };
   });
 
@@ -36,7 +38,6 @@ const generatePluginClassInner = async (
   } else if (data.type === 'after') {
     pluginFunctionParams.push({
       name: 'result',
-      type: null,
     });
     functionData = `return $result;`;
   } else if (data.type === 'around') {
