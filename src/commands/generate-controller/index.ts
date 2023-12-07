@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import { resolveLoadedModules, resolveMagentoRoot } from 'utils/magento';
-import { capitalize, lowerCase, snakeCase } from 'lodash-es';
+import { resolveLoadedModules, resolveMagentoRoot, resolveUriModule } from 'utils/magento';
+import { capitalize, snakeCase } from 'lodash-es';
 import { generateBlockClass } from 'commands/generate-block/generate-block-class';
 import {
   generateBlockLayoutHandle,
@@ -23,8 +23,14 @@ export default async function (context: vscode.ExtensionContext) {
   // Load all magento modules in app/code
   const modules = await resolveLoadedModules(appCodeUri);
 
+  let defaultModule: string | undefined;
+
+  if (vscode.window.activeTextEditor?.document.uri) {
+    defaultModule = await resolveUriModule(vscode.window.activeTextEditor.document.uri)
+  }
+
   // Open wizard
-  const data = await controllerWizard(context, modules);
+  const data = await controllerWizard(context, modules, defaultModule);
 
   const [vendor, module] = data.module.split('_');
 
@@ -38,8 +44,9 @@ export default async function (context: vscode.ExtensionContext) {
   const controllerDirectory = data.scope === 'frontend' ? 'Controller' : 'Controller/Adminhtml';
   const actionPath = capitalize(data.actionPath);
   const actionName = capitalize(data.actionName);
+  const controllerPath = vscode.Uri.joinPath(moduleDirectory, `${controllerDirectory}/${actionPath}/${actionName}.php`);
   await vscode.workspace.fs.writeFile(
-    vscode.Uri.joinPath(moduleDirectory, `${controllerDirectory}/${actionPath}/${actionName}.php`),
+    controllerPath,
     Buffer.from(controllerClass, 'utf-8')
   );
 
@@ -67,7 +74,12 @@ export default async function (context: vscode.ExtensionContext) {
       Buffer.from(blockClass, 'utf-8')
     );
 
-    const layoutHandleName = lowerCase(`${data.frontName}_${data.actionPath}_${data.actionName}`);
+    let frontName = (data.frontName || module).toLowerCase();
+    frontName = snakeCase(frontName);
+
+    const layoutHandleParts = [frontName, data.actionPath, data.actionName];
+
+    const layoutHandleName = snakeCase(layoutHandleParts.filter(Boolean).join('_'));
 
     // Generate view/scope/layout/layout_handle_name.xml
     const layoutHandleUri = vscode.Uri.joinPath(
@@ -102,6 +114,10 @@ export default async function (context: vscode.ExtensionContext) {
       ),
       Buffer.from(template, 'utf-8')
     );
+
+    await vscode.workspace.openTextDocument(controllerPath).then(doc => {
+      vscode.window.showTextDocument(doc);
+    });
   }
 
   vscode.commands.executeCommand('workbench.files.action.refreshFilesExplorer');

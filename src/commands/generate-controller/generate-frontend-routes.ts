@@ -21,7 +21,9 @@ export const generateFrontendRoutes = async (data: ControllerWizardData, appCode
     // File does not exist
   }
 
-  const frontName = lowerCase(snakeCase(data.frontName || module));
+  let frontName = (data.frontName || module).toLowerCase();
+  frontName = snakeCase(frontName);
+
   const routesXml = generateRoutesXml(
     {
       routerId: data.scope === 'frontend' ? 'standard' : 'admin',

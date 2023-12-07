@@ -14,7 +14,7 @@ export interface ControllerWizardData {
   generateTemplate: boolean;
 }
 
-export const controllerWizard = async (context: ExtensionContext, modules: string[]) => {
+export const controllerWizard = async (context: ExtensionContext, modules: string[], initialModule?: string) => {
   const data = await openWizard<ControllerWizardData>(context, {
     title: 'Generate a new controller',
     fields: [
@@ -23,7 +23,7 @@ export const controllerWizard = async (context: ExtensionContext, modules: strin
         label: 'Module*',
         type: WizardInput.Select,
         options: modules.map((module) => ({ label: module, value: module })),
-        initialValue: first(modules),
+        initialValue: initialModule ?? first(modules),
       },
       {
         id: 'frontName',
