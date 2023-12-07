@@ -61,3 +61,17 @@ export async function resolveLoadedModules(uri: Uri) {
 
   return uniq(loadedModules);
 }
+
+export async function resolveUriModule(uri: Uri) {
+  const baseModulePath = uri.fsPath.match(/(.+app\/code\/[^\/]+\/[^\/]+)/)
+
+  if (!baseModulePath) return null;
+
+  const moduleXmlUri = Uri.file(baseModulePath[1] + '/etc/module.xml')
+
+  const moduleXml = await workspace.fs.readFile(moduleXmlUri)
+  const xml = await parseXml(moduleXml.toString())
+  const module = get(xml, 'config.module[0].$.name');
+
+  return module
+}
