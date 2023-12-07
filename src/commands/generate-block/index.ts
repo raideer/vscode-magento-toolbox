@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { resolveLoadedModules, resolveMagentoRoot } from 'utils/magento';
+import { resolveLoadedModules, resolveMagentoRoot, resolveUriModule } from 'utils/magento';
 import { capitalize, snakeCase } from 'lodash-es';
 import { blockWizard } from './block-wizard';
 import { generateBlockClass } from './generate-block-class';
@@ -16,21 +16,38 @@ export default async function (context: vscode.ExtensionContext) {
     return;
   }
 
+  let defaultModule: string | undefined;
+
+  if (vscode.window.activeTextEditor?.document.uri) {
+    defaultModule = await resolveUriModule(vscode.window.activeTextEditor.document.uri)
+  }
+
   const appCodeUri = vscode.Uri.joinPath(magentoRoot, 'app/code');
   const modules = await resolveLoadedModules(appCodeUri);
 
   // Open block wizard
-  const data = await blockWizard(context, modules);
+  const data = await blockWizard(context, modules, defaultModule);
 
   const [vendor, module] = data.module.split('_');
   const moduleDirectory = vscode.Uri.joinPath(appCodeUri, `${vendor}/${module}`);
 
   // Generate block class
-  const blockName = `${capitalize(data.blockName.replace('Block', ''))}Block`;
+  const blockParts = data.blockName.split('/');
+  let blockName = blockParts.pop() as string;
+  blockName = blockName.replace('Block', '')
+  blockName = `${capitalize(blockName)}Block`;
+
   const blockClass = await generateBlockClass(data, blockName);
-  const blockPath = data.scope === 'frontend' ? `Block` : 'Block/Adminhtml';
+  let blockScope = data.scope === 'frontend' ? `Block` : 'Block/Adminhtml';
+
+  if (blockParts.length) {
+    blockScope = `${blockScope}/${blockParts.join('/')}`;
+  }
+
+  const blockPath = vscode.Uri.joinPath(moduleDirectory, `${blockScope}/${blockName}.php`)
+
   await vscode.workspace.fs.writeFile(
-    vscode.Uri.joinPath(moduleDirectory, `${blockPath}/${blockName}.php`),
+    blockPath,
     Buffer.from(blockClass, 'utf-8')
   );
 
@@ -61,4 +78,8 @@ export default async function (context: vscode.ExtensionContext) {
 
   vscode.window.showInformationMessage(`Generated a Block: ${data.blockName}`);
   vscode.commands.executeCommand('workbench.files.action.refreshFilesExplorer');
+
+  await vscode.workspace.openTextDocument(blockPath).then(doc => {
+    vscode.window.showTextDocument(doc);
+  });
 }

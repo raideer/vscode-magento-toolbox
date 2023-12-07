@@ -21,7 +21,7 @@ export interface BlockWizardLayoutHandleData extends BlockWizardBaseData {
   referenceName: string;
 }
 
-export const blockWizard = async (context: ExtensionContext, modules: string[]) => {
+export const blockWizard = async (context: ExtensionContext, modules: string[], initialModule?: string) => {
   const data = await openWizard<BlockWizardBlockData | BlockWizardLayoutHandleData>(context, {
     title: 'Generate a new block',
     description: 'Create a new block class and register it in the layout.',
@@ -31,12 +31,12 @@ export const blockWizard = async (context: ExtensionContext, modules: string[]) 
         label: 'Module*',
         type: WizardInput.Select,
         options: modules.map((module) => ({ label: module, value: module })),
-        initialValue: first(modules),
+        initialValue: initialModule ?? first(modules),
       },
       {
         id: 'blockName',
         label: 'Block name*',
-        placeholder: 'eg. Info',
+        placeholder: 'eg. Info or Order/Info',
         type: WizardInput.Text,
         description: ['Note: consider using a view model instead of a block if possible'],
       },
@@ -51,7 +51,7 @@ export const blockWizard = async (context: ExtensionContext, modules: string[]) 
             value: 'frontend',
           },
           {
-            label: 'Backend',
+            label: 'Adminhtml',
             value: 'adminhtml',
           },
         ],
