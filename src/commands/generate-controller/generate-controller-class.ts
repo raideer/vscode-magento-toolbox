@@ -109,8 +109,12 @@ export const generateControllerClass = async (data: ControllerWizardData) => {
   ];
 
   if (data.inheritAction) {
-    dependencies.push(`\\Magento\\Framework\\App\\Action\\Action`);
-    dependencies.push(`\\Magento\\Framework\\App\\Action\\Context`);
+    dependencies.push(`Magento\\Framework\\App\\Action\\Action`);
+    dependencies.push(`Magento\\Framework\\App\\Action\\Context`);
+  }
+
+  if (data.generateTemplate) {
+    dependencies.push(`Magento\\Framework\\View\\Result\\PageFactory`);
   }
 
   const classInner = await generateControllerClassInner(data);
