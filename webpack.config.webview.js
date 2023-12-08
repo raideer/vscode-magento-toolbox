@@ -2,16 +2,13 @@
 // @ts-check
 
 const path = require('path');
-// eslint-disable-next-line import/no-extraneous-dependencies
-const webpack = require('webpack');
-
 // @ts-check
 /** @typedef {import('webpack').Configuration} WebpackConfig * */
 
 /** @type WebpackConfig */
 const webviewConfig = {
   target: 'node',
-  mode: 'none',
+  mode: 'development',
 
   entry: {
     webview: './src/webview/index.tsx',
@@ -24,11 +21,6 @@ const webviewConfig = {
     extensions: ['.ts', '.js', '.tsx'],
     modules: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'node_modules')],
   },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-    }),
-  ],
   module: {
     rules: [
       {
