@@ -1,4 +1,4 @@
-import { mergeXml } from 'utils/xml';
+import { mergeXml } from 'utils/xml/merge';
 import { Builder } from 'xml2js';
 
 export interface IRoutesXmlVariables {
@@ -30,7 +30,7 @@ export function generateRoutesXml(variables: IRoutesXmlVariables, initialObject:
       }
     : {};
 
-  const moduleXmlObject: any = mergeXml(initialObject, {
+  const routesXmlObject = {
     config: {
       $: {
         'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
@@ -60,7 +60,9 @@ export function generateRoutesXml(variables: IRoutesXmlVariables, initialObject:
         },
       ],
     },
-  });
+  };
 
-  return xmlBuilder.buildObject(moduleXmlObject);
+  return xmlBuilder.buildObject(
+    mergeXml(initialObject, routesXmlObject)
+  );
 }
