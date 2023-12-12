@@ -22,12 +22,14 @@ export const Select: React.FC<Props> = ({ description, children, options, ...pro
         value={options ? options.find(option => option.value === field.value) : ''}
         onChange={(option: any) => form.setValue(option.value)}
         onBlur={field.onBlur}
+        isMulti={props.multiple}
         unstyled
         classNames={{
           indicatorSeparator: () => 'bg-vscode-input-background',
           indicatorsContainer: () => 'p-0',
           singleValue: () => 'text-vscode-input-foreground',
           input: () => 'p-0 text-vscode-input-foreground',
+          multiValue: () => 'bg-vscode-inputOption-activeBackground mr-1 px-1',
           control: () =>
             clsx('p-1 !min-h-[auto] bg-vscode-input-background rounded-none border', {
               'border-vscode-input-background': !meta.touched || !meta.error,
