@@ -31,11 +31,16 @@ export default async function (context: vscode.ExtensionContext) {
 
   // Generate Observer class
   const observerClass = await generateObserverClass(data);
+  const observerClassPath = vscode.Uri.joinPath(moduleDirectory, `Observer/${data.observerName}.php`);
   await vscode.workspace.fs.writeFile(
-    vscode.Uri.joinPath(moduleDirectory, `Observer/${data.observerName}.php`),
+    observerClassPath,
     Buffer.from(observerClass, 'utf-8')
   );
 
   vscode.window.showInformationMessage(`Generated an Observer: ${data.observerName}`);
   vscode.commands.executeCommand('workbench.files.action.refreshFilesExplorer');
+
+  await vscode.workspace.openTextDocument(observerClassPath).then(doc => {
+    vscode.window.showTextDocument(doc);
+  });
 }
