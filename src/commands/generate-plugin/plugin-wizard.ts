@@ -1,4 +1,4 @@
-import { capitalize, first } from 'lodash-es';
+import { camelCase, first, upperFirst } from 'lodash-es';
 import { WizardInput } from 'types/wizard';
 import { openWizard } from 'utils/vscode';
 import { ExtensionContext } from 'vscode';
@@ -29,7 +29,7 @@ export const pluginWizard = async (
         id: 'name',
         label: 'Plugin name*',
         type: WizardInput.Text,
-        initialValue: `${capitalize(className)}Plugin`,
+        initialValue: `${upperFirst(camelCase(className))}Plugin`,
       },
       {
         id: 'type',
