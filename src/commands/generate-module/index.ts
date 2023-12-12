@@ -37,9 +37,10 @@ export default async function (context: vscode.ExtensionContext) {
 
   // Generate module.xml
   const moduleXml = generateModuleXml({ ...data, moduleName });
+  const moduleXmlPath = vscode.Uri.joinPath(moduleDirectory, 'etc/module.xml');
 
   await vscode.workspace.fs.writeFile(
-    vscode.Uri.joinPath(moduleDirectory, 'etc/module.xml'),
+    moduleXmlPath,
     Buffer.from(moduleXml, 'utf-8')
   );
 
@@ -75,4 +76,8 @@ export default async function (context: vscode.ExtensionContext) {
 
   vscode.window.showInformationMessage(`Generated module: ${moduleName}`);
   vscode.commands.executeCommand('workbench.files.action.refreshFilesExplorer');
+
+  await vscode.workspace.openTextDocument(moduleXmlPath).then(doc => {
+    vscode.window.showTextDocument(doc);
+  });
 }
