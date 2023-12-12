@@ -1,4 +1,4 @@
-import { mergeXml } from 'utils/xml';
+import { mergeXml } from 'utils/xml/merge';
 import { Builder } from 'xml2js';
 
 export interface IEventsXmlVariables {
