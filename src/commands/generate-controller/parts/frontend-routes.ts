@@ -2,9 +2,9 @@ import { Uri, workspace } from 'vscode';
 import { parseXml } from 'utils/xml';
 import { generateRoutesXml } from 'generators/generateRoutesXml';
 import { snakeCase } from 'lodash-es';
-import { ControllerWizardData } from '../controller-wizard';
+import { IControllerWizardData } from '../controller-wizard';
 
-export const generateFrontendRoutes = async (data: ControllerWizardData, appCodeUri: Uri) => {
+export const generateFrontendRoutes = async (data: IControllerWizardData, appCodeUri: Uri) => {
   const [vendor, module] = data.module.split('_');
   const moduleDirectory = Uri.joinPath(appCodeUri, `${vendor}/${module}`);
 

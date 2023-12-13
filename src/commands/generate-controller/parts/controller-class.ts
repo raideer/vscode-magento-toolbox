@@ -1,11 +1,11 @@
 import indentString from 'indent-string';
 import { capitalize } from 'lodash-es';
-import { ControllerWizardData } from '../controller-wizard';
+import { IControllerWizardData } from '../controller-wizard';
 import { IFunctionParam, generateFunction } from 'generators/template/function';
 import { generateClassParameter } from 'generators/template/class-parameter';
 import { generateClass } from 'generators/template/class';
 
-async function generateExecuteFunctionInner(data: ControllerWizardData) {
+async function generateExecuteFunctionInner(data: IControllerWizardData) {
   let executeFunctionInner = `// TODO: Implement action`;
 
   if (data.generateTemplate) {
@@ -36,7 +36,7 @@ async function generateClassParameters() {
   return pageResultFactoryParameter;
 }
 
-async function generateClassConstructor(data: ControllerWizardData) {
+async function generateClassConstructor(data: IControllerWizardData) {
   const constructorParams: IFunctionParam[] = [];
   const constructorData: string[] = [];
 
@@ -67,7 +67,7 @@ async function generateClassConstructor(data: ControllerWizardData) {
   return constructorFunction;
 }
 
-const generateControllerClassInner = async (data: ControllerWizardData) => {
+const generateControllerClassInner = async (data: IControllerWizardData) => {
   let classInner = '';
 
   if (data.generateTemplate) {
@@ -97,7 +97,7 @@ const getMethodClass = (method: string) => {
   }
 };
 
-export const generateControllerClass = async (data: ControllerWizardData) => {
+export const generateControllerClass = async (data: IControllerWizardData) => {
   const [vendor, module] = data.module.split('_');
   const actionPath = capitalize(data.actionPath);
   const actionName = capitalize(data.actionName);

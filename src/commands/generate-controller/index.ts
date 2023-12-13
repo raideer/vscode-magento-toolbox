@@ -9,6 +9,17 @@ import { openFile, refreshFileExplorer, writeFile } from 'utils/vscode';
 import { generateBlockLayoutHandle } from 'commands/generate-block/parts/block-layout-handle';
 import { generateBlockLayoutTemplate } from 'commands/generate-block/parts/block-layout-template';
 
+/**
+ * Generates a controller
+ * 
+ * File list:
+ * - app/code/Vendor/Module/Controller/ActionPath/ActionName.php
+ * - app/code/Vendor/Module/etc/frontend/routes.xml
+ * - (optional) app/code/Vendor/Module/Block/ActionPath/ActionName.php
+ * - (optional) app/code/Vendor/Module/view/frontend/layout/layout_handle_name.xml
+ * - (optional) app/code/Vendor/Module/view/frontend/templates/action_name.phtml
+ * 
+ */
 export default async function (context: vscode.ExtensionContext) {
   const magentoRoot = await resolveMagentoRoot(context);
 

@@ -3,7 +3,7 @@ import { first } from 'lodash-es';
 import { WizardInput } from 'types/wizard';
 import { ExtensionContext } from 'vscode';
 
-export interface ControllerWizardData {
+export interface IControllerWizardData {
   module: string;
   frontName: string;
   actionPath: string;
@@ -15,7 +15,7 @@ export interface ControllerWizardData {
 }
 
 export const controllerWizard = async (context: ExtensionContext, modules: string[], initialModule?: string) => {
-  const data = await openWizard<ControllerWizardData>(context, {
+  const data = await openWizard<IControllerWizardData>(context, {
     title: 'Generate a new controller',
     fields: [
       {
