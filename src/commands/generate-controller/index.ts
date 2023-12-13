@@ -1,14 +1,13 @@
 import * as vscode from 'vscode';
 import { resolveLoadedModules, resolveMagentoRoot, resolveUriModule } from 'utils/magento';
 import { capitalize, snakeCase } from 'lodash-es';
-import { generateBlockClass } from 'commands/generate-block/generate-block-class';
-import {
-  generateBlockLayoutHandle,
-  generateBlockLayoutTemplate,
-} from 'commands/generate-block/generate-block-layout-handle';
 import { controllerWizard } from './controller-wizard';
-import { generateControllerClass } from './generate-controller-class';
-import { generateFrontendRoutes } from './generate-frontend-routes';
+import { generateControllerClass } from './parts/controller-class';
+import { generateFrontendRoutes } from './parts/frontend-routes';
+import { generateBlockClass } from 'commands/generate-block/parts/block-class';
+import { openFile, refreshFileExplorer, writeFile } from 'utils/vscode';
+import { generateBlockLayoutHandle } from 'commands/generate-block/parts/block-layout-handle';
+import { generateBlockLayoutTemplate } from 'commands/generate-block/parts/block-layout-template';
 
 export default async function (context: vscode.ExtensionContext) {
   const magentoRoot = await resolveMagentoRoot(context);
@@ -45,17 +44,13 @@ export default async function (context: vscode.ExtensionContext) {
   const actionPath = capitalize(data.actionPath);
   const actionName = capitalize(data.actionName);
   const controllerPath = vscode.Uri.joinPath(moduleDirectory, `${controllerDirectory}/${actionPath}/${actionName}.php`);
-  await vscode.workspace.fs.writeFile(
-    controllerPath,
-    Buffer.from(controllerClass, 'utf-8')
-  );
+
+  await writeFile(controllerPath, controllerClass);
 
   // Generate routes.xml
   const routesXml = await generateFrontendRoutes(data, appCodeUri);
-  await vscode.workspace.fs.writeFile(
-    vscode.Uri.joinPath(moduleDirectory, `etc/${data.scope}/routes.xml`),
-    Buffer.from(routesXml, 'utf-8')
-  );
+
+  await writeFile(vscode.Uri.joinPath(moduleDirectory, `etc/${data.scope}/routes.xml`), routesXml);
 
   if (data.generateTemplate) {
     // Generate block class
@@ -69,10 +64,8 @@ export default async function (context: vscode.ExtensionContext) {
       actionName
     );
     const blockPath = data.scope === 'frontend' ? `Block` : 'Block/Adminhtml';
-    await vscode.workspace.fs.writeFile(
-      vscode.Uri.joinPath(moduleDirectory, `${blockPath}/${actionPath}/${actionName}.php`),
-      Buffer.from(blockClass, 'utf-8')
-    );
+
+    await writeFile(vscode.Uri.joinPath(moduleDirectory, `${blockPath}/${actionPath}/${actionName}.php`), blockClass);
 
     let frontName = (data.frontName || module).toLowerCase();
     frontName = snakeCase(frontName);
@@ -102,23 +95,20 @@ export default async function (context: vscode.ExtensionContext) {
       data.actionName
     );
 
-    await vscode.workspace.fs.writeFile(layoutHandleUri, Buffer.from(eventsXml, 'utf-8'));
+    await writeFile(layoutHandleUri, eventsXml)
 
     // Generate block template
     const template = await generateBlockLayoutTemplate(data.module, data.actionName);
 
-    await vscode.workspace.fs.writeFile(
+    await writeFile(
       vscode.Uri.joinPath(
         moduleDirectory,
         `view/${data.scope}/templates/${blockTemplateName}.phtml`
       ),
-      Buffer.from(template, 'utf-8')
-    );
-
-    await vscode.workspace.openTextDocument(controllerPath).then(doc => {
-      vscode.window.showTextDocument(doc);
-    });
+      template
+    )
   }
-
-  vscode.commands.executeCommand('workbench.files.action.refreshFilesExplorer');
+  
+  openFile(controllerPath);
+  refreshFileExplorer();
 }

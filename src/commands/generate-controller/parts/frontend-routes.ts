@@ -1,8 +1,8 @@
 import { Uri, workspace } from 'vscode';
 import { parseXml } from 'utils/xml';
 import { generateRoutesXml } from 'generators/generateRoutesXml';
-import { lowerCase, snakeCase } from 'lodash-es';
-import { ControllerWizardData } from './controller-wizard';
+import { snakeCase } from 'lodash-es';
+import { ControllerWizardData } from '../controller-wizard';
 
 export const generateFrontendRoutes = async (data: ControllerWizardData, appCodeUri: Uri) => {
   const [vendor, module] = data.module.split('_');

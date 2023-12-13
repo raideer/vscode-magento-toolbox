@@ -3,7 +3,7 @@ import indentString from 'indent-string';
 import { generateClassParameter } from 'generators/generateClassParameter';
 import { generateClass } from 'generators/generateClass';
 import { capitalize } from 'lodash-es';
-import { ControllerWizardData } from './controller-wizard';
+import { ControllerWizardData } from '../controller-wizard';
 
 async function generateExecuteFunctionInner(data: ControllerWizardData) {
   let executeFunctionInner = `// TODO: Implement action`;

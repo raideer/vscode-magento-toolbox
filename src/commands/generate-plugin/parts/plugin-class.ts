@@ -3,7 +3,7 @@ import { upperFirst } from 'lodash-es';
 import { IFunctionParam, generateFunction } from 'generators/generateFunction';
 import { IPhpClass, IPhpMethod } from 'types/reflection';
 import indentString from 'indent-string';
-import { PluginWizardData } from './plugin-wizard';
+import { PluginWizardData } from '../plugin-wizard';
 
 const generatePluginClassInner = async (
   data: PluginWizardData,
@@ -65,6 +65,7 @@ const generatePluginClassInner = async (
 export const generatePluginClass = async (
   data: PluginWizardData,
   methodClass: IPhpClass,
+  subjectClass: string,
   method: IPhpMethod
 ) => {
   const [vendor, module] = data.module.split('_');
@@ -73,7 +74,6 @@ export const generatePluginClass = async (
   const namespace = [vendor, module, 'Plugin', ...nameParts].join('\\');
 
   const pluginClassInner = await generatePluginClassInner(data, methodClass, method);
-  const subjectClass = `${methodClass.namespace}\\${methodClass.name}`;
 
   const pluginClass = await generateClass({
     namespace,
@@ -85,5 +85,8 @@ export const generatePluginClass = async (
     license: null,
   });
 
-  return pluginClass;
+  return {
+    pluginClass,
+    namespace
+  };
 };

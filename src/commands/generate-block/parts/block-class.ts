@@ -1,5 +1,5 @@
 import { generateClass } from 'generators/generateClass';
-import { BlockWizardBlockData, BlockWizardLayoutHandleData } from './block-wizard';
+import { BlockWizardBlockData, BlockWizardLayoutHandleData } from '../block-wizard';
 
 export const generateBlockClass = async (
   data: BlockWizardBlockData | BlockWizardLayoutHandleData,

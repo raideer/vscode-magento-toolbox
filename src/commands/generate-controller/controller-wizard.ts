@@ -1,6 +1,6 @@
+import { openWizard } from 'base/wizard';
 import { first } from 'lodash-es';
 import { WizardInput } from 'types/wizard';
-import { openWizard } from 'utils/vscode';
 import { ExtensionContext } from 'vscode';
 
 export interface ControllerWizardData {
