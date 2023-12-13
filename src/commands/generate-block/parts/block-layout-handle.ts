@@ -1,13 +1,11 @@
-import { capitalize, snakeCase } from 'lodash-es';
-import { Uri, workspace } from 'vscode';
-import { generateBlockLayoutHandleXml } from 'generators/generateBlockLayoutHandleXml';
-import { loadXml, parseXml } from 'utils/xml';
-import { generateBlockTemplate } from 'generators/generateBlockTemplate';
+import { snakeCase } from 'lodash-es';
+import { Uri } from 'vscode';
+import { loadXml } from 'utils/xml';
 import { BlockWizardLayoutHandleData } from '../block-wizard';
-import { LayoutHandleFactory } from 'generators/layout-handle-xml';
-import { LayoutBodyBlock } from 'generators/layout-handle-xml/parts/body-block';
-import { LayoutBody } from 'generators/layout-handle-xml/parts/body';
-import { LayoutBodyReference } from 'generators/layout-handle-xml/parts/body-reference';
+import { LayoutHandleFactory } from 'generators/xml/layout-handle';
+import { LayoutBodyBlock } from 'generators/xml/layout-handle/parts/body-block';
+import { LayoutBodyReference } from 'generators/xml/layout-handle/parts/body-reference';
+import { LayoutBody } from 'generators/xml/layout-handle/parts/body';
 
 export const generateBlockLayoutHandle = async (
   data: BlockWizardLayoutHandleData,

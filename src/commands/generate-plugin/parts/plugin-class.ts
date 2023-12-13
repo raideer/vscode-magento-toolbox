@@ -1,9 +1,9 @@
-import { generateClass } from 'generators/generateClass';
 import { upperFirst } from 'lodash-es';
-import { IFunctionParam, generateFunction } from 'generators/generateFunction';
 import { IPhpClass, IPhpMethod } from 'types/reflection';
 import indentString from 'indent-string';
 import { PluginWizardData } from '../plugin-wizard';
+import { IFunctionParam, generateFunction } from 'generators/template/function';
+import { generateClass } from 'generators/template/class';
 
 const generatePluginClassInner = async (
   data: PluginWizardData,

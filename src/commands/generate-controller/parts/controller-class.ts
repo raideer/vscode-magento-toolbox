@@ -1,9 +1,9 @@
-import { IFunctionParam, generateFunction } from 'generators/generateFunction';
 import indentString from 'indent-string';
-import { generateClassParameter } from 'generators/generateClassParameter';
-import { generateClass } from 'generators/generateClass';
 import { capitalize } from 'lodash-es';
 import { ControllerWizardData } from '../controller-wizard';
+import { IFunctionParam, generateFunction } from 'generators/template/function';
+import { generateClassParameter } from 'generators/template/class-parameter';
+import { generateClass } from 'generators/template/class';
 
 async function generateExecuteFunctionInner(data: ControllerWizardData) {
   let executeFunctionInner = `// TODO: Implement action`;

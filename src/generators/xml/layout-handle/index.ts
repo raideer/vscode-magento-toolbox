@@ -1,12 +1,15 @@
 import { buildXml } from "utils/xml";
 import { mergeXml } from "utils/xml/merge";
-import { XmlGenerator } from "../xml";
 import { IXmlFactory } from "types/generator";
 import { LayoutBody } from "./parts/body";
+import { XmlGenerator } from "../generator";
 
 type LayoutItem = LayoutBody;
 
 class LayoutHandle extends XmlGenerator<LayoutItem> {
+  addItem(body: LayoutBody) {
+    throw new Error('Method not implemented.');
+  }
   protected xsdPath = 'urn:magento:framework:View/Layout/etc/page_configuration.xsd';
 }
 

@@ -1,11 +1,11 @@
 import * as vscode from 'vscode';
 import { getModuleUri, resolveLoadedModules, resolveMagentoRoot } from 'utils/magento';
-import { generateModuleRegistration } from 'generators/generateModuleRegistration';
 import { generateModuleXml } from 'generators/generateModuleXml';
-import { generateLicense } from 'generators/generateLicense';
-import { generateComposerJson } from 'generators/generateComposerJson';
 import { moduleWizard } from './module-wizard';
 import { openFile, refreshFileExplorer, writeFile } from 'utils/vscode';
+import { generateModuleRegistration } from 'generators/template/registration';
+import { generateLicense } from 'generators/template/license';
+import { generateComposerJson } from 'generators/json/composer';
 
 export default async function (context: vscode.ExtensionContext) {
   const magentoRoot = await resolveMagentoRoot(context);

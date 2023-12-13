@@ -3,9 +3,9 @@
 import { Uri } from 'vscode';
 import { loadXml } from 'utils/xml';
 import { PluginWizardData } from '../plugin-wizard';
-import { DiFactory } from 'generators/di-xml';
 import { snakeCase } from 'lodash-es';
 import { getModuleUri, getScopedPath } from 'utils/magento';
+import { DiFactory } from 'generators/xml/di';
 
 /**
  * Generates di.xml for a plugin

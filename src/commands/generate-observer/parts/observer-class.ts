@@ -1,7 +1,8 @@
-import { generateFunction } from 'generators/generateFunction';
-import { generateClass } from 'generators/generateClass';
+
 import indentString from 'indent-string';
 import { ObserverWizardData } from '../observer-wizard';
+import { generateFunction } from 'generators/template/function';
+import { generateClass } from 'generators/template/class';
 
 export const generateObserverClass = async (data: ObserverWizardData) => {
   const [vendor, module] = data.module.split('_');

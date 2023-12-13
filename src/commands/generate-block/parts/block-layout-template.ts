@@ -1,4 +1,4 @@
-import { generateBlockTemplate } from "generators/generateBlockTemplate";
+import { generateBlockTemplate } from "generators/template/block-template";
 
 export const generateBlockLayoutTemplate = async (moduleName: string, blockName: string) => {
   const [vendor, module] = moduleName.split('_');
