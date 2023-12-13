@@ -9,6 +9,15 @@ import {
 import { openFile, refreshFileExplorer, writeFile } from 'utils/vscode';
 import { generateBlockLayoutTemplate } from './parts/block-layout-template';
 
+/**
+ * Generates a block
+ * 
+ * File list:
+ * - app/code/Vendor/Module/Block/BlockName.php
+ * - (optional) app/code/Vendor/Module/view/frontend/layout/layout_handle_name.xml
+ * - (optional) app/code/Vendor/Module/view/frontend/templates/block_name.phtml
+ * 
+ */
 export default async function (context: vscode.ExtensionContext) {
   const magentoRoot = await resolveMagentoRoot(context);
 

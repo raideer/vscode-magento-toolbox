@@ -3,18 +3,18 @@ import { first } from 'lodash-es';
 import { IWizardField, WizardInput } from 'types/wizard';
 import { ExtensionContext } from 'vscode';
 
-interface BlockWizardBaseData {
+interface IBlockWizardBaseData {
   module: string;
   blockName: string;
   referenceHandle: boolean;
   scope: string;
 }
 
-export interface BlockWizardBlockData extends BlockWizardBaseData {
+export interface IBlockWizardBlockData extends IBlockWizardBaseData {
   referenceHandle: false;
 }
 
-export interface BlockWizardLayoutHandleData extends BlockWizardBaseData {
+export interface IBlockWizardLayoutHandleData extends IBlockWizardBaseData {
   referenceHandle: true;
   layoutHandle: string;
   referenceType: 'container' | 'block';

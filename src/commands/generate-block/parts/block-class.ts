@@ -1,8 +1,8 @@
 import { generateClass } from 'generators/template/class';
-import { BlockWizardBlockData, BlockWizardLayoutHandleData } from '../block-wizard';
+import { IBlockWizardBlockData, IBlockWizardLayoutHandleData } from '../block-wizard';
 
 export const generateBlockClass = async (
-  data: BlockWizardBlockData | BlockWizardLayoutHandleData,
+  data: IBlockWizardBlockData | IBlockWizardLayoutHandleData,
   blockName: string
 ) => {
   const [vendor, module] = data.module.split('_');
