@@ -75,3 +75,12 @@ export async function resolveUriModule(uri: Uri) {
 
   return module
 }
+
+export function getScopedPath(basePath: string, scope: string, filename: string) {
+  return scope === 'all' ? `${basePath}/${filename}`: `${basePath}/${scope}/${filename}`;
+}
+
+export function getModuleUri(appCodeUri: Uri, module: string){
+  const [v, m] = module.split('_');
+  return Uri.joinPath(appCodeUri, `${v}/${m}`);
+}

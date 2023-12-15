@@ -1,11 +1,11 @@
-import { IFunctionParam, generateFunction } from 'generators/generateFunction';
 import indentString from 'indent-string';
-import { generateClassParameter } from 'generators/generateClassParameter';
-import { generateClass } from 'generators/generateClass';
 import { capitalize } from 'lodash-es';
-import { ControllerWizardData } from './controller-wizard';
+import { IControllerWizardData } from '../controller-wizard';
+import { IFunctionParam, generateFunction } from 'generators/template/function';
+import { generateClassParameter } from 'generators/template/class-parameter';
+import { generateClass } from 'generators/template/class';
 
-async function generateExecuteFunctionInner(data: ControllerWizardData) {
+async function generateExecuteFunctionInner(data: IControllerWizardData) {
   let executeFunctionInner = `// TODO: Implement action`;
 
   if (data.generateTemplate) {
@@ -36,7 +36,7 @@ async function generateClassParameters() {
   return pageResultFactoryParameter;
 }
 
-async function generateClassConstructor(data: ControllerWizardData) {
+async function generateClassConstructor(data: IControllerWizardData) {
   const constructorParams: IFunctionParam[] = [];
   const constructorData: string[] = [];
 
@@ -67,7 +67,7 @@ async function generateClassConstructor(data: ControllerWizardData) {
   return constructorFunction;
 }
 
-const generateControllerClassInner = async (data: ControllerWizardData) => {
+const generateControllerClassInner = async (data: IControllerWizardData) => {
   let classInner = '';
 
   if (data.generateTemplate) {
@@ -97,30 +97,48 @@ const getMethodClass = (method: string) => {
   }
 };
 
-export const generateControllerClass = async (data: ControllerWizardData) => {
+export const generateControllerClass = async (data: IControllerWizardData) => {
   const [vendor, module] = data.module.split('_');
   const actionPath = capitalize(data.actionPath);
   const actionName = capitalize(data.actionName);
   const methodClass = getMethodClass(data.method);
-  const dependencies = [
-    `Magento\\Framework\\App\\Action\\${methodClass}`,
-    `Magento\\Framework\\App\\ResponseInterface`,
-    `Magento\\Framework\\Controller\\ResultInterface`,
+  const use = [
+    {
+      class: `Magento\\Framework\\App\\Action\\${methodClass}`,
+      alias: null,
+    },
+    {
+      class: `Magento\\Framework\\App\\ResponseInterface`,
+      alias: null,
+    },
+    {
+      class: `Magento\\Framework\\Controller\\ResultInterface`,
+      alias: null,
+    },
   ];
 
   if (data.inheritAction) {
-    dependencies.push(`Magento\\Framework\\App\\Action\\Action`);
-    dependencies.push(`Magento\\Framework\\App\\Action\\Context`);
+    use.push({
+      class: `Magento\\Framework\\App\\Action\\Action`,
+      alias: null,
+    });
+    use.push({
+      class: `Magento\\Framework\\App\\Action\\Context`,
+      alias: null,
+    });
   }
 
   if (data.generateTemplate) {
-    dependencies.push(`Magento\\Framework\\View\\Result\\PageFactory`);
+    use.push({
+      class: `Magento\\Framework\\View\\Result\\PageFactory`,
+      alias: null,
+    });
   }
 
   const classInner = await generateControllerClassInner(data);
   const controllerClass = await generateClass({
     namespace: `${vendor}\\${module}\\Controller\\${actionPath}`,
-    dependencies,
+    use,
     className: actionName,
     classExtends: data.inheritAction ? `Action` : null,
     classImplements: methodClass,

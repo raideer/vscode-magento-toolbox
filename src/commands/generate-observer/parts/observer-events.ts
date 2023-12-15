@@ -2,7 +2,7 @@ import { Uri, workspace } from 'vscode';
 import { snakeCase } from 'lodash-es';
 import { parseXml } from 'utils/xml';
 import { generateEventsXml } from 'generators/generateEventsXml';
-import { ObserverWizardData } from './observer-wizard';
+import { ObserverWizardData } from '../observer-wizard';
 
 export const generateObserverEvents = async (data: ObserverWizardData, appCodeUri: Uri) => {
   const [vendor, module] = data.module.split('_');

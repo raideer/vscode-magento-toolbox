@@ -1,15 +1,15 @@
-import { generateClass } from 'generators/generateClass';
 import { upperFirst } from 'lodash-es';
-import { IFunctionParam, generateFunction } from 'generators/generateFunction';
 import { IPhpClass, IPhpMethod } from 'types/reflection';
 import indentString from 'indent-string';
-import { PluginWizardData } from './plugin-wizard';
+import { PluginWizardData } from '../plugin-wizard';
+import { IFunctionParam, generateFunction } from 'generators/template/function';
+import { IClassUse, generateClass } from 'generators/template/class';
 
 const generatePluginClassInner = async (
   data: PluginWizardData,
   methodClass: IPhpClass,
   method: IPhpMethod
-) => {
+): Promise<[string, IFunctionParam[]]> => {
   const pluginMethodName = `${data.type}${upperFirst(method.name)}`;
 
   const pluginFunctionParams: IFunctionParam[] = [
@@ -59,7 +59,10 @@ const generatePluginClassInner = async (
     returnType: null,
   });
 
-  return pluginFunction;
+  return [
+    pluginFunction,
+    pluginFunctionParams
+  ];
 };
 
 export const generatePluginClass = async (
@@ -72,12 +75,35 @@ export const generatePluginClass = async (
   const pluginName = nameParts.pop() as string;
   const namespace = [vendor, module, 'Plugin', ...nameParts].join('\\');
 
-  const pluginClassInner = await generatePluginClassInner(data, methodClass, method);
-  const subjectClass = `${methodClass.namespace}\\${methodClass.name}`;
+  const [
+    pluginClassInner,
+    pluginFunctionParams
+  ] = await generatePluginClassInner(data, methodClass, method);
+  
+  const use: IClassUse[] = pluginFunctionParams.map((param) => {
+    if (methodClass.use && methodClass.use[param.type!]) {
+      return {
+        class: methodClass.use[param.type!]!,
+        alias: param.type!
+      }
+    }
+
+    if (methodClass.name === param.type) {
+      return {
+        class: methodClass.namespace + '\\' + methodClass.name!,
+        alias: null
+      }
+    }
+
+    return {
+      class: param.type!,
+      alias: null
+    };
+  });
 
   const pluginClass = await generateClass({
     namespace,
-    dependencies: [subjectClass],
+    use,
     className: pluginName,
     classExtends: null,
     classImplements: null,
@@ -85,5 +111,8 @@ export const generatePluginClass = async (
     license: null,
   });
 
-  return pluginClass;
+  return {
+    pluginClass,
+    namespace
+  };
 };

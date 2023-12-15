@@ -2,12 +2,22 @@ import * as vscode from 'vscode';
 import { resolveLoadedModules, resolveMagentoRoot, resolveUriModule } from 'utils/magento';
 import { capitalize, snakeCase } from 'lodash-es';
 import { blockWizard } from './block-wizard';
-import { generateBlockClass } from './generate-block-class';
+import { generateBlockClass } from './parts/block-class';
 import {
   generateBlockLayoutHandle,
-  generateBlockLayoutTemplate,
-} from './generate-block-layout-handle';
+} from './parts/block-layout-handle';
+import { openFile, refreshFileExplorer, writeFile } from 'utils/vscode';
+import { generateBlockLayoutTemplate } from './parts/block-layout-template';
 
+/**
+ * Generates a block
+ * 
+ * File list:
+ * - app/code/Vendor/Module/Block/BlockName.php
+ * - (optional) app/code/Vendor/Module/view/frontend/layout/layout_handle_name.xml
+ * - (optional) app/code/Vendor/Module/view/frontend/templates/block_name.phtml
+ * 
+ */
 export default async function (context: vscode.ExtensionContext) {
   const magentoRoot = await resolveMagentoRoot(context);
 
@@ -19,7 +29,7 @@ export default async function (context: vscode.ExtensionContext) {
   let defaultModule: string | undefined;
 
   if (vscode.window.activeTextEditor?.document.uri) {
-    defaultModule = await resolveUriModule(vscode.window.activeTextEditor.document.uri)
+    defaultModule = await resolveUriModule(vscode.window.activeTextEditor.document.uri);
   }
 
   const appCodeUri = vscode.Uri.joinPath(magentoRoot, 'app/code');
@@ -34,7 +44,7 @@ export default async function (context: vscode.ExtensionContext) {
   // Generate block class
   const blockParts = data.blockName.split('/');
   let blockName = blockParts.pop() as string;
-  blockName = blockName.replace('Block', '')
+  blockName = blockName.replace('Block', '');
   blockName = `${capitalize(blockName)}Block`;
 
   const blockClass = await generateBlockClass(data, blockName);
@@ -44,12 +54,9 @@ export default async function (context: vscode.ExtensionContext) {
     blockScope = `${blockScope}/${blockParts.join('/')}`;
   }
 
-  const blockPath = vscode.Uri.joinPath(moduleDirectory, `${blockScope}/${blockName}.php`)
+  const blockPath = vscode.Uri.joinPath(moduleDirectory, `${blockScope}/${blockName}.php`);
 
-  await vscode.workspace.fs.writeFile(
-    blockPath,
-    Buffer.from(blockClass, 'utf-8')
-  );
+  await writeFile(blockPath, blockClass);
 
   // Generate layout handle
   if (data.referenceHandle) {
@@ -62,24 +69,21 @@ export default async function (context: vscode.ExtensionContext) {
     const blockTemplateName = snakeCase(data.blockName);
     const eventsXml = await generateBlockLayoutHandle(data, appCodeUri, blockName);
 
-    await vscode.workspace.fs.writeFile(layoutHandleUri, Buffer.from(eventsXml, 'utf-8'));
+    await writeFile(layoutHandleUri, eventsXml);
 
     // Generate block template
     const template = await generateBlockLayoutTemplate(data.module, blockName);
 
-    await vscode.workspace.fs.writeFile(
+    await writeFile(
       vscode.Uri.joinPath(
         moduleDirectory,
         `view/${data.scope}/templates/${blockTemplateName}.phtml`
       ),
-      Buffer.from(template, 'utf-8')
+      template
     );
   }
 
   vscode.window.showInformationMessage(`Generated a Block: ${data.blockName}`);
-  vscode.commands.executeCommand('workbench.files.action.refreshFilesExplorer');
-
-  await vscode.workspace.openTextDocument(blockPath).then(doc => {
-    vscode.window.showTextDocument(doc);
-  });
+  refreshFileExplorer();
+  openFile(blockPath);
 }
