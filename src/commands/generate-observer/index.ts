@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
 import { resolveLoadedModules, resolveMagentoRoot } from 'utils/magento';
 import { observerWizard } from './observer-wizard';
-import { generateObserverEvents } from './generate-observer-events';
-import { generateObserverClass } from './generate-observer-class';
+import { generateObserverEvents } from './parts/observer-events';
+import { generateObserverClass } from './parts/observer-class';
 
 export default async function (context: vscode.ExtensionContext) {
   const magentoRoot = await resolveMagentoRoot(context);

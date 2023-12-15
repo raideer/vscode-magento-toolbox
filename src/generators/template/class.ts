@@ -1,9 +1,14 @@
 import { renderTemplate } from 'utils/generator';
 import { resolve } from 'path';
 
+export interface IClassUse {
+  alias: string | null;
+  class: string;
+}
+
 export interface IClassVariables {
   namespace: string;
-  dependencies: string[];
+  use: IClassUse[];
   className: string;
   classExtends: string | null;
   classImplements: string | null;

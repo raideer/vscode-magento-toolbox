@@ -11,12 +11,7 @@
   ],
   "publisher": "raideer",
   "activationEvents": [
-    "onCommand:magento-toolbox.generateBlock",
-    "onCommand:magento-toolbox.generateController",
-    "onCommand:magento-toolbox.generateObserver",
-    "onCommand:magento-toolbox.generateModule",
-    "onCommand:magento-toolbox.binMagento",
-    "onCommand:magento-toolbox.generatePlugin"
+    "onStartupFinished"
   ],
   "repository": {
     "type": "git",
@@ -24,6 +19,12 @@
   },
   "main": "./dist/extension.js",
   "contributes": {
+    "submenus": [
+      {
+        "id": "magento-toolbox.submenu",
+        "label": "Magento Toolbox"
+      }
+    ],
     "commands": [
       {
         "command": "magento-toolbox.generateModule",
@@ -48,6 +49,14 @@
       {
         "command": "magento-toolbox.generatePlugin",
         "title": "Magento Toolbox: Generate Plugin"
+      },
+      {
+        "command": "magento-toolbox.generatePreference",
+        "title": "Magento Toolbox: Generate Preference"
+      },
+      {
+        "command": "magento-toolbox.insertSearchCriteria",
+        "title": "Magento Toolbox: Insert SearchCriteriaBuilder"
       }
     ],
     "menus": {
@@ -55,12 +64,34 @@
         {
           "command": "magento-toolbox.generatePlugin",
           "when": "false"
+        },
+        {
+          "command": "magento-toolbox.generatePreference",
+          "when": "false"
+        },
+        {
+          "command": "magento-toolbox.insertSearchCriteria",
+          "when": "false"
         }
       ],
       "editor/context": [
         {
+          "submenu": "magento-toolbox.submenu",
+          "group": "magento-toolbox"
+        }
+      ],
+      "magento-toolbox.submenu": [
+        {
           "command": "magento-toolbox.generatePlugin",
-          "when": "editorLangId == php && editorTextFocus"
+          "when": "magento-toolbox.canGeneratePlugin"
+        },
+        {
+          "command": "magento-toolbox.generatePreference",
+          "when": "magento-toolbox.canGeneratePlugin"
+        },
+        {
+          "command": "magento-toolbox.insertSearchCriteria",
+          "when": "magento-toolbox.canInsertSearchCriteria"
         }
       ]
     }

@@ -1,10 +1,11 @@
 import * as vscode from 'vscode';
-import { resolveLoadedModules, resolveMagentoRoot } from 'utils/magento';
-import { generateModuleRegistration } from 'generators/generateModuleRegistration';
+import { getModuleUri, resolveLoadedModules, resolveMagentoRoot } from 'utils/magento';
 import { generateModuleXml } from 'generators/generateModuleXml';
-import { generateLicense } from 'generators/generateLicense';
-import { generateComposerJson } from 'generators/generateComposerJson';
 import { moduleWizard } from './module-wizard';
+import { openFile, refreshFileExplorer, writeFile } from 'utils/vscode';
+import { generateModuleRegistration } from 'generators/template/registration';
+import { generateLicense } from 'generators/template/license';
+import { generateComposerJson } from 'generators/json/composer';
 
 export default async function (context: vscode.ExtensionContext) {
   const magentoRoot = await resolveMagentoRoot(context);
@@ -22,7 +23,7 @@ export default async function (context: vscode.ExtensionContext) {
 
   const moduleName = `${data.vendor}_${data.module}`;
 
-  const moduleDirectory = vscode.Uri.joinPath(appCodeUri, `${data.vendor}/${data.module}`);
+  const moduleDirectory = getModuleUri(appCodeUri, moduleName);
 
   // Generate registration.php
   const registration = await generateModuleRegistration({
@@ -30,19 +31,13 @@ export default async function (context: vscode.ExtensionContext) {
     license: null,
   });
 
-  await vscode.workspace.fs.writeFile(
-    vscode.Uri.joinPath(moduleDirectory, 'registration.php'),
-    Buffer.from(registration, 'utf-8')
-  );
+  await writeFile(vscode.Uri.joinPath(moduleDirectory, 'registration.php'), registration);
 
   // Generate module.xml
   const moduleXml = generateModuleXml({ ...data, moduleName });
   const moduleXmlPath = vscode.Uri.joinPath(moduleDirectory, 'etc/module.xml');
 
-  await vscode.workspace.fs.writeFile(
-    moduleXmlPath,
-    Buffer.from(moduleXml, 'utf-8')
-  );
+  await writeFile(moduleXmlPath, moduleXml);
 
   // Generate LICENSE.txt
   if (data.license && data.license !== 'none') {
@@ -51,9 +46,9 @@ export default async function (context: vscode.ExtensionContext) {
       copyright: data.copyright || data.vendor,
     });
 
-    await vscode.workspace.fs.writeFile(
+    await writeFile(
       vscode.Uri.joinPath(moduleDirectory, 'LICENSE.txt'),
-      Buffer.from(license, 'utf-8')
+      license
     );
   }
 
@@ -68,16 +63,13 @@ export default async function (context: vscode.ExtensionContext) {
       version: data.version,
     });
 
-    await vscode.workspace.fs.writeFile(
+    await writeFile(
       vscode.Uri.joinPath(moduleDirectory, 'composer.json'),
-      Buffer.from(json, 'utf-8')
+      json
     );
   }
 
   vscode.window.showInformationMessage(`Generated module: ${moduleName}`);
-  vscode.commands.executeCommand('workbench.files.action.refreshFilesExplorer');
-
-  await vscode.workspace.openTextDocument(moduleXmlPath).then(doc => {
-    vscode.window.showTextDocument(doc);
-  });
+  refreshFileExplorer()
+  await openFile(moduleXmlPath)
 }

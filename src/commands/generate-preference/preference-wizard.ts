@@ -1,11 +1,12 @@
-import { capitalize, first } from 'lodash-es';
+import { first } from 'lodash-es';
 import { WizardInput } from 'types/wizard';
-import { openWizard } from 'utils/vscode';
+import { openWizard } from 'base/wizard';
 import { ExtensionContext } from 'vscode';
 
 export interface PreferenceWizardData {
   module: string;
-  name: string;
+  type: string;
+  scope: string;
 }
 
 export const preferenceWizard = async (
@@ -23,14 +24,44 @@ export const preferenceWizard = async (
         initialValue: first(modules),
       },
       {
-        id: 'name',
-        label: 'Preference name*',
+        id: 'type',
+        label: 'Preference type*',
         type: WizardInput.Text,
+        placeholder: 'Vendor\\Module\\Class',
+      },
+      {
+        id: 'scope',
+        label: 'Scope',
+        type: WizardInput.Select,
+        options: [
+          {
+            label: 'All',
+            value: 'all',
+          },
+          {
+            label: 'Frontend',
+            value: 'frontend',
+          },
+          {
+            label: 'Backend',
+            value: 'adminhtml',
+          },
+          {
+            label: 'Webapi',
+            value: 'webapi_rest',
+          },
+          {
+            label: 'GraphQL',
+            value: 'graphql',
+          },
+        ],
+        initialValue: 'all',
       },
     ],
     validation: {
       module: 'required',
-      name: 'required',
+      type: 'required',
+      scope: 'required',
     },
   });
 

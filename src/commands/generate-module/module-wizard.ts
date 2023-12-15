@@ -1,5 +1,5 @@
 import { License, WizardInput } from 'types/wizard';
-import { openWizard } from 'utils/vscode';
+import { openWizard } from 'base/wizard';
 import { ExtensionContext } from 'vscode';
 
 interface ModuleWizardBaseData {

@@ -1,16 +1,25 @@
 /* eslint-disable no-param-reassign */
-import { isString } from 'lodash-es';
+import { isString, last } from 'lodash-es';
 import { Class, Identifier, Method, Namespace, Program, UseGroup, UseItem } from 'php-parser';
 import { IPhpClass, IPhpMethod, IPhpMethodArgument } from 'types/reflection';
 
+const getUseItemName = (item: UseItem) => {
+  if (item.alias) {
+    return item.alias.name;
+  }
+
+  const parts = item.name.split('\\');
+  return last(parts)!;
+}
+
 const consumeUseGroup = (node: UseGroup, phpClass: IPhpClass) => {
   if (!phpClass.use) {
-    phpClass.use = [];
+    phpClass.use = {};
   }
 
   // UseGroup has invalid types. Should be items instead of item
   for (const item of (node as any).items as UseItem[]) {
-    phpClass.use.push(item.name);
+    phpClass.use[getUseItemName(item)] = item.name;
   }
 };
 
@@ -91,11 +100,9 @@ const consumeFile = (node: Program, phpClass: IPhpClass) => {
 
 export const astToPhpClass = (ast: Program) => {
   const phpClass: IPhpClass = {
-    use: [],
+    use: {},
   };
 
   consumeFile(ast, phpClass);
-
-  console.log(ast);
   return phpClass;
 };

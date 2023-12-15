@@ -1,5 +1,5 @@
 import { Engine } from 'php-parser';
-import { IPhpClass, IPhpMethod } from 'types/reflection';
+import { IPhpClass } from 'types/reflection';
 import { astToPhpClass } from 'utils/ast';
 import * as vscode from 'vscode';
 

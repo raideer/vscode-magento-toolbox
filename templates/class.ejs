@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace <%= namespace %>;
 
-<% for (const key in dependencies) {-%>
-use <%= dependencies[key] -%>;
+<% for (const key in use) {-%>
+use <%= use[key].class -%><% if (use[key].alias) {-%> as <%= use[key].alias%><% } -%>;
 <% } -%>
 
 class <%= className %><% if (classExtends) {%> extends <%= classExtends%><% } %><% if (classImplements) {%> implements <%= classImplements%><% } %>

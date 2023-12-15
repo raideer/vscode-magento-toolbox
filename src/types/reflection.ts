@@ -20,7 +20,7 @@ export interface IPhpMethod {
 export interface IPhpClass {
   namespace?: string;
   name?: string;
-  use?: string[];
+  use?: Record<string, string | null>;
   implements?: string[];
   extends?: string;
   isFinal?: boolean;
