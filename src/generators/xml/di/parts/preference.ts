@@ -1,18 +1,22 @@
-import { IXmlPart } from "types/generator";
+import { XmlPart } from "generators/xml/generator";
 
-export class DiPreference implements IXmlPart {
-  constructor(private forClass: string, private type: string) {}
+/**
+ * Represents <preference> element in di.xml.
+ * 
+ * <preference for="{{forClass}}" type="{{type}}" />
+ * 
+ */
+export class DiPreference extends XmlPart {
+  constructor(forClass: string, type: string) {
+    super(
+      {
+        for: forClass,
+        type,
+      },
+    );
+  }
 
   getKey() {
     return 'preference';
-  }
-
-  toXmlObject() {
-    return {
-      $: {
-        for: this.forClass,
-        type: this.type,
-      },
-    };
   }
 }

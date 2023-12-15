@@ -7,10 +7,9 @@ import { XmlGenerator } from "../generator";
 type LayoutItem = LayoutBody;
 
 class LayoutHandle extends XmlGenerator<LayoutItem> {
-  addItem(body: LayoutBody) {
-    throw new Error('Method not implemented.');
+  constructor() {
+    super([], 'urn:magento:framework:View/Layout/etc/page_configuration.xsd')
   }
-  protected xsdPath = 'urn:magento:framework:View/Layout/etc/page_configuration.xsd';
 }
 
 export class LayoutHandleFactory implements IXmlFactory {

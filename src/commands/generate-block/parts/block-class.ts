@@ -12,10 +12,16 @@ export const generateBlockClass = async (
       data.scope === 'frontend'
         ? `${vendor}\\${module}\\Block`
         : `${vendor}\\${module}\\Block\\Adminhtml`,
-    dependencies: [
+    use: [
       data.scope === 'frontend'
-        ? `Magento\\Framework\\View\\Element\\Template`
-        : `Magento\\Backend\\Block\\Template`,
+        ? {
+            class: `Magento\\Framework\\View\\Element\\Template`,
+            alias: null,
+        }
+        : {
+            class: `Magento\\Backend\\Block\\Template`,
+            alias: null,
+        },
     ],
     className: blockName,
     classExtends: 'Template',

@@ -1,19 +1,28 @@
-import { IXmlPart } from "types/generator";
+import { XmlPart } from "generators/xml/generator";
 
-export class DiTypeArgument implements IXmlPart {
-  constructor(private name: string, private xsiType: string, private value: string) {}
+/**
+ * Represents <argument> element in di.xml.
+ * 
+ * <type name="...">
+ *   <arguments>
+ *    <argument name="{{name}}" xsi:type="{{xsiType}}">{{value}}</argument>
+ *  </arguments>
+ * </type>
+ * 
+ */
+export class DiTypeArgument extends XmlPart {
+  constructor(name: string, xsiType: string, value: string) {
+    super(
+      {
+        name,
+        'xsi:type': xsiType,
+      },
+      [],
+      value,
+    );
+  }
 
   getKey() {
     return 'argument';
-  }
-
-  toXmlObject() {
-    return {
-      $: {
-        name: this.name,
-        xsiType: this.xsiType,
-      },
-      _: this.value
-    };
   }
 }

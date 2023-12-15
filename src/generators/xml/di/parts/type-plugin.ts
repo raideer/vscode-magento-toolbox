@@ -1,18 +1,24 @@
-import { IXmlPart } from "types/generator";
+import { XmlPart } from "generators/xml/generator";
 
-export class DiTypePlugin implements IXmlPart {
-  constructor(private name: string, private type: string) {}
+/**
+ * Represents <plugin> element in di.xml.
+ * 
+ * <type name="...">
+ *    <plugin name="{{name}}" type="{{type}}" />
+ * </type>
+ * 
+ */
+export class DiTypePlugin extends XmlPart {
+  constructor(name: string, type: string) {
+    super(
+      {
+        name,
+        type,
+      },
+    );
+  }
 
   getKey() {
     return 'plugin';
-  }
-
-  toXmlObject() {
-    return {
-      $: {
-        name: this.name,
-        type: this.type,
-      },
-    };
   }
 }

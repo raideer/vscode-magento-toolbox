@@ -1,10 +1,22 @@
-import { IXmlPart } from "types/generator";
-import { LayoutBodyBlock } from "./body-block";
+import { IXmlPart } from 'types/generator';
+import { LayoutBodyBlock } from './body-block';
+import { XmlPart } from 'generators/xml/generator';
 
 type ReferenceContainerChildren = LayoutBodyBlock;
 
-export class LayoutBodyReference implements IXmlPart {
-  constructor(private referenceType: 'block' | 'container', private name: string, private children: ReferenceContainerChildren[]) {}
+export class LayoutBodyReference extends XmlPart {
+  constructor(
+    private referenceType: 'block' | 'container',
+    name: string,
+    children: ReferenceContainerChildren[]
+  ) {
+    super(
+      {
+        name,
+      },
+      children
+    );
+  }
 
   getKey() {
     if (this.referenceType === 'block') {
@@ -12,14 +24,5 @@ export class LayoutBodyReference implements IXmlPart {
     }
 
     return 'referenceContainer';
-  }
-
-  toXmlObject() {
-    return {
-      $: {
-        name: this.name,
-        _: this.children.map((item) => item.toXmlObject()),
-      },
-    };
   }
 }

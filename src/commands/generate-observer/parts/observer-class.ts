@@ -28,7 +28,12 @@ export const generateObserverClass = async (data: ObserverWizardData) => {
 
   const observerClass = await generateClass({
     namespace: `${vendor}\\${module}\\Observer`,
-    dependencies: [`Magento\\Framework\\Event\\Observer`],
+    use: [
+      {
+        class: `Magento\\Framework\\Event\\Observer`,
+        alias: null
+      }
+    ],
     className: data.observerName,
     classExtends: null,
     classImplements: `\\Magento\\Framework\\Event\\ObserverInterface`,

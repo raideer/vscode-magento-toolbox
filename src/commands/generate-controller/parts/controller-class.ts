@@ -102,25 +102,43 @@ export const generateControllerClass = async (data: IControllerWizardData) => {
   const actionPath = capitalize(data.actionPath);
   const actionName = capitalize(data.actionName);
   const methodClass = getMethodClass(data.method);
-  const dependencies = [
-    `Magento\\Framework\\App\\Action\\${methodClass}`,
-    `Magento\\Framework\\App\\ResponseInterface`,
-    `Magento\\Framework\\Controller\\ResultInterface`,
+  const use = [
+    {
+      class: `Magento\\Framework\\App\\Action\\${methodClass}`,
+      alias: null,
+    },
+    {
+      class: `Magento\\Framework\\App\\ResponseInterface`,
+      alias: null,
+    },
+    {
+      class: `Magento\\Framework\\Controller\\ResultInterface`,
+      alias: null,
+    },
   ];
 
   if (data.inheritAction) {
-    dependencies.push(`Magento\\Framework\\App\\Action\\Action`);
-    dependencies.push(`Magento\\Framework\\App\\Action\\Context`);
+    use.push({
+      class: `Magento\\Framework\\App\\Action\\Action`,
+      alias: null,
+    });
+    use.push({
+      class: `Magento\\Framework\\App\\Action\\Context`,
+      alias: null,
+    });
   }
 
   if (data.generateTemplate) {
-    dependencies.push(`Magento\\Framework\\View\\Result\\PageFactory`);
+    use.push({
+      class: `Magento\\Framework\\View\\Result\\PageFactory`,
+      alias: null,
+    });
   }
 
   const classInner = await generateControllerClassInner(data);
   const controllerClass = await generateClass({
     namespace: `${vendor}\\${module}\\Controller\\${actionPath}`,
-    dependencies,
+    use,
     className: actionName,
     classExtends: data.inheritAction ? `Action` : null,
     classImplements: methodClass,

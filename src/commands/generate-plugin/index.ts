@@ -4,6 +4,7 @@ import { resolvePluginClass, resolvePluginMethod } from './resolve-plugin-method
 import { pluginWizard } from './plugin-wizard';
 import { generatePluginClass } from './parts/plugin-class';
 import { generatePluginDi } from './parts/plugin-di';
+import { openFile, writeFile } from 'utils/vscode';
 
 export default async function (context: vscode.ExtensionContext) {
   const magentoRoot = await resolveMagentoRoot(context);
@@ -38,7 +39,7 @@ export default async function (context: vscode.ExtensionContext) {
   const moduleDirectory = vscode.Uri.joinPath(appCodeUri, `${vendor}/${module}`);
   const subjectClass = `${phpClass.namespace}\\${phpClass.name}`;
 
-  const {pluginClass, namespace} = await generatePluginClass(data, phpClass, subjectClass, method);
+  const {pluginClass, namespace} = await generatePluginClass(data, phpClass, method);
 
   if (!pluginClass) {
     vscode.window.showWarningMessage(`Failed to generate plugin class.`);
@@ -51,19 +52,10 @@ export default async function (context: vscode.ExtensionContext) {
   const diLocation = data.scope === 'all' ? 'etc/di.xml' : `etc/${data.scope}/di.xml`;
   const diXmlPath = vscode.Uri.joinPath(moduleDirectory, diLocation);
 
-  await vscode.workspace.fs.writeFile(
-    diXmlPath,
-    Buffer.from(diXml, 'utf-8')
-  );
+  await writeFile(diXmlPath,diXml);
 
   const path = vscode.Uri.joinPath(moduleDirectory, pluginName);
 
-  await vscode.workspace.fs.writeFile(
-    path,
-    Buffer.from(pluginClass, 'utf-8')
-  );
-
-  await vscode.workspace.openTextDocument(path).then(doc => {
-    vscode.window.showTextDocument(doc);
-  });
+  await writeFile(path,pluginClass);
+  await openFile(path);
 }

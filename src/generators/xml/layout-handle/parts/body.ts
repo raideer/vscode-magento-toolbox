@@ -1,30 +1,17 @@
-import { IXmlPart } from "types/generator";
 import { LayoutBodyReference } from "./body-reference";
+import { XmlPart } from "generators/xml/generator";
 
 type LayoutBodyChildren = LayoutBodyReference;
 
-export class LayoutBody implements IXmlPart {
-  constructor(private children: LayoutBodyChildren[] = []) {}
+export class LayoutBody extends XmlPart {
+  constructor(children: LayoutBodyChildren[] = []) {
+    super(
+      {},
+      children
+    );
+  }
 
   getKey() {
     return 'body';
-  }
-
-  addItem(item: LayoutBodyChildren) {
-    this.children.push(item);
-  }
-
-  toXmlObject() {
-    return {
-      ...this.children.reduce((acc, item) => {
-        if (!acc[item.getKey()]) {
-          acc[item.getKey()] = [];
-        }
-  
-        acc[item.getKey()].push(item.toXmlObject());
-  
-        return acc;
-      }, {})
-    };
   }
 }

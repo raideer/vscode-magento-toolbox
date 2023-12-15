@@ -9,7 +9,9 @@ import { XmlGenerator } from "../generator";
 type DiItem = DiType | DiPreference;
 
 class Di extends XmlGenerator<DiItem> {
-  protected xsdPath = 'urn:magento:framework:ObjectManager/etc/config.xsd';
+  constructor() {
+    super([], 'urn:magento:framework:ObjectManager/etc/config.xsd');
+  }
 }
 
 export class DiFactory implements IXmlFactory {
@@ -28,7 +30,7 @@ export class DiFactory implements IXmlFactory {
   addPlugin(subject: string, plugin: string, name: string) {
     const type = new DiType(subject);
     const pluginItem = new DiTypePlugin(name, plugin);
-    type.addItem(pluginItem);
+    type.addChild(pluginItem);
     this.generator.addItem(type);
   }
 

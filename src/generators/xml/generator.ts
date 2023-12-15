@@ -1,8 +1,77 @@
 import { IXmlGenerator, IXmlPart } from "types/generator";
 
+/**
+ * Represents a part of XML document.
+ * 
+ * Examples:
+ * 
+ * <example name="pluginName" type="pluginType">
+ *   foobar
+ * </example>
+ * 
+ * - "example": key
+ * - "name", "type": attributes
+ * - "foobar": value
+ * 
+ */
+export abstract class XmlPart implements IXmlPart {
+  constructor(
+    protected attributes: Record<string, string> = {},
+    protected children: IXmlPart[] = [],
+    protected value?: string | IXmlPart[]
+  ) {}
+
+  public setAttribute(name: string, value: string) {
+    this.attributes[name] = value;
+  }
+
+  public addChild(child: XmlPart) {
+    this.children.push(child);
+  }
+
+  public setValue(value: string | IXmlPart[]) {
+    this.value = value;
+  }
+
+  public getKey(): string {
+    throw new Error('getKey() method must be implemented');
+  }
+
+  public toXmlObject() {
+    const object: Record<string, any> = {};
+
+    for (const key in this.attributes) {
+      if (!object.$) {
+        object.$ = {};
+      }
+
+      object.$[key] = this.attributes[key];
+    }
+
+    for (const child of this.children) {
+      if (!object[child.getKey()]) {
+        object[child.getKey()] = [];
+      }
+
+      object[child.getKey()].push(child.toXmlObject());
+    }
+
+    if (this.value) {
+      object._ = this.value;
+    }
+
+    return object;
+  }
+}
+
+/**
+ * Generates XML object and string from XmlParts
+ */
 export abstract class XmlGenerator<T extends IXmlPart> implements IXmlGenerator {
-  protected items: T[] = [];
-  protected xsdPath?: string;
+  constructor(
+    protected items: T[] = [],
+    protected xsdPath?: string
+  ){}
 
   public addItem(item: T) {
     this.items.push(item);
