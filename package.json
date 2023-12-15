@@ -48,6 +48,10 @@
       {
         "command": "magento-toolbox.generatePlugin",
         "title": "Magento Toolbox: Generate Plugin"
+      },
+      {
+        "command": "magento-toolbox.generatePreference",
+        "title": "Magento Toolbox: Generate Preference"
       }
     ],
     "menus": {
@@ -55,11 +59,19 @@
         {
           "command": "magento-toolbox.generatePlugin",
           "when": "false"
+        },
+        {
+          "command": "magento-toolbox.generatePreference",
+          "when": "false"
         }
       ],
       "editor/context": [
         {
           "command": "magento-toolbox.generatePlugin",
+          "when": "editorLangId == php && editorTextFocus"
+        },
+        {
+          "command": "magento-toolbox.generatePreference",
           "when": "editorLangId == php && editorTextFocus"
         }
       ]

@@ -5,7 +5,7 @@ import { ExtensionContext } from 'vscode';
 
 export interface PreferenceWizardData {
   module: string;
-  name: string;
+  type: string;
   scope: string;
 }
 
@@ -24,9 +24,10 @@ export const preferenceWizard = async (
         initialValue: first(modules),
       },
       {
-        id: 'name',
-        label: 'Preference name*',
+        id: 'type',
+        label: 'Preference type*',
         type: WizardInput.Text,
+        placeholder: 'Vendor\\Module\\Class',
       },
       {
         id: 'scope',
@@ -59,7 +60,7 @@ export const preferenceWizard = async (
     ],
     validation: {
       module: 'required',
-      name: 'required',
+      type: 'required',
       scope: 'required',
     },
   });

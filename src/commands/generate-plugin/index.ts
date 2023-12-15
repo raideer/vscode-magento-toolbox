@@ -39,7 +39,7 @@ export default async function (context: vscode.ExtensionContext) {
   const moduleDirectory = vscode.Uri.joinPath(appCodeUri, `${vendor}/${module}`);
   const subjectClass = `${phpClass.namespace}\\${phpClass.name}`;
 
-  const {pluginClass, namespace} = await generatePluginClass(data, phpClass, method);
+  const { pluginClass, namespace } = await generatePluginClass(data, phpClass, method);
 
   if (!pluginClass) {
     vscode.window.showWarningMessage(`Failed to generate plugin class.`);
@@ -48,14 +48,19 @@ export default async function (context: vscode.ExtensionContext) {
 
   const pluginName = `Plugin/${data.name}.php`;
 
-  const diXml = await generatePluginDi(data, subjectClass, `${namespace}\\${data.name}`, appCodeUri)
+  const diXml = await generatePluginDi(
+    data,
+    subjectClass,
+    `${namespace}\\${data.name}`,
+    appCodeUri
+  );
   const diLocation = data.scope === 'all' ? 'etc/di.xml' : `etc/${data.scope}/di.xml`;
   const diXmlPath = vscode.Uri.joinPath(moduleDirectory, diLocation);
 
-  await writeFile(diXmlPath,diXml);
+  await writeFile(diXmlPath, diXml);
 
   const path = vscode.Uri.joinPath(moduleDirectory, pluginName);
 
-  await writeFile(path,pluginClass);
+  await writeFile(path, pluginClass);
   await openFile(path);
 }
