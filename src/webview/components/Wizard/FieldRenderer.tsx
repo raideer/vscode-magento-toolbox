@@ -16,11 +16,13 @@ export const FieldRenderer: React.FC<Props> = ({ field, className }) => {
   const fieldInner = useMemo(() => {
     // eslint-disable-next-line default-case
     switch (field.type) {
+      case WizardInput.Number:
       case WizardInput.Text: {
         return (
           <TextInput
             description={field.description}
             placeholder={field.placeholder}
+            type={field.type === WizardInput.Number ? 'number' : 'text'}
             name={field.id}
           >
             {field.label}

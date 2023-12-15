@@ -8,6 +8,7 @@ export interface PluginWizardData {
   name: string;
   type: string;
   scope: string;
+  sort_order?: number;
 }
 
 export const pluginWizard = async (
@@ -79,12 +80,18 @@ export const pluginWizard = async (
         ],
         initialValue: 'all',
       },
+      {
+        id: 'sort_order',
+        label: 'Sort order',
+        type: WizardInput.Number,
+      },
     ],
     validation: {
       module: 'required',
       name: 'required',
       type: 'required',
       scope: 'required',
+      sort_order: 'numeric'
     },
   });
 

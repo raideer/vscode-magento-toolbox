@@ -1,10 +1,10 @@
-import { buildXml } from "utils/xml";
-import { mergeXml } from "utils/xml/merge";
-import { DiType } from "./parts/type";
-import { DiPreference } from "./parts/preference";
-import { DiTypePlugin } from "./parts/type-plugin";
-import { IXmlFactory } from "types/generator";
-import { XmlGenerator } from "../generator";
+import { buildXml } from 'utils/xml';
+import { mergeXml } from 'utils/xml/merge';
+import { DiType } from './parts/type';
+import { DiPreference } from './parts/preference';
+import { DiTypePlugin } from './parts/type-plugin';
+import { IXmlFactory } from 'types/generator';
+import { XmlGenerator } from '../generator';
 
 type DiItem = DiType | DiPreference;
 
@@ -22,14 +22,22 @@ export class DiFactory implements IXmlFactory {
   }
 
   addPreference(forClass: string, type: string) {
-    this.generator.addItem(
-      new DiPreference(forClass, type)
-    );
+    this.generator.addItem(new DiPreference(forClass, type));
   }
 
-  addPlugin(subject: string, plugin: string, name: string) {
+  addPlugin({
+    subject,
+    plugin,
+    name,
+    sortOrder,
+  }: {
+    subject: string;
+    plugin: string;
+    name: string;
+    sortOrder?: number;
+  }) {
     const type = new DiType(subject);
-    const pluginItem = new DiTypePlugin(name, plugin);
+    const pluginItem = new DiTypePlugin(name, plugin, sortOrder);
     type.addChild(pluginItem);
     this.generator.addItem(type);
   }
@@ -43,8 +51,6 @@ export class DiFactory implements IXmlFactory {
       return buildXml(this.toObject());
     }
 
-    return buildXml(
-      mergeXml(existing, this.toObject())
-    );
+    return buildXml(mergeXml(existing, this.toObject()));
   }
 }

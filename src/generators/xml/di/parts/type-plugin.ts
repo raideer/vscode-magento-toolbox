@@ -9,12 +9,18 @@ import { XmlPart } from "generators/xml/generator";
  * 
  */
 export class DiTypePlugin extends XmlPart {
-  constructor(name: string, type: string) {
+  constructor(name: string, type: string, sortOrder?: number) {
+    const attributes: Record<string, string> = {
+      name,
+      type,
+    };
+
+    if (sortOrder) {
+      attributes.sortOrder = String(sortOrder);
+    }
+
     super(
-      {
-        name,
-        type,
-      },
+      attributes
     );
   }
 

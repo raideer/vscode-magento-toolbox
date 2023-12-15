@@ -3,6 +3,7 @@ import { useField } from 'formik';
 
 interface Props {
   name: string;
+  type?: 'text' | 'number';
   description?: string[];
   placeholder?: string;
 }
