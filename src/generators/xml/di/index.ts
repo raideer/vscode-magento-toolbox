@@ -1,10 +1,10 @@
 import { buildXml } from "utils/xml";
 import { mergeXml } from "utils/xml/merge";
-import { XmlGenerator } from "../xml";
 import { DiType } from "./parts/type";
 import { DiPreference } from "./parts/preference";
 import { DiTypePlugin } from "./parts/type-plugin";
 import { IXmlFactory } from "types/generator";
+import { XmlGenerator } from "../generator";
 
 type DiItem = DiType | DiPreference;
 

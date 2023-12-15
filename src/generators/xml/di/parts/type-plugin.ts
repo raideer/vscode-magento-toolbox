@@ -1,7 +1,7 @@
 import { IXmlPart } from "types/generator";
 
 export class DiTypePlugin implements IXmlPart {
-  constructor(private name: string, private value: string) {}
+  constructor(private name: string, private type: string) {}
 
   getKey() {
     return 'plugin';
@@ -11,7 +11,7 @@ export class DiTypePlugin implements IXmlPart {
     return {
       $: {
         name: this.name,
-        value: this.value,
+        type: this.type,
       },
     };
   }
