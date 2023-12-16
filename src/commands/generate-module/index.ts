@@ -1,23 +1,16 @@
 import * as vscode from 'vscode';
-import { getModuleUri, resolveLoadedModules, resolveMagentoRoot } from 'utils/magento';
+import { getModuleUri } from 'utils/magento';
 import { generateModuleXml } from 'generators/generateModuleXml';
 import { moduleWizard } from './module-wizard';
 import { openFile, refreshFileExplorer, writeFile } from 'utils/vscode';
 import { generateModuleRegistration } from 'generators/template/registration';
 import { generateLicense } from 'generators/template/license';
 import { generateComposerJson } from 'generators/json/composer';
+import { ext } from 'base/variables';
 
 export default async function () {
-  const magentoRoot = await resolveMagentoRoot();
-
-  if (!magentoRoot) {
-    vscode.window.showWarningMessage(`Could not find Magento root directory.`);
-    return;
-  }
-
-  const appCodeUri = vscode.Uri.joinPath(magentoRoot, 'app/code');
-
-  const loadedModules = await resolveLoadedModules(magentoRoot);
+  const appCodeUri = ext.index.modules.data.appCode;
+  const loadedModules = ext.index.modules.getModuleList();
 
   const data = await moduleWizard(loadedModules);
 

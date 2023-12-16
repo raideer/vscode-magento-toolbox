@@ -1,19 +1,12 @@
 import * as vscode from 'vscode';
-import { resolveLoadedModules, resolveMagentoRoot } from 'utils/magento';
 import { resolvePluginClass, resolvePluginMethod } from './resolve-plugin-method';
 import { pluginWizard } from './plugin-wizard';
 import { generatePluginClass } from './parts/plugin-class';
 import { generatePluginDi } from './parts/plugin-di';
 import { openFile, writeFile } from 'utils/vscode';
+import { ext } from 'base/variables';
 
 export default async function () {
-  const magentoRoot = await resolveMagentoRoot();
-
-  if (!magentoRoot) {
-    vscode.window.showWarningMessage(`Could not find Magento root directory.`);
-    return;
-  }
-
   const phpClass = resolvePluginClass();
   if (!phpClass) {
     // Error message already shown by resolvePluginClass
@@ -27,9 +20,8 @@ export default async function () {
     return;
   }
 
-  const appCodeUri = vscode.Uri.joinPath(magentoRoot, 'app/code');
-
-  const modules = await resolveLoadedModules(appCodeUri);
+  const appCodeUri = ext.index.modules.data.appCode;
+  const modules = ext.index.modules.getModuleList();
 
   // Open plugin wizard
   const data = await pluginWizard(modules, phpClass.name!, method.name!);

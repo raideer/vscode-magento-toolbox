@@ -1,20 +1,13 @@
 import * as vscode from 'vscode';
-import { resolveLoadedModules, resolveMagentoRoot } from 'utils/magento';
 import { observerWizard } from './observer-wizard';
 import { generateObserverEvents } from './parts/observer-events';
 import { generateObserverClass } from './parts/observer-class';
 import { isString } from 'lodash-es';
+import { ext } from 'base/variables';
 
 export default async function (...args: any[]) {
-  const magentoRoot = await resolveMagentoRoot();
-
-  if (!magentoRoot) {
-    vscode.window.showWarningMessage(`Could not find Magento root directory.`);
-    return;
-  }
-
-  const appCodeUri = vscode.Uri.joinPath(magentoRoot, 'app/code');
-  const modules = await resolveLoadedModules(appCodeUri);
+  const appCodeUri = ext.index.modules.data.appCode;
+  const modules = ext.index.modules.getModuleList();
 
   const eventName = args.length > 0 && isString(args[0]) ? args[0] : undefined;
 

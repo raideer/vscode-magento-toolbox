@@ -1,22 +1,11 @@
 import * as vscode from 'vscode';
-import {
-  getModuleUri,
-  getScopedPath,
-  resolveLoadedModules,
-  resolveMagentoRoot,
-} from 'utils/magento';
+import { getModuleUri, getScopedPath } from 'utils/magento';
 import { resolvePreferenceClass } from './resolve-preference-class';
 import { preferenceWizard } from './preference-wizard';
 import { generatePreferenceDi } from './parts/preference-di';
+import { ext } from 'base/variables';
 
 export default async function () {
-  const magentoRoot = await resolveMagentoRoot();
-
-  if (!magentoRoot) {
-    vscode.window.showWarningMessage(`Could not find Magento root directory.`);
-    return;
-  }
-
   const phpClass = resolvePreferenceClass();
 
   if (!phpClass) {
@@ -24,9 +13,8 @@ export default async function () {
     return;
   }
 
-  const appCodeUri = vscode.Uri.joinPath(magentoRoot, 'app/code');
-
-  const modules = await resolveLoadedModules(appCodeUri);
+  const appCodeUri = ext.index.modules.data.appCode;
+  const modules = ext.index.modules.getModuleList();
 
   // Open plugin wizard
   const data = await preferenceWizard(modules);

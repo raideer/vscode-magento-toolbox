@@ -1,11 +1,12 @@
 import * as vscode from 'vscode';
-import { resolveLoadedModules, resolveMagentoRoot, resolveUriModule } from 'utils/magento';
+import { resolveUriModule } from 'utils/magento';
 import { capitalize, snakeCase } from 'lodash-es';
 import { blockWizard } from './block-wizard';
 import { generateBlockClass } from './parts/block-class';
 import { generateBlockLayoutHandle } from './parts/block-layout-handle';
 import { openFile, refreshFileExplorer, writeFile } from 'utils/vscode';
 import { generateBlockLayoutTemplate } from './parts/block-layout-template';
+import { ext } from 'base/variables';
 
 /**
  * Generates a block
@@ -17,21 +18,14 @@ import { generateBlockLayoutTemplate } from './parts/block-layout-template';
  *
  */
 export default async function () {
-  const magentoRoot = await resolveMagentoRoot();
-
-  if (!magentoRoot) {
-    vscode.window.showWarningMessage(`Could not find Magento root directory.`);
-    return;
-  }
-
   let defaultModule: string | undefined;
 
   if (vscode.window.activeTextEditor?.document.uri) {
     defaultModule = await resolveUriModule(vscode.window.activeTextEditor.document.uri);
   }
 
-  const appCodeUri = vscode.Uri.joinPath(magentoRoot, 'app/code');
-  const modules = await resolveLoadedModules(appCodeUri);
+  const appCodeUri = ext.index.modules.data.appCode;
+  const modules = ext.index.modules.getModuleList();
 
   // Open block wizard
   const data = await blockWizard(modules, defaultModule);

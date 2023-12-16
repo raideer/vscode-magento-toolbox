@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { resolveLoadedModules, resolveMagentoRoot, resolveUriModule } from 'utils/magento';
+import { resolveUriModule } from 'utils/magento';
 import { capitalize, snakeCase } from 'lodash-es';
 import { controllerWizard } from './controller-wizard';
 import { generateControllerClass } from './parts/controller-class';
@@ -8,6 +8,7 @@ import { generateBlockClass } from 'commands/generate-block/parts/block-class';
 import { openFile, refreshFileExplorer, writeFile } from 'utils/vscode';
 import { generateBlockLayoutHandle } from 'commands/generate-block/parts/block-layout-handle';
 import { generateBlockLayoutTemplate } from 'commands/generate-block/parts/block-layout-template';
+import { ext } from 'base/variables';
 
 /**
  * Generates a controller
@@ -21,17 +22,10 @@ import { generateBlockLayoutTemplate } from 'commands/generate-block/parts/block
  *
  */
 export default async function () {
-  const magentoRoot = await resolveMagentoRoot();
-
-  if (!magentoRoot) {
-    vscode.window.showWarningMessage(`Could not find Magento root directory.`);
-    return;
-  }
-
-  const appCodeUri = vscode.Uri.joinPath(magentoRoot, 'app/code');
+  const appCodeUri = ext.index.modules.data.appCode;
 
   // Load all magento modules in app/code
-  const modules = await resolveLoadedModules(appCodeUri);
+  const modules = ext.index.modules.getModuleList();
 
   let defaultModule: string | undefined;
 

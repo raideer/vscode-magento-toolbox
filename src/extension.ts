@@ -7,10 +7,10 @@ import generateObserver from './commands/generate-observer';
 import generateBlock from './commands/generate-block';
 import generateController from './commands/generate-controller';
 import handleChangeActiveTextEditor from 'base/events/handleChangeActiveTextEditor';
-import { resolveMagentoRoot } from 'utils/magento';
 import generateViewModel from 'commands/generate-viewmodel';
 import { ext } from 'base/variables';
 import handleChangeTextEditorSelection from 'base/events/handleChangeTextEditorSelection';
+import { indexWorkspace } from 'base/indexer';
 
 const loadCommands = () => {
   const commands = [
@@ -50,11 +50,10 @@ const loadEvents = () => {
 export async function activate(context: vscode.ExtensionContext) {
   ext.context = context;
 
-  const magentoRoot = await resolveMagentoRoot();
-
-  if (!magentoRoot) {
-    // Not magento project
-    console.log('[Magento Toolbox] Not a Magento project.');
+  try {
+    ext.index = await indexWorkspace();
+  } catch (e) {
+    console.error('[Magento Toolbox] Error indexing workspace', e);
     return;
   }
 
