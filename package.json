@@ -11,7 +11,9 @@
   ],
   "publisher": "raideer",
   "activationEvents": [
-    "onStartupFinished"
+    "workspaceContains:**/app/etc/env.php",
+    "workspaceContains:**/app/etc/di.xml",
+    "workspaceContains:**/bin/magento"
   ],
   "repository": {
     "type": "git",
