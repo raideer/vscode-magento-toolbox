@@ -59,10 +59,7 @@ const generatePluginClassInner = async (
     returnType: null,
   });
 
-  return [
-    pluginFunction,
-    pluginFunctionParams
-  ];
+  return [pluginFunction, pluginFunctionParams];
 };
 
 export const generatePluginClass = async (
@@ -75,31 +72,34 @@ export const generatePluginClass = async (
   const pluginName = nameParts.pop() as string;
   const namespace = [vendor, module, 'Plugin', ...nameParts].join('\\');
 
-  const [
-    pluginClassInner,
-    pluginFunctionParams
-  ] = await generatePluginClassInner(data, methodClass, method);
-  
-  const use: IClassUse[] = pluginFunctionParams.map((param) => {
-    if (methodClass.use && methodClass.use[param.type!]) {
-      return {
-        class: methodClass.use[param.type!]!,
-        alias: param.type!
-      }
-    }
+  const [pluginClassInner, pluginFunctionParams] = await generatePluginClassInner(
+    data,
+    methodClass,
+    method
+  );
 
-    if (methodClass.name === param.type) {
-      return {
-        class: methodClass.namespace + '\\' + methodClass.name!,
-        alias: null
+  const use: IClassUse[] = pluginFunctionParams
+    .filter((param) => param.type)
+    .map((param) => {
+      if (methodClass.use && methodClass.use[param.type!]) {
+        return {
+          class: methodClass.use[param.type!]!,
+          alias: param.type!,
+        };
       }
-    }
 
-    return {
-      class: param.type!,
-      alias: null
-    };
-  });
+      if (methodClass.name === param.type) {
+        return {
+          class: methodClass.namespace + '\\' + methodClass.name!,
+          alias: null,
+        };
+      }
+
+      return {
+        class: param.type!,
+        alias: null,
+      };
+    });
 
   const pluginClass = await generateClass({
     namespace,
@@ -113,6 +113,6 @@ export const generatePluginClass = async (
 
   return {
     pluginClass,
-    namespace
+    namespace,
   };
 };
