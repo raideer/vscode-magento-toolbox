@@ -1,4 +1,4 @@
-import { execCommand, getActiveWorkspaceFolder } from 'utils/vscode';
+import { execCommand, fileExists, getActiveWorkspaceFolder } from 'utils/vscode';
 import { workspace, window, Uri } from 'vscode';
 
 export class MagentoCLI {
@@ -19,10 +19,7 @@ export class MagentoCLI {
 
     const cliUri = Uri.joinPath(workspaceUri, cliLocation);
 
-    const cliExists = await workspace.fs.stat(cliUri).then(
-      () => true,
-      () => false
-    );
+    const cliExists = await fileExists(cliUri);
 
     if (!cliExists) {
       return;
@@ -47,13 +44,10 @@ export class MagentoCLI {
 
     const prefix = cliUser ? `sudo -u ${cliUser} ` : '';
     const cliCommand = `${prefix}php ${this.cliUri.fsPath} ${command} ${args.join(' ')}`;
+    const workspaceUri = getActiveWorkspaceFolder()!.uri;
 
-    try {
-      const output = await execCommand(cliCommand);
-    } catch (e) {
-      window.showErrorMessage(`Failed to generate XML catalog: ${cliCommand}`);
-      return;
-    }
-    console.log(cliCommand);
+    const output = await execCommand(cliCommand, { cwd: workspaceUri.fsPath });
+
+    return output;
   }
 }

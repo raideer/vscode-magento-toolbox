@@ -1,5 +1,5 @@
 import { OpenDialogOptions, Uri, commands, window, workspace } from 'vscode';
-import { exec } from 'child_process';
+import { ExecOptions, exec } from 'child_process';
 
 export async function openTextDialog(prompt: string, placeHolder?: string, value?: string) {
   const result = await window.showInputBox({
@@ -41,15 +41,31 @@ export function refreshFileExplorer() {
 }
 
 export function getActiveWorkspaceFolder() {
+  if (!workspace.workspaceFolders) {
+    throw new Error('Workspace is empty');
+  }
+
+  if (workspace.workspaceFolders.length === 1) {
+    return workspace.workspaceFolders[0];
+  }
+
   if (!window.activeTextEditor?.document.uri) {
     throw new Error('No active text editor');
   }
 
   return workspace.getWorkspaceFolder(window.activeTextEditor.document.uri);
 }
-export async function execCommand(command: string) {
+
+export function fileExists(uri: Uri) {
+  return workspace.fs.stat(uri).then(
+    () => true,
+    () => false
+  );
+}
+
+export async function execCommand(command: string, options: ExecOptions = {}) {
   return new Promise((resolve, reject) => {
-    exec(command, (err, stdout, stderr) => {
+    exec(command, options, (err, stdout, stderr) => {
       if (err) {
         reject(err);
         return;
