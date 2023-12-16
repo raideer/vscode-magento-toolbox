@@ -1,8 +1,10 @@
 import { Progress } from 'vscode';
 import { ModuleIndexer, ModuleIndexerData } from './indexers/module-indexer';
+import { ObserverIndexer, ObserverIndexerData } from './indexers/observer-indexer';
 
 export interface Indexer<D = Record<string, any>> {
-  index(): Promise<IndexerData<D>>;
+  name: string;
+  index(data: Partial<MagentoIndex>): Promise<IndexerData<D>>;
 }
 
 export interface IndexerData<D = Record<string, any>> {
@@ -11,6 +13,7 @@ export interface IndexerData<D = Record<string, any>> {
 
 export interface MagentoIndex {
   modules: ModuleIndexerData;
+  observers: ObserverIndexerData;
 }
 
 export async function indexWorkspace(
@@ -19,16 +22,16 @@ export async function indexWorkspace(
     increment?: number;
   }>
 ): Promise<MagentoIndex> {
-  const indexers = [ModuleIndexer];
+  const indexers = [ModuleIndexer, ObserverIndexer];
 
   progress.report({ message: 'Indexing', increment: 0 });
   const data = {};
 
   for (const indexer of indexers) {
-    const instance = new indexer();
+    const instance: Indexer = new indexer();
 
     progress.report({ message: `Indexing ${instance.name}` });
-    data[instance.name] = await instance.index();
+    data[instance.name] = await instance.index(data);
   }
 
   progress.report({ increment: 100 });

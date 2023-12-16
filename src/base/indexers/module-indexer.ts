@@ -15,18 +15,18 @@ export interface MagentoModule {
 export interface ModuleIndex {
   magentoRoot: Uri;
   appCode: Uri;
-  modules: MagentoModule[];
+  modules: Map<string, MagentoModule>;
 }
 
 export class ModuleIndexerData implements IndexerData<ModuleIndex> {
   constructor(public data: ModuleIndex) {}
 
   public getModule(name: string) {
-    return this.data.modules.find((module) => module.name === name);
+    return this.data.modules.get(name);
   }
 
   public getModuleList() {
-    return this.data.modules.map((module) => module.name);
+    return Array.from(this.data.modules.keys());
   }
 }
 
@@ -34,7 +34,7 @@ export class ModuleIndexer implements Indexer<ModuleIndex> {
   public name = 'modules';
 
   protected data: Partial<ModuleIndex> = {
-    modules: [],
+    modules: new Map(),
   };
 
   public async index() {
@@ -46,8 +46,6 @@ export class ModuleIndexer implements Indexer<ModuleIndex> {
 
     this.data.appCode = Uri.joinPath(magentoRoot, 'app/code');
     this.data.magentoRoot = magentoRoot;
-
-    await new Promise((resolve) => setTimeout(resolve, 5000));
 
     await this.indexModules(magentoRoot);
 
@@ -72,14 +70,16 @@ export class ModuleIndexer implements Indexer<ModuleIndex> {
           name: module,
           vendor,
           module: name,
-          path: Uri.joinPath(file, '..'),
+          path: Uri.joinPath(file, '../..'),
           location: file.path.includes('vendor') ? 'vendor' : 'app/code',
           dependencies: sequence.map((item: any) => item.$.name),
         };
       })
     );
 
-    this.data.modules = uniqBy(modules, 'name');
+    modules.forEach((module) => {
+      this.data.modules!.set(module.name, module);
+    });
   }
 
   private async resolveMagentoRoot() {
