@@ -9,8 +9,8 @@ import { resolvePreferenceClass } from './resolve-preference-class';
 import { preferenceWizard } from './preference-wizard';
 import { generatePreferenceDi } from './parts/preference-di';
 
-export default async function (context: vscode.ExtensionContext) {
-  const magentoRoot = await resolveMagentoRoot(context);
+export default async function () {
+  const magentoRoot = await resolveMagentoRoot();
 
   if (!magentoRoot) {
     vscode.window.showWarningMessage(`Could not find Magento root directory.`);
@@ -29,7 +29,7 @@ export default async function (context: vscode.ExtensionContext) {
   const modules = await resolveLoadedModules(appCodeUri);
 
   // Open plugin wizard
-  const data = await preferenceWizard(context, modules);
+  const data = await preferenceWizard(modules);
 
   // Module directory to generate plugin in
   const moduleDirectory = getModuleUri(appCodeUri, data.module);

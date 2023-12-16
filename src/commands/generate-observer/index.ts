@@ -4,8 +4,8 @@ import { observerWizard } from './observer-wizard';
 import { generateObserverEvents } from './parts/observer-events';
 import { generateObserverClass } from './parts/observer-class';
 
-export default async function (context: vscode.ExtensionContext) {
-  const magentoRoot = await resolveMagentoRoot(context);
+export default async function () {
+  const magentoRoot = await resolveMagentoRoot();
 
   if (!magentoRoot) {
     vscode.window.showWarningMessage(`Could not find Magento root directory.`);
@@ -16,7 +16,7 @@ export default async function (context: vscode.ExtensionContext) {
   const modules = await resolveLoadedModules(appCodeUri);
 
   // Open observer wizard
-  const data = await observerWizard(context, modules);
+  const data = await observerWizard(modules);
 
   const [vendor, module] = data.module.split('_');
   const moduleDirectory = vscode.Uri.joinPath(appCodeUri, `${vendor}/${module}`);

@@ -1,6 +1,5 @@
 import { License, WizardInput } from 'types/wizard';
 import { openWizard } from 'base/wizard';
-import { ExtensionContext } from 'vscode';
 
 interface ModuleWizardBaseData {
   vendor: string;
@@ -22,8 +21,8 @@ interface ModuleWizardComposerData extends ModuleWizardBaseData {
   composerDescription: string;
 }
 
-export const moduleWizard = async (context: ExtensionContext, modules: string[]) => {
-  const data: ModuleWizardData | ModuleWizardComposerData = await openWizard(context, {
+export const moduleWizard = async (modules: string[]) => {
+  const data: ModuleWizardData | ModuleWizardComposerData = await openWizard({
     title: 'Generate a new module',
     description: 'Generates the basic structure of a Magento2 module.',
     fields: [

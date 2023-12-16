@@ -10,12 +10,8 @@ export interface IViewModelWizardBlockData {
   scope: string;
 }
 
-export const viewModelWizard = async (
-  context: ExtensionContext,
-  modules: string[],
-  initialModule?: string
-) => {
-  const wizard = new WizardGenerator(context);
+export const viewModelWizard = async (modules: string[], initialModule?: string) => {
+  const wizard = new WizardGenerator();
   wizard.setTitle('Generate a new View Model');
   wizard.setDescription('Create a new View Model class.');
 

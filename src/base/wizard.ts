@@ -3,8 +3,9 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
 import { IWizard, IWizardField } from 'types/wizard';
+import { ext } from './variables';
 
-export function openWizard<T = any>(context: vscode.ExtensionContext, wizard: IWizard): Promise<T> {
+export function openWizard<T = any>(wizard: IWizard): Promise<T> {
   return new Promise((resolve, reject) => {
     const panel = window.createWebviewPanel(
       'magentoToolboxDialog',
@@ -15,10 +16,13 @@ export function openWizard<T = any>(context: vscode.ExtensionContext, wizard: IW
       }
     );
 
-    const scriptPath = Uri.file(path.join(context.extensionPath, 'dist', 'webview.js'));
+    const scriptPath = Uri.file(path.join(ext.context.extensionPath, 'dist', 'webview.js'));
     const scriptSrc = panel.webview.asWebviewUri(scriptPath);
 
-    let template = fs.readFileSync(`${context.extensionPath}/templates/webview/index.html`, 'utf8');
+    let template = fs.readFileSync(
+      `${ext.context.extensionPath}/templates/webview/index.html`,
+      'utf8'
+    );
     template = template.replace('{{APP_SCRIPT}}', scriptSrc.toString());
 
     panel.webview.html = template;
@@ -61,8 +65,6 @@ export class WizardGenerator {
     fields: [],
   };
 
-  constructor(private context: vscode.ExtensionContext) {}
-
   setTitle(title: string) {
     this.wizard.title = title;
   }
@@ -89,6 +91,6 @@ export class WizardGenerator {
   }
 
   public open<T = any>() {
-    return openWizard<T>(this.context, this.wizard)
+    return openWizard<T>(this.wizard);
   }
 }

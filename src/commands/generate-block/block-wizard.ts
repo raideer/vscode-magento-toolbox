@@ -1,7 +1,6 @@
 import { WizardGenerator } from 'base/wizard';
 import { first } from 'lodash-es';
 import { IWizardField, WizardInput } from 'types/wizard';
-import { ExtensionContext } from 'vscode';
 
 interface IBlockWizardBaseData {
   module: string;
@@ -21,8 +20,8 @@ export interface IBlockWizardLayoutHandleData extends IBlockWizardBaseData {
   referenceName: string;
 }
 
-export const blockWizard = async (context: ExtensionContext, modules: string[], initialModule?: string) => {
-  const wizard = new WizardGenerator(context);
+export const blockWizard = async (modules: string[], initialModule?: string) => {
+  const wizard = new WizardGenerator();
   wizard.setTitle('Generate a new block');
   wizard.setDescription('Create a new block class and register it in the layout.');
 

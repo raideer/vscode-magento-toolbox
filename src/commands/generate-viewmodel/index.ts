@@ -11,8 +11,8 @@ import { generateViewModelClass } from './parts/view-model-class';
  * - app/code/Vendor/Module/ViewModel/ViewModelName.php
  *
  */
-export default async function (context: vscode.ExtensionContext) {
-  const magentoRoot = await resolveMagentoRoot(context);
+export default async function () {
+  const magentoRoot = await resolveMagentoRoot();
 
   if (!magentoRoot) {
     vscode.window.showWarningMessage(`Could not find Magento root directory.`);
@@ -29,7 +29,7 @@ export default async function (context: vscode.ExtensionContext) {
   const modules = await resolveLoadedModules(appCodeUri);
 
   // Open ViewModel wizard
-  const data = await viewModelWizard(context, modules, defaultModule);
+  const data = await viewModelWizard(modules, defaultModule);
 
   const [vendor, module] = data.module.split('_');
   const moduleDirectory = vscode.Uri.joinPath(appCodeUri, `${vendor}/${module}`);

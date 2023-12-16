@@ -9,8 +9,9 @@ import generateController from './commands/generate-controller';
 import handleChangeActiveTextEditor from 'base/events/handleChangeActiveTextEditor';
 import { resolveMagentoRoot } from 'utils/magento';
 import generateViewModel from 'commands/generate-viewmodel';
+import { ext } from 'base/variables';
 
-const loadCommands = (context: vscode.ExtensionContext) => {
+const loadCommands = () => {
   const commands = [
     ['magento-toolbox.generateModule', generateModule],
     ['magento-toolbox.generateObserver', generateObserver],
@@ -18,27 +19,23 @@ const loadCommands = (context: vscode.ExtensionContext) => {
     ['magento-toolbox.generateController', generateController],
     ['magento-toolbox.generateViewModel', generateViewModel],
   ].map(([commandName, command]) => {
-    return vscode.commands.registerCommand(commandName as string, () => {
-      return (command as any)(context);
-    });
+    return vscode.commands.registerCommand(commandName as string, command as any);
   });
 
-  context.subscriptions.push(...commands);
+  ext.context.subscriptions.push(...commands);
 
   const textEditorCommands = [
     ['magento-toolbox.generatePlugin', generatePlugin],
     ['magento-toolbox.generatePreference', generatePreference],
   ].map(([commandName, command]) => {
-    return vscode.commands.registerTextEditorCommand(commandName as string, () => {
-      return (command as any)(context);
-    });
+    return vscode.commands.registerTextEditorCommand(commandName as string, command as any);
   });
 
-  context.subscriptions.push(...textEditorCommands);
+  ext.context.subscriptions.push(...textEditorCommands);
 };
 
-const loadEvents = (context: vscode.ExtensionContext) => {
-  context.subscriptions.push(
+const loadEvents = () => {
+  ext.context.subscriptions.push(
     vscode.window.onDidChangeActiveTextEditor(handleChangeActiveTextEditor)
   );
 
@@ -46,7 +43,9 @@ const loadEvents = (context: vscode.ExtensionContext) => {
 };
 
 export async function activate(context: vscode.ExtensionContext) {
-  const magentoRoot = await resolveMagentoRoot(context);
+  ext.context = context;
+
+  const magentoRoot = await resolveMagentoRoot();
 
   if (!magentoRoot) {
     // Not magento project
@@ -54,8 +53,8 @@ export async function activate(context: vscode.ExtensionContext) {
     return;
   }
 
-  loadCommands(context);
-  loadEvents(context);
+  loadCommands();
+  loadEvents();
 
   console.log('[Magento Toolbox] Loaded');
 }

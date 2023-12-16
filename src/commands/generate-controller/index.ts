@@ -11,17 +11,17 @@ import { generateBlockLayoutTemplate } from 'commands/generate-block/parts/block
 
 /**
  * Generates a controller
- * 
+ *
  * File list:
  * - app/code/Vendor/Module/Controller/ActionPath/ActionName.php
  * - app/code/Vendor/Module/etc/frontend/routes.xml
  * - (optional) app/code/Vendor/Module/Block/ActionPath/ActionName.php
  * - (optional) app/code/Vendor/Module/view/frontend/layout/layout_handle_name.xml
  * - (optional) app/code/Vendor/Module/view/frontend/templates/action_name.phtml
- * 
+ *
  */
-export default async function (context: vscode.ExtensionContext) {
-  const magentoRoot = await resolveMagentoRoot(context);
+export default async function () {
+  const magentoRoot = await resolveMagentoRoot();
 
   if (!magentoRoot) {
     vscode.window.showWarningMessage(`Could not find Magento root directory.`);
@@ -36,11 +36,11 @@ export default async function (context: vscode.ExtensionContext) {
   let defaultModule: string | undefined;
 
   if (vscode.window.activeTextEditor?.document.uri) {
-    defaultModule = await resolveUriModule(vscode.window.activeTextEditor.document.uri)
+    defaultModule = await resolveUriModule(vscode.window.activeTextEditor.document.uri);
   }
 
   // Open wizard
-  const data = await controllerWizard(context, modules, defaultModule);
+  const data = await controllerWizard(modules, defaultModule);
 
   const [vendor, module] = data.module.split('_');
 
@@ -54,7 +54,10 @@ export default async function (context: vscode.ExtensionContext) {
   const controllerDirectory = data.scope === 'frontend' ? 'Controller' : 'Controller/Adminhtml';
   const actionPath = capitalize(data.actionPath);
   const actionName = capitalize(data.actionName);
-  const controllerPath = vscode.Uri.joinPath(moduleDirectory, `${controllerDirectory}/${actionPath}/${actionName}.php`);
+  const controllerPath = vscode.Uri.joinPath(
+    moduleDirectory,
+    `${controllerDirectory}/${actionPath}/${actionName}.php`
+  );
 
   await writeFile(controllerPath, controllerClass);
 
@@ -76,7 +79,10 @@ export default async function (context: vscode.ExtensionContext) {
     );
     const blockPath = data.scope === 'frontend' ? `Block` : 'Block/Adminhtml';
 
-    await writeFile(vscode.Uri.joinPath(moduleDirectory, `${blockPath}/${actionPath}/${actionName}.php`), blockClass);
+    await writeFile(
+      vscode.Uri.joinPath(moduleDirectory, `${blockPath}/${actionPath}/${actionName}.php`),
+      blockClass
+    );
 
     let frontName = (data.frontName || module).toLowerCase();
     frontName = snakeCase(frontName);
@@ -106,7 +112,7 @@ export default async function (context: vscode.ExtensionContext) {
       data.actionName
     );
 
-    await writeFile(layoutHandleUri, eventsXml)
+    await writeFile(layoutHandleUri, eventsXml);
 
     // Generate block template
     const template = await generateBlockLayoutTemplate(data.module, data.actionName);
@@ -117,9 +123,9 @@ export default async function (context: vscode.ExtensionContext) {
         `view/${data.scope}/templates/${blockTemplateName}.phtml`
       ),
       template
-    )
+    );
   }
-  
+
   openFile(controllerPath);
   refreshFileExplorer();
 }

@@ -1,7 +1,6 @@
 import { first } from 'lodash-es';
 import { WizardInput } from 'types/wizard';
 import { openWizard } from 'base/wizard';
-import { ExtensionContext } from 'vscode';
 
 export interface ObserverWizardData {
   module: string;
@@ -10,8 +9,8 @@ export interface ObserverWizardData {
   scope: string;
 }
 
-export const observerWizard = async (context: ExtensionContext, modules: string[]) => {
-  const data: ObserverWizardData = await openWizard(context, {
+export const observerWizard = async (modules: string[]) => {
+  const data: ObserverWizardData = await openWizard({
     title: 'Generate a new observer',
     fields: [
       {

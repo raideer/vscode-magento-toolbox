@@ -6,8 +6,8 @@ import { generatePluginClass } from './parts/plugin-class';
 import { generatePluginDi } from './parts/plugin-di';
 import { openFile, writeFile } from 'utils/vscode';
 
-export default async function (context: vscode.ExtensionContext) {
-  const magentoRoot = await resolveMagentoRoot(context);
+export default async function () {
+  const magentoRoot = await resolveMagentoRoot();
 
   if (!magentoRoot) {
     vscode.window.showWarningMessage(`Could not find Magento root directory.`);
@@ -32,7 +32,7 @@ export default async function (context: vscode.ExtensionContext) {
   const modules = await resolveLoadedModules(appCodeUri);
 
   // Open plugin wizard
-  const data = await pluginWizard(context, modules, phpClass.name!);
+  const data = await pluginWizard(modules, phpClass.name!);
   const [vendor, module] = data.module.split('_');
 
   // Module directory to generate plugin in

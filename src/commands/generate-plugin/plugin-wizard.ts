@@ -1,7 +1,6 @@
 import { camelCase, first, upperFirst } from 'lodash-es';
 import { WizardInput } from 'types/wizard';
 import { openWizard } from 'base/wizard';
-import { ExtensionContext } from 'vscode';
 
 export interface PluginWizardData {
   module: string;
@@ -12,11 +11,10 @@ export interface PluginWizardData {
 }
 
 export const pluginWizard = async (
-  context: ExtensionContext,
   modules: string[],
   className: string
 ): Promise<PluginWizardData> => {
-  const data: PluginWizardData = await openWizard(context, {
+  const data: PluginWizardData = await openWizard({
     title: 'Generate a new plugin',
     fields: [
       {
@@ -91,7 +89,7 @@ export const pluginWizard = async (
       name: 'required',
       type: 'required',
       scope: 'required',
-      sort_order: 'numeric'
+      sort_order: 'numeric',
     },
   });
 

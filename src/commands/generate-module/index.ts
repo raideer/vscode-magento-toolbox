@@ -7,8 +7,8 @@ import { generateModuleRegistration } from 'generators/template/registration';
 import { generateLicense } from 'generators/template/license';
 import { generateComposerJson } from 'generators/json/composer';
 
-export default async function (context: vscode.ExtensionContext) {
-  const magentoRoot = await resolveMagentoRoot(context);
+export default async function () {
+  const magentoRoot = await resolveMagentoRoot();
 
   if (!magentoRoot) {
     vscode.window.showWarningMessage(`Could not find Magento root directory.`);
@@ -19,7 +19,7 @@ export default async function (context: vscode.ExtensionContext) {
 
   const loadedModules = await resolveLoadedModules(magentoRoot);
 
-  const data = await moduleWizard(context, loadedModules);
+  const data = await moduleWizard(loadedModules);
 
   const moduleName = `${data.vendor}_${data.module}`;
 
@@ -46,10 +46,7 @@ export default async function (context: vscode.ExtensionContext) {
       copyright: data.copyright || data.vendor,
     });
 
-    await writeFile(
-      vscode.Uri.joinPath(moduleDirectory, 'LICENSE.txt'),
-      license
-    );
+    await writeFile(vscode.Uri.joinPath(moduleDirectory, 'LICENSE.txt'), license);
   }
 
   // Generate composer.json
@@ -63,13 +60,10 @@ export default async function (context: vscode.ExtensionContext) {
       version: data.version,
     });
 
-    await writeFile(
-      vscode.Uri.joinPath(moduleDirectory, 'composer.json'),
-      json
-    );
+    await writeFile(vscode.Uri.joinPath(moduleDirectory, 'composer.json'), json);
   }
 
   vscode.window.showInformationMessage(`Generated module: ${moduleName}`);
-  refreshFileExplorer()
-  await openFile(moduleXmlPath)
+  refreshFileExplorer();
+  await openFile(moduleXmlPath);
 }

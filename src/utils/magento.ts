@@ -1,17 +1,16 @@
-import { workspace, Uri, ExtensionContext, RelativePattern } from 'vscode';
+import { workspace, Uri, RelativePattern } from 'vscode';
 import get from 'lodash-es/get';
 import { uniq } from 'lodash-es';
 import { parseXml } from './xml';
+import { ext } from 'base/variables';
 
 export const MAGENTO_ROOT_KEY = 'magentoToolbox/magentoRoot';
 
-export async function resolveMagentoRoot(context: ExtensionContext | null = null) {
+export async function resolveMagentoRoot() {
   if (!workspace.workspaceFolders) return null;
 
-  if (context) {
-    const root = context.workspaceState.get(MAGENTO_ROOT_KEY);
-    if (root) return Uri.parse(root as string);
-  }
+  const root = ext.context.workspaceState.get(MAGENTO_ROOT_KEY);
+  if (root) return Uri.parse(root as string);
 
   const folders = workspace.workspaceFolders;
 
@@ -28,9 +27,7 @@ export async function resolveMagentoRoot(context: ExtensionContext | null = null
       const status = await Promise.all(testPaths.map((test) => workspace.fs.stat(test)));
 
       if (status.every((exists) => exists)) {
-        if (context) {
-          context.workspaceState.update(MAGENTO_ROOT_KEY, uri.toString());
-        }
+        ext.context.workspaceState.update(MAGENTO_ROOT_KEY, uri.toString());
 
         return uri;
       }
@@ -63,24 +60,24 @@ export async function resolveLoadedModules(uri: Uri) {
 }
 
 export async function resolveUriModule(uri: Uri) {
-  const baseModulePath = uri.fsPath.match(/(.+app\/code\/[^\/]+\/[^\/]+)/)
+  const baseModulePath = uri.fsPath.match(/(.+app\/code\/[^\/]+\/[^\/]+)/);
 
   if (!baseModulePath) return null;
 
-  const moduleXmlUri = Uri.file(baseModulePath[1] + '/etc/module.xml')
+  const moduleXmlUri = Uri.file(baseModulePath[1] + '/etc/module.xml');
 
-  const moduleXml = await workspace.fs.readFile(moduleXmlUri)
-  const xml = await parseXml(moduleXml.toString())
+  const moduleXml = await workspace.fs.readFile(moduleXmlUri);
+  const xml = await parseXml(moduleXml.toString());
   const module = get(xml, 'config.module[0].$.name');
 
-  return module
+  return module;
 }
 
 export function getScopedPath(basePath: string, scope: string, filename: string) {
-  return scope === 'all' ? `${basePath}/${filename}`: `${basePath}/${scope}/${filename}`;
+  return scope === 'all' ? `${basePath}/${filename}` : `${basePath}/${scope}/${filename}`;
 }
 
-export function getModuleUri(appCodeUri: Uri, module: string){
+export function getModuleUri(appCodeUri: Uri, module: string) {
   const [v, m] = module.split('_');
   return Uri.joinPath(appCodeUri, `${v}/${m}`);
 }

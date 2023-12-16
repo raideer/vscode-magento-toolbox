@@ -3,23 +3,21 @@ import { resolveLoadedModules, resolveMagentoRoot, resolveUriModule } from 'util
 import { capitalize, snakeCase } from 'lodash-es';
 import { blockWizard } from './block-wizard';
 import { generateBlockClass } from './parts/block-class';
-import {
-  generateBlockLayoutHandle,
-} from './parts/block-layout-handle';
+import { generateBlockLayoutHandle } from './parts/block-layout-handle';
 import { openFile, refreshFileExplorer, writeFile } from 'utils/vscode';
 import { generateBlockLayoutTemplate } from './parts/block-layout-template';
 
 /**
  * Generates a block
- * 
+ *
  * File list:
  * - app/code/Vendor/Module/Block/BlockName.php
  * - (optional) app/code/Vendor/Module/view/frontend/layout/layout_handle_name.xml
  * - (optional) app/code/Vendor/Module/view/frontend/templates/block_name.phtml
- * 
+ *
  */
-export default async function (context: vscode.ExtensionContext) {
-  const magentoRoot = await resolveMagentoRoot(context);
+export default async function () {
+  const magentoRoot = await resolveMagentoRoot();
 
   if (!magentoRoot) {
     vscode.window.showWarningMessage(`Could not find Magento root directory.`);
@@ -36,7 +34,7 @@ export default async function (context: vscode.ExtensionContext) {
   const modules = await resolveLoadedModules(appCodeUri);
 
   // Open block wizard
-  const data = await blockWizard(context, modules, defaultModule);
+  const data = await blockWizard(modules, defaultModule);
 
   const [vendor, module] = data.module.split('_');
   const moduleDirectory = vscode.Uri.joinPath(appCodeUri, `${vendor}/${module}`);

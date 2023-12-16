@@ -9,11 +9,8 @@ export interface PreferenceWizardData {
   scope: string;
 }
 
-export const preferenceWizard = async (
-  context: ExtensionContext,
-  modules: string[]
-): Promise<PreferenceWizardData> => {
-  const data: PreferenceWizardData = await openWizard(context, {
+export const preferenceWizard = async (modules: string[]): Promise<PreferenceWizardData> => {
+  const data: PreferenceWizardData = await openWizard({
     title: 'Create a new preference',
     fields: [
       {
