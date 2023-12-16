@@ -10,6 +10,7 @@ import handleChangeActiveTextEditor from 'base/events/handleChangeActiveTextEdit
 import { resolveMagentoRoot } from 'utils/magento';
 import generateViewModel from 'commands/generate-viewmodel';
 import { ext } from 'base/variables';
+import handleChangeTextEditorSelection from 'base/events/handleChangeTextEditorSelection';
 
 const loadCommands = () => {
   const commands = [
@@ -37,6 +38,10 @@ const loadCommands = () => {
 const loadEvents = () => {
   ext.context.subscriptions.push(
     vscode.window.onDidChangeActiveTextEditor(handleChangeActiveTextEditor)
+  );
+
+  ext.context.subscriptions.push(
+    vscode.window.onDidChangeTextEditorSelection(handleChangeTextEditorSelection)
   );
 
   handleChangeActiveTextEditor(vscode.window.activeTextEditor);

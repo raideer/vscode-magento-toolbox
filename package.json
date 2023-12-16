@@ -76,10 +76,6 @@
         {
           "command": "magento-toolbox.generatePreference",
           "when": "false"
-        },
-        {
-          "command": "magento-toolbox.insertSearchCriteria",
-          "when": "false"
         }
       ],
       "editor/context": [
@@ -114,8 +110,8 @@
           "when": "magento-toolbox.canGeneratePlugin"
         },
         {
-          "command": "magento-toolbox.insertSearchCriteria",
-          "when": "magento-toolbox.canInsertSearchCriteria"
+          "command": "magento-toolbox.generateObserver",
+          "when": "magento-toolbox.canGenerateObserver"
         }
       ]
     }

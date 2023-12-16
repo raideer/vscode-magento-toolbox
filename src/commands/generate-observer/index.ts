@@ -3,8 +3,9 @@ import { resolveLoadedModules, resolveMagentoRoot } from 'utils/magento';
 import { observerWizard } from './observer-wizard';
 import { generateObserverEvents } from './parts/observer-events';
 import { generateObserverClass } from './parts/observer-class';
+import { isString } from 'lodash-es';
 
-export default async function () {
+export default async function (...args: any[]) {
   const magentoRoot = await resolveMagentoRoot();
 
   if (!magentoRoot) {
@@ -15,8 +16,10 @@ export default async function () {
   const appCodeUri = vscode.Uri.joinPath(magentoRoot, 'app/code');
   const modules = await resolveLoadedModules(appCodeUri);
 
+  const eventName = args.length > 0 && isString(args[0]) ? args[0] : undefined;
+
   // Open observer wizard
-  const data = await observerWizard(modules);
+  const data = await observerWizard(modules, eventName);
 
   const [vendor, module] = data.module.split('_');
   const moduleDirectory = vscode.Uri.joinPath(appCodeUri, `${vendor}/${module}`);

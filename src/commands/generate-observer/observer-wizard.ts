@@ -9,7 +9,7 @@ export interface ObserverWizardData {
   scope: string;
 }
 
-export const observerWizard = async (modules: string[]) => {
+export const observerWizard = async (modules: string[], eventName?: string) => {
   const data: ObserverWizardData = await openWizard({
     title: 'Generate a new observer',
     fields: [
@@ -24,6 +24,7 @@ export const observerWizard = async (modules: string[]) => {
         id: 'eventName',
         label: 'Event*',
         placeholder: 'event_name',
+        initialValue: eventName,
         type: WizardInput.Text,
         description: ['The event name to observe'],
       },
