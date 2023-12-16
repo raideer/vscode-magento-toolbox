@@ -4,9 +4,9 @@ import { TextEditor, commands } from 'vscode';
 
 const parserEngine = new Engine({});
 
-export default (editor: TextEditor | undefined) => {
+export default async (editor: TextEditor | undefined) => {
   if (!editor || editor.document.languageId !== 'php') {
-    commands.executeCommand('setContext', 'magento-toolbox.canGeneratePlugin', false);
+    await commands.executeCommand('setContext', 'magento-toolbox.canGeneratePlugin', false);
     return;
   }
 
@@ -21,5 +21,9 @@ export default (editor: TextEditor | undefined) => {
         'Magento\\Framework\\ObjectManager\\NoninterceptableInterface'
       ));
 
-  commands.executeCommand('setContext', 'magento-toolbox.canGeneratePlugin', canGeneratePlugin);
+  await commands.executeCommand(
+    'setContext',
+    'magento-toolbox.canGeneratePlugin',
+    canGeneratePlugin
+  );
 };

@@ -23,6 +23,10 @@
       {
         "id": "magento-toolbox.submenu",
         "label": "Magento Toolbox"
+      },
+      {
+        "id": "magento-toolbox.explorer-submenu",
+        "label": "Magento Toolbox"
       }
     ],
     "commands": [
@@ -82,6 +86,22 @@
         {
           "submenu": "magento-toolbox.submenu",
           "group": "magento-toolbox"
+        }
+      ],
+      "explorer/context": [
+        {
+          "submenu": "magento-toolbox.explorer-submenu",
+          "group": "magento-toolbox"
+        }
+      ],
+      "magento-toolbox.explorer-submenu": [
+        {
+          "command": "magento-toolbox.generateModule",
+          "when": "resourceDirname =~ /app/"
+        },
+        {
+          "command": "magento-toolbox.generateObserver",
+          "when": "resourceDirname =~ /app\\\\code\\\\/"
         }
       ],
       "magento-toolbox.submenu": [
