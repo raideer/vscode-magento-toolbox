@@ -11,6 +11,7 @@ import generateViewModel from 'commands/generate-viewmodel';
 import { ext } from 'base/variables';
 import handleChangeTextEditorSelection from 'base/events/handleChangeTextEditorSelection';
 import { indexWorkspace } from 'base/indexer';
+import generateXmlCatalog from 'commands/generate-xml-catalog';
 
 const loadCommands = () => {
   const commands = [
@@ -19,6 +20,7 @@ const loadCommands = () => {
     ['magento-toolbox.generateBlock', generateBlock],
     ['magento-toolbox.generateController', generateController],
     ['magento-toolbox.generateViewModel', generateViewModel],
+    ['magento-toolbox.generateXmlCatalog', generateXmlCatalog],
   ].map(([commandName, command]) => {
     return vscode.commands.registerCommand(commandName as string, command as any);
   });
@@ -52,20 +54,27 @@ export async function activate(context: vscode.ExtensionContext) {
 
   console.log('[Magento Toolbox] Starting...');
 
-  try {
-    await vscode.window.withProgress(
-      {
-        location: vscode.ProgressLocation.Window,
-        title: 'Magento Toolbox',
-        cancellable: false,
-      },
-      async (progress) => {
-        ext.index = await indexWorkspace(progress);
-      }
-    );
-  } catch (e) {
-    console.error('[Magento Toolbox] Error indexing workspace', e);
-    return;
+  ext.workspaceIndex = new Map();
+
+  if (vscode.workspace.workspaceFolders) {
+    try {
+      await vscode.window.withProgress(
+        {
+          location: vscode.ProgressLocation.Window,
+          title: 'Magento Toolbox',
+          cancellable: false,
+        },
+        async (progress) => {
+          for (const workspaceFolder of vscode.workspace.workspaceFolders!) {
+            const index = await indexWorkspace(workspaceFolder, progress);
+            ext.workspaceIndex.set(workspaceFolder, index);
+          }
+        }
+      );
+    } catch (e) {
+      console.error('[Magento Toolbox] Error indexing workspace', e);
+      return;
+    }
   }
 
   loadCommands();

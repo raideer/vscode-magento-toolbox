@@ -6,7 +6,7 @@ import { generateBlockClass } from './parts/block-class';
 import { generateBlockLayoutHandle } from './parts/block-layout-handle';
 import { openFile, refreshFileExplorer, writeFile } from 'utils/vscode';
 import { generateBlockLayoutTemplate } from './parts/block-layout-template';
-import { ext } from 'base/variables';
+import { getWorkspaceIndex } from 'utils/extension';
 
 /**
  * Generates a block
@@ -24,8 +24,10 @@ export default async function () {
     defaultModule = await resolveUriModule(vscode.window.activeTextEditor.document.uri);
   }
 
-  const appCodeUri = ext.index.modules.data.appCode;
-  const modules = ext.index.modules.getModuleList();
+  const workspaceIndex = getWorkspaceIndex();
+
+  const appCodeUri = workspaceIndex.modules.data.appCode;
+  const modules = workspaceIndex.modules.getModuleList();
 
   // Open block wizard
   const data = await blockWizard(modules, defaultModule);

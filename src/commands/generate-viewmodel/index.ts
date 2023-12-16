@@ -3,7 +3,7 @@ import { resolveUriModule } from 'utils/magento';
 import { openFile, refreshFileExplorer, writeFile } from 'utils/vscode';
 import { viewModelWizard } from './viewmodel-wizard';
 import { generateViewModelClass } from './parts/view-model-class';
-import { ext } from 'base/variables';
+import { getWorkspaceIndex } from 'utils/extension';
 
 /**
  * Generates a ViewModel class.
@@ -19,8 +19,9 @@ export default async function () {
     defaultModule = await resolveUriModule(vscode.window.activeTextEditor.document.uri);
   }
 
-  const appCodeUri = ext.index.modules.data.appCode;
-  const modules = ext.index.modules.getModuleList();
+  const workspaceIndex = getWorkspaceIndex();
+  const appCodeUri = workspaceIndex.modules.data.appCode;
+  const modules = workspaceIndex.modules.getModuleList();
 
   // Open ViewModel wizard
   const data = await viewModelWizard(modules, defaultModule);

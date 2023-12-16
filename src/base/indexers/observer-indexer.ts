@@ -1,8 +1,9 @@
-import { Indexer, IndexerData, MagentoIndex } from 'base/indexer';
+import { Indexer, IndexerData, WorkspaceIndex } from 'base/indexer';
 import { MagentoModule } from './module-indexer';
 import { loadXml, parseXml } from 'utils/xml';
 import { get } from 'lodash-es';
 import { removeExtraSlashes } from 'utils/path';
+import { WorkspaceFolder } from 'vscode';
 
 export interface Observer {
   event: string;
@@ -33,7 +34,7 @@ export class ObserverIndexer implements Indexer<ObserverIndex> {
     observers: new Map(),
   };
 
-  public async index(data: Partial<MagentoIndex>) {
+  public async index(workspaceFolder: WorkspaceFolder, data: Partial<WorkspaceIndex>) {
     const { modules } = data;
 
     if (modules) {

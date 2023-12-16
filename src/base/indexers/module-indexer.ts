@@ -1,7 +1,7 @@
 import { Indexer, IndexerData } from 'base/indexer';
 import { get, uniqBy } from 'lodash-es';
 import { parseXml } from 'utils/xml';
-import { RelativePattern, Uri, workspace } from 'vscode';
+import { RelativePattern, Uri, WorkspaceFolder, workspace } from 'vscode';
 
 export interface MagentoModule {
   name: string;
@@ -37,8 +37,8 @@ export class ModuleIndexer implements Indexer<ModuleIndex> {
     modules: new Map(),
   };
 
-  public async index() {
-    const magentoRoot = await this.resolveMagentoRoot();
+  public async index(workspaceFolder: WorkspaceFolder) {
+    const magentoRoot = await this.resolveMagentoRoot(workspaceFolder);
 
     if (!magentoRoot) {
       throw new Error('Could not find Magento root directory.');
@@ -82,29 +82,23 @@ export class ModuleIndexer implements Indexer<ModuleIndex> {
     });
   }
 
-  private async resolveMagentoRoot() {
-    if (!workspace.workspaceFolders) return null;
+  private async resolveMagentoRoot(workspaceFolder: WorkspaceFolder) {
+    const { uri } = workspaceFolder;
 
-    const folders = workspace.workspaceFolders;
+    const testPaths = [
+      Uri.joinPath(uri, 'app/etc'),
+      Uri.joinPath(uri, 'bin'),
+      Uri.joinPath(uri, 'var'),
+    ];
 
-    for (const folder of folders) {
-      const { uri } = folder;
+    try {
+      const status = await Promise.all(testPaths.map((test) => workspace.fs.stat(test)));
 
-      const testPaths = [
-        Uri.joinPath(uri, 'app/etc'),
-        Uri.joinPath(uri, 'bin'),
-        Uri.joinPath(uri, 'var'),
-      ];
-
-      try {
-        const status = await Promise.all(testPaths.map((test) => workspace.fs.stat(test)));
-
-        if (status.every((exists) => exists)) {
-          return uri;
-        }
-      } catch (e) {
-        // Do nothing
+      if (status.every((exists) => exists)) {
+        return uri;
       }
+    } catch (e) {
+      // Do nothing
     }
 
     return null;

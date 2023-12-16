@@ -3,7 +3,7 @@ import { getModuleUri, getScopedPath } from 'utils/magento';
 import { resolvePreferenceClass } from './resolve-preference-class';
 import { preferenceWizard } from './preference-wizard';
 import { generatePreferenceDi } from './parts/preference-di';
-import { ext } from 'base/variables';
+import { getWorkspaceIndex } from 'utils/extension';
 
 export default async function () {
   const phpClass = resolvePreferenceClass();
@@ -13,8 +13,9 @@ export default async function () {
     return;
   }
 
-  const appCodeUri = ext.index.modules.data.appCode;
-  const modules = ext.index.modules.getModuleList();
+  const workspaceIndex = getWorkspaceIndex();
+  const appCodeUri = workspaceIndex.modules.data.appCode;
+  const modules = workspaceIndex.modules.getModuleList();
 
   // Open plugin wizard
   const data = await preferenceWizard(modules);

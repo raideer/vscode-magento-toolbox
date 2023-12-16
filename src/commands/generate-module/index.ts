@@ -6,11 +6,12 @@ import { openFile, refreshFileExplorer, writeFile } from 'utils/vscode';
 import { generateModuleRegistration } from 'generators/template/registration';
 import { generateLicense } from 'generators/template/license';
 import { generateComposerJson } from 'generators/json/composer';
-import { ext } from 'base/variables';
+import { getWorkspaceIndex } from 'utils/extension';
 
 export default async function () {
-  const appCodeUri = ext.index.modules.data.appCode;
-  const loadedModules = ext.index.modules.getModuleList();
+  const workspaceIndex = getWorkspaceIndex();
+  const appCodeUri = workspaceIndex.modules.data.appCode;
+  const loadedModules = workspaceIndex.modules.getModuleList();
 
   const data = await moduleWizard(loadedModules);
 
