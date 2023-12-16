@@ -4,10 +4,12 @@ import { generateObserverEvents } from './parts/observer-events';
 import { generateObserverClass } from './parts/observer-class';
 import { isString } from 'lodash-es';
 import { ext } from 'base/variables';
+import { getWorkspaceIndex } from 'utils/extension';
 
 export default async function (...args: any[]) {
-  const appCodeUri = ext.index.modules.data.appCode;
-  const modules = ext.index.modules.getModuleList();
+  const workspaceIndex = getWorkspaceIndex();
+  const appCodeUri = workspaceIndex.modules.data.appCode;
+  const modules = workspaceIndex.modules.getModuleList();
 
   const eventName = args.length > 0 && isString(args[0]) ? args[0] : undefined;
 

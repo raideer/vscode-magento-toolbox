@@ -1,4 +1,4 @@
-import { ext } from 'base/variables';
+import { getWorkspaceIndex } from 'utils/extension';
 import { TextEditor, Range, window, MarkdownString, ThemeColor } from 'vscode';
 
 const decorationType = window.createTextEditorDecorationType({
@@ -23,7 +23,8 @@ export function decorateObserverClass(editor: TextEditor) {
   const className = classMatch[1];
 
   const classNamespace = `${namespace}\\${className}`;
-  const observer = ext.index.observers.getObserverByClass(classNamespace);
+  const workspaceIndex = getWorkspaceIndex();
+  const observer = workspaceIndex.observers.getObserverByClass(classNamespace);
 
   if (!observer) {
     return;

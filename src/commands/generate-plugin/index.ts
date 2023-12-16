@@ -5,6 +5,7 @@ import { generatePluginClass } from './parts/plugin-class';
 import { generatePluginDi } from './parts/plugin-di';
 import { openFile, writeFile } from 'utils/vscode';
 import { ext } from 'base/variables';
+import { getWorkspaceIndex } from 'utils/extension';
 
 export default async function () {
   const phpClass = resolvePluginClass();
@@ -20,8 +21,9 @@ export default async function () {
     return;
   }
 
-  const appCodeUri = ext.index.modules.data.appCode;
-  const modules = ext.index.modules.getModuleList();
+  const workspaceIndex = getWorkspaceIndex();
+  const appCodeUri = workspaceIndex.modules.data.appCode;
+  const modules = workspaceIndex.modules.getModuleList();
 
   // Open plugin wizard
   const data = await pluginWizard(modules, phpClass.name!, method.name!);

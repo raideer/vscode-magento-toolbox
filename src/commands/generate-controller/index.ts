@@ -9,6 +9,7 @@ import { openFile, refreshFileExplorer, writeFile } from 'utils/vscode';
 import { generateBlockLayoutHandle } from 'commands/generate-block/parts/block-layout-handle';
 import { generateBlockLayoutTemplate } from 'commands/generate-block/parts/block-layout-template';
 import { ext } from 'base/variables';
+import { getWorkspaceIndex } from 'utils/extension';
 
 /**
  * Generates a controller
@@ -22,10 +23,12 @@ import { ext } from 'base/variables';
  *
  */
 export default async function () {
-  const appCodeUri = ext.index.modules.data.appCode;
+  const workspaceIndex = getWorkspaceIndex();
+
+  const appCodeUri = workspaceIndex.modules.data.appCode;
 
   // Load all magento modules in app/code
-  const modules = ext.index.modules.getModuleList();
+  const modules = workspaceIndex.modules.getModuleList();
 
   let defaultModule: string | undefined;
 

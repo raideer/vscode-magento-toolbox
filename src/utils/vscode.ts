@@ -1,4 +1,5 @@
 import { OpenDialogOptions, Uri, commands, window, workspace } from 'vscode';
+import { ExecOptions, exec } from 'child_process';
 
 export async function openTextDialog(prompt: string, placeHolder?: string, value?: string) {
   const result = await window.showInputBox({
@@ -28,10 +29,7 @@ export async function openDirectoryDialog(title?: string) {
 }
 
 export async function writeFile(uri: Uri, content: string) {
-  return workspace.fs.writeFile(
-    uri,
-    Buffer.from(content, 'utf-8')
-  );
+  return workspace.fs.writeFile(uri, Buffer.from(content, 'utf-8'));
 }
 
 export async function openFile(uri: Uri) {
@@ -40,4 +38,40 @@ export async function openFile(uri: Uri) {
 
 export function refreshFileExplorer() {
   return commands.executeCommand('workbench.files.action.refreshFilesExplorer');
+}
+
+export function getActiveWorkspaceFolder() {
+  if (!workspace.workspaceFolders) {
+    throw new Error('Workspace is empty');
+  }
+
+  if (workspace.workspaceFolders.length === 1) {
+    return workspace.workspaceFolders[0];
+  }
+
+  if (!window.activeTextEditor?.document.uri) {
+    throw new Error('No active text editor');
+  }
+
+  return workspace.getWorkspaceFolder(window.activeTextEditor.document.uri);
+}
+
+export function fileExists(uri: Uri) {
+  return workspace.fs.stat(uri).then(
+    () => true,
+    () => false
+  );
+}
+
+export async function execCommand(command: string, options: ExecOptions = {}) {
+  return new Promise((resolve, reject) => {
+    exec(command, options, (err, stdout, stderr) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+
+      resolve(stdout);
+    });
+  });
 }

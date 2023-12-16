@@ -1,7 +1,7 @@
-import { MagentoIndex } from 'base/indexer';
-import { ExtensionContext } from 'vscode';
+import { WorkspaceIndex } from 'base/indexer';
+import { ExtensionContext, WorkspaceFolder } from 'vscode';
 
 export namespace ext {
   export let context: ExtensionContext;
-  export let index: MagentoIndex;
+  export let workspaceIndex: Map<WorkspaceFolder, WorkspaceIndex>;
 }
