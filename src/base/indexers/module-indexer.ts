@@ -1,7 +1,7 @@
+import { Indexer, IndexerData } from 'base/indexer';
 import { get, uniqBy } from 'lodash-es';
 import { parseXml } from 'utils/xml';
 import { RelativePattern, Uri, workspace } from 'vscode';
-import { Indexer, IndexerData } from '.';
 
 export interface MagentoModule {
   name: string;

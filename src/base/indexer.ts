@@ -1,5 +1,5 @@
 import { Progress } from 'vscode';
-import { ModuleIndex, ModuleIndexer, ModuleIndexerData } from './module-indexer';
+import { ModuleIndexer, ModuleIndexerData } from './indexers/module-indexer';
 
 export interface Indexer<D = Record<string, any>> {
   index(): Promise<IndexerData<D>>;
