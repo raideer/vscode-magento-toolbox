@@ -57,6 +57,10 @@
       {
         "command": "magento-toolbox.insertSearchCriteria",
         "title": "Magento Toolbox: Insert SearchCriteriaBuilder"
+      },
+      {
+        "command": "magento-toolbox.generateViewModel",
+        "title": "Magento Toolbox: Generate ViewModel"
       }
     ],
     "menus": {

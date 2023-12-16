@@ -8,6 +8,7 @@ import generateBlock from './commands/generate-block';
 import generateController from './commands/generate-controller';
 import handleChangeActiveTextEditor from 'base/events/handleChangeActiveTextEditor';
 import { resolveMagentoRoot } from 'utils/magento';
+import generateViewModel from 'commands/generate-viewmodel';
 
 const loadCommands = (context: vscode.ExtensionContext) => {
   const commands = [
@@ -15,6 +16,7 @@ const loadCommands = (context: vscode.ExtensionContext) => {
     ['magento-toolbox.generateObserver', generateObserver],
     ['magento-toolbox.generateBlock', generateBlock],
     ['magento-toolbox.generateController', generateController],
+    ['magento-toolbox.generateViewModel', generateViewModel],
   ].map(([commandName, command]) => {
     return vscode.commands.registerCommand(commandName as string, () => {
       return (command as any)(context);
