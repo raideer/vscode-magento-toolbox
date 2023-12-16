@@ -50,8 +50,19 @@ const loadEvents = () => {
 export async function activate(context: vscode.ExtensionContext) {
   ext.context = context;
 
+  console.log('[Magento Toolbox] Starting...');
+
   try {
-    ext.index = await indexWorkspace();
+    await vscode.window.withProgress(
+      {
+        location: vscode.ProgressLocation.Window,
+        title: 'Magento Toolbox',
+        cancellable: false,
+      },
+      async (progress) => {
+        ext.index = await indexWorkspace(progress);
+      }
+    );
   } catch (e) {
     console.error('[Magento Toolbox] Error indexing workspace', e);
     return;

@@ -1,7 +1,8 @@
+import { Progress } from 'vscode';
 import { ModuleIndex, ModuleIndexer, ModuleIndexerData } from './module-indexer';
 
 export interface Indexer<D = Record<string, any>> {
-  index(): Promise<D>;
+  index(): Promise<IndexerData<D>>;
 }
 
 export interface IndexerData<D = Record<string, any>> {
@@ -12,20 +13,25 @@ export interface MagentoIndex {
   modules: ModuleIndexerData;
 }
 
-export async function indexWorkspace(): Promise<MagentoIndex> {
+export async function indexWorkspace(
+  progress: Progress<{
+    message?: string;
+    increment?: number;
+  }>
+): Promise<MagentoIndex> {
   const indexers = [ModuleIndexer];
 
-  const data = await Promise.all(
-    indexers.map((indexer) => {
-      const instance = new indexer();
+  progress.report({ message: 'Indexing', increment: 0 });
+  const data = {};
 
-      return instance.index().then((data) => ({ name: instance.name, data }));
-    })
-  );
+  for (const indexer of indexers) {
+    const instance = new indexer();
 
-  return data.reduce((acc, item) => {
-    acc[item.name] = new ModuleIndexerData(item.data);
+    progress.report({ message: `Indexing ${instance.name}` });
+    data[instance.name] = await instance.index();
+  }
 
-    return acc;
-  }, {}) as MagentoIndex;
+  progress.report({ increment: 100 });
+
+  return data as MagentoIndex;
 }

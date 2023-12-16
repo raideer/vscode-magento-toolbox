@@ -47,9 +47,11 @@ export class ModuleIndexer implements Indexer<ModuleIndex> {
     this.data.appCode = Uri.joinPath(magentoRoot, 'app/code');
     this.data.magentoRoot = magentoRoot;
 
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+
     await this.indexModules(magentoRoot);
 
-    return this.data as ModuleIndex;
+    return new ModuleIndexerData(this.data as ModuleIndex);
   }
 
   private async indexModules(root: Uri) {
