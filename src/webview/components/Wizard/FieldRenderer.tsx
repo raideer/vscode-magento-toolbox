@@ -16,6 +16,7 @@ export const FieldRenderer: React.FC<Props> = ({ field, className }) => {
   const fieldInner = useMemo(() => {
     // eslint-disable-next-line default-case
     switch (field.type) {
+      case WizardInput.Readonly:
       case WizardInput.Number:
       case WizardInput.Text: {
         return (
@@ -23,6 +24,7 @@ export const FieldRenderer: React.FC<Props> = ({ field, className }) => {
             description={field.description}
             placeholder={field.placeholder}
             type={field.type === WizardInput.Number ? 'number' : 'text'}
+            readonly={field.type === WizardInput.Readonly}
             name={field.id}
           >
             {field.label}

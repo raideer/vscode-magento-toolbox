@@ -9,7 +9,12 @@ export interface IWizard {
   validationMessages?: ErrorMessages;
 }
 
-export type IWizardField = IWizardTextField | IWizardNumberField | IWizardSelectField | IWizardCheckboxField;
+export type IWizardField =
+  | IWizardTextField
+  | IWizardNumberField
+  | IWizardSelectField
+  | IWizardReadonlyField
+  | IWizardCheckboxField;
 
 export interface IWizardTextField extends IWizardGenericField {
   type: WizardInput.Text;
@@ -18,6 +23,11 @@ export interface IWizardTextField extends IWizardGenericField {
 
 export interface IWizardNumberField extends IWizardGenericField {
   type: WizardInput.Number;
+  placeholder?: string;
+}
+
+export interface IWizardReadonlyField extends IWizardGenericField {
+  type: WizardInput.Readonly;
   placeholder?: string;
 }
 
@@ -45,6 +55,7 @@ export enum WizardInput {
   Number = 'number',
   Select = 'select',
   Checkbox = 'checkbox',
+  Readonly = 'readonly',
 }
 
 export interface IWizardSelectOption {

@@ -32,7 +32,7 @@ export default async function () {
   const modules = await resolveLoadedModules(appCodeUri);
 
   // Open plugin wizard
-  const data = await pluginWizard(modules, phpClass.name!);
+  const data = await pluginWizard(modules, phpClass.name!, method.name!);
   const [vendor, module] = data.module.split('_');
 
   // Module directory to generate plugin in

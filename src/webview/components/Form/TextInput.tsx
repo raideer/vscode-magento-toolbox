@@ -6,9 +6,10 @@ interface Props {
   type?: 'text' | 'number';
   description?: string[];
   placeholder?: string;
+  readonly?: boolean;
 }
 
-export const TextInput: React.FC<Props> = ({ description, children, ...props }) => {
+export const TextInput: React.FC<Props> = ({ description, children, readonly, ...props }) => {
   const [field, meta] = useField(props);
 
   return (
@@ -18,7 +19,10 @@ export const TextInput: React.FC<Props> = ({ description, children, ...props }) 
         className={clsx('p-1 bg-vscode-input-background border', {
           'border-vscode-input-background': !meta.touched || !meta.error,
           'border-vscode-inputValidation-errorBorder': meta.touched && meta.error,
+          'opacity-50 cursor-not-allowed': readonly,
         })}
+        readOnly={readonly}
+        disabled={readonly}
         {...field}
         {...props}
       />

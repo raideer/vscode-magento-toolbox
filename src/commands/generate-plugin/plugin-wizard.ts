@@ -12,7 +12,8 @@ export interface PluginWizardData {
 
 export const pluginWizard = async (
   modules: string[],
-  className: string
+  className: string,
+  methodName: string
 ): Promise<PluginWizardData> => {
   const data: PluginWizardData = await openWizard({
     title: 'Generate a new plugin',
@@ -29,6 +30,12 @@ export const pluginWizard = async (
         label: 'Plugin name*',
         type: WizardInput.Text,
         initialValue: `${upperFirst(camelCase(className))}Plugin`,
+      },
+      {
+        id: 'method',
+        label: 'Method name*',
+        type: WizardInput.Readonly,
+        initialValue: methodName,
       },
       {
         id: 'type',
