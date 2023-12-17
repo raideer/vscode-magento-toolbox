@@ -1,7 +1,23 @@
 /* eslint-disable no-param-reassign */
 import { isString, last } from 'lodash-es';
-import { Class, Identifier, Method, Namespace, Program, UseGroup, UseItem } from 'php-parser';
+import {
+  Class,
+  Engine,
+  Identifier,
+  Method,
+  Namespace,
+  Program,
+  UseGroup,
+  UseItem,
+} from 'php-parser';
 import { IPhpClass, IPhpMethod, IPhpMethodArgument } from 'types/reflection';
+
+const parser = new Engine({
+  ast: {
+    withPositions: true,
+    extractDoc: true,
+  },
+});
 
 const getUseItemName = (item: UseItem) => {
   if (item.alias) {
@@ -10,7 +26,7 @@ const getUseItemName = (item: UseItem) => {
 
   const parts = item.name.split('\\');
   return last(parts)!;
-}
+};
 
 const consumeUseGroup = (node: UseGroup, phpClass: IPhpClass) => {
   if (!phpClass.use) {
@@ -105,4 +121,8 @@ export const astToPhpClass = (ast: Program) => {
 
   consumeFile(ast, phpClass);
   return phpClass;
+};
+
+export const parsePhpClass = (code: string, filename = 'file.php') => {
+  return parser.parseCode(code, filename);
 };

@@ -1,5 +1,4 @@
-import { Engine } from 'php-parser';
-import { astToPhpClass } from 'utils/ast';
+import { astToPhpClass, parsePhpClass } from 'utils/ast';
 import { TextEditor, commands } from 'vscode';
 
 interface EditorContext {
@@ -12,7 +11,6 @@ const defaultEditorContext: EditorContext = Object.freeze({
 });
 
 const currentContext = { ...defaultEditorContext };
-const parserEngine = new Engine({});
 
 export async function updateContext(type: 'editor' | 'selection', editor?: TextEditor) {
   if (!editor) {
@@ -38,7 +36,7 @@ const setContext = async (editorContext: EditorContext) => {
 
 const getCanGeneratePlugin = (editor: TextEditor) => {
   const fullText = editor.document.getText();
-  const ast = parserEngine.parseCode(fullText, 'file.php');
+  const ast = parsePhpClass(fullText, editor.document.fileName);
   const phpClass = astToPhpClass(ast);
 
   const canGeneratePlugin =

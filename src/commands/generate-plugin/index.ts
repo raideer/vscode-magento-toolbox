@@ -4,7 +4,6 @@ import { pluginWizard } from './plugin-wizard';
 import { generatePluginClass } from './parts/plugin-class';
 import { generatePluginDi } from './parts/plugin-di';
 import { openFile, writeFile } from 'utils/vscode';
-import { ext } from 'base/variables';
 import { getWorkspaceIndex } from 'utils/extension';
 
 export default async function () {

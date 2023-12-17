@@ -1,6 +1,5 @@
-import { Engine } from 'php-parser';
 import { IPhpClass } from 'types/reflection';
-import { astToPhpClass } from 'utils/ast';
+import { astToPhpClass, parsePhpClass } from 'utils/ast';
 import * as vscode from 'vscode';
 
 export const resolvePreferenceClass = (): IPhpClass | null => {
@@ -19,9 +18,7 @@ export const resolvePreferenceClass = (): IPhpClass | null => {
 
   const fullText = editor.document.getText();
 
-  const parser = new Engine({});
-  const ast = parser.parseCode(fullText, 'file.php');
-
+  const ast = parsePhpClass(fullText, editor.document.fileName);
   const phpClass = astToPhpClass(ast);
 
   if (phpClass.isFinal) {
