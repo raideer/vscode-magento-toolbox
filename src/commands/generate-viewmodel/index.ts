@@ -21,7 +21,7 @@ export default async function () {
 
   const workspaceIndex = getWorkspaceIndex();
   const appCodeUri = workspaceIndex.modules.data.appCode;
-  const modules = workspaceIndex.modules.getModuleList();
+  const modules = workspaceIndex.modules.getModuleList('app/code');
 
   // Open ViewModel wizard
   const data = await viewModelWizard(modules, defaultModule);

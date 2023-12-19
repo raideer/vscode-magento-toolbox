@@ -27,7 +27,7 @@ export default async function () {
   const workspaceIndex = getWorkspaceIndex();
 
   const appCodeUri = workspaceIndex.modules.data.appCode;
-  const modules = workspaceIndex.modules.getModuleList();
+  const modules = workspaceIndex.modules.getModuleList('app/code');
 
   // Open block wizard
   const data = await blockWizard(modules, defaultModule);

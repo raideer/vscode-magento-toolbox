@@ -28,7 +28,7 @@ export default async function () {
   const appCodeUri = workspaceIndex.modules.data.appCode;
 
   // Load all magento modules in app/code
-  const modules = workspaceIndex.modules.getModuleList();
+  const modules = workspaceIndex.modules.getModuleList('app/code');
 
   let defaultModule: string | undefined;
 

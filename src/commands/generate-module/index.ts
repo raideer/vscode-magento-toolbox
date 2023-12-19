@@ -11,7 +11,7 @@ import { getWorkspaceIndex } from 'utils/extension';
 export default async function () {
   const workspaceIndex = getWorkspaceIndex();
   const appCodeUri = workspaceIndex.modules.data.appCode;
-  const loadedModules = workspaceIndex.modules.getModuleList();
+  const loadedModules = workspaceIndex.modules.getModuleList('app/code');
 
   const data = await moduleWizard(loadedModules);
 

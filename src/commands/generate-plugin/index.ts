@@ -39,7 +39,7 @@ export default async function () {
 
   const workspaceIndex = getWorkspaceIndex();
   const appCodeUri = workspaceIndex.modules.data.appCode;
-  const modules = workspaceIndex.modules.getModuleList();
+  const modules = workspaceIndex.modules.getModuleList('app/code');
 
   // Open plugin wizard
   const data = await pluginWizard(modules, phpClass.name, method.name);

@@ -25,8 +25,14 @@ export class ModuleIndexerData implements IndexerData<ModuleIndex> {
     return this.data.modules.get(name);
   }
 
-  public getModuleList() {
-    return Array.from(this.data.modules.keys());
+  public getModuleList(location?: MagentoModule['location']) {
+    const modules = Array.from(this.data.modules.keys());
+
+    if (!location) {
+      return modules;
+    }
+
+    return modules.filter((name) => this.data.modules.get(name)?.location === location);
   }
 }
 
@@ -54,7 +60,8 @@ export class ModuleIndexer implements Indexer<ModuleIndex> {
 
   private async indexModules(root: Uri) {
     const pattern = new RelativePattern(root, '**/etc/module.xml');
-    const files = await workspace.findFiles(pattern);
+    const ignorePattern = 'dev/**';
+    const files = await workspace.findFiles(pattern, ignorePattern);
 
     const modules: MagentoModule[] = await Promise.all(
       files.map(async (file) => {
