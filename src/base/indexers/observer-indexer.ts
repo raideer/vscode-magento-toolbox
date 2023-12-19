@@ -1,7 +1,7 @@
 import { Indexer, IndexerData, WorkspaceIndex } from 'base/indexer';
 import { MagentoModule } from './module-indexer';
 import { loadXml, parseXml } from 'utils/xml';
-import { get } from 'lodash-es';
+import { get, trimStart } from 'lodash-es';
 import { removeExtraSlashes } from 'utils/path';
 import { WorkspaceFolder } from 'vscode';
 
@@ -20,7 +20,7 @@ export class ObserverIndexerData implements IndexerData<ObserverIndex> {
 
   public getObserverByClass(name: string) {
     for (const observer of this.data.observers) {
-      if (removeExtraSlashes(observer.class) === name) {
+      if (trimStart(removeExtraSlashes(observer.class), '\\') === name) {
         return observer;
       }
     }
