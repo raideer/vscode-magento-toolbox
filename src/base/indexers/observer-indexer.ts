@@ -12,18 +12,22 @@ export interface Observer {
 }
 
 export interface ObserverIndex {
-  observers: Map<string, Observer>;
+  observers: Observer[];
 }
 
 export class ObserverIndexerData implements IndexerData<ObserverIndex> {
   constructor(public data: ObserverIndex) {}
 
   public getObserverByClass(name: string) {
-    for (const observer of this.data.observers.values()) {
+    for (const observer of this.data.observers) {
       if (removeExtraSlashes(observer.class) === name) {
         return observer;
       }
     }
+  }
+
+  public getObserversByEvent(name: string) {
+    return this.data.observers.filter((observer) => observer.event === name);
   }
 }
 
@@ -31,7 +35,7 @@ export class ObserverIndexer implements Indexer<ObserverIndex> {
   public name = 'observers';
 
   protected data: ObserverIndex = {
-    observers: new Map(),
+    observers: [],
   };
 
   public async index(workspaceFolder: WorkspaceFolder, data: Partial<WorkspaceIndex>) {
@@ -69,8 +73,8 @@ export class ObserverIndexer implements Indexer<ObserverIndex> {
         const observerClass = get(observer, '$.instance');
 
         if (observerName && observerClass) {
-          this.data.observers.set(observerName, {
-            event: observerName,
+          this.data.observers.push({
+            event: event.$.name,
             class: observerClass,
             module: module.name,
           });

@@ -1,10 +1,24 @@
-import { DecorationOptions, TextEditor, Range, Position, window, MarkdownString } from 'vscode';
+import { ext } from 'base/variables';
+import { getWorkspaceIndex } from 'utils/extension';
+import {
+  DecorationOptions,
+  TextEditor,
+  Range,
+  Position,
+  window,
+  MarkdownString,
+  ThemeColor,
+} from 'vscode';
 
-const decorationType = window.createTextEditorDecorationType({});
+const decorationType = window.createTextEditorDecorationType({
+  borderWidth: '1px',
+  borderStyle: 'solid',
+  borderColor: new ThemeColor('editor.selectionBackground'),
+});
 
 export function decorateObserverKeys(editor: TextEditor) {
   const sourceCode = editor.document.getText();
-  const regex = /->dispatch\(['"](\w+)['"]/;
+  const regex = /->dispatch\([\n\s]*['"](\w+)['"](?!\s*\.)/;
   const offset = 12;
 
   const decorationsArray: DecorationOptions[] = [];
@@ -20,11 +34,23 @@ export function decorateObserverKeys(editor: TextEditor) {
         new Position(line, match.index + offset + match[1].length)
       );
 
+      const workspaceIndex = getWorkspaceIndex();
+      const observers = workspaceIndex.observers.getObserversByEvent(match[1]);
+
       const args = [match[1]];
 
       const message = new MarkdownString(`**Magento Toolbox:**\n\n`);
+
+      if (observers.length > 0) {
+        message.appendMarkdown(`Observers listening to this event:\n\n`);
+      }
+
+      observers.forEach((observer) => {
+        message.appendMarkdown(`- \`${observer.class}\`\n\n`);
+      });
+
       message.appendMarkdown(
-        `- [Create Observer](command:magento-toolbox.generateObserver?${encodeURIComponent(
+        `[Create Observer](command:magento-toolbox.generateObserver?${encodeURIComponent(
           JSON.stringify(args)
         )})`
       );
