@@ -12,7 +12,8 @@
     "esModuleInterop": true,
     "noImplicitReturns": false,
     "noImplicitAny": false,
-    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "moduleResolution": "node"
   },
   "exclude": ["node_modules", ".vscode-test"]
 }

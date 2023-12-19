@@ -3,7 +3,6 @@ import { observerWizard } from './observer-wizard';
 import { generateObserverEvents } from './parts/observer-events';
 import { generateObserverClass } from './parts/observer-class';
 import { isString } from 'lodash-es';
-import { ext } from 'base/variables';
 import { getWorkspaceIndex } from 'utils/extension';
 
 export default async function (...args: any[]) {

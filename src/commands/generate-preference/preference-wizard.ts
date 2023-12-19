@@ -1,7 +1,6 @@
 import { first } from 'lodash-es';
 import { WizardInput } from 'types/wizard';
 import { openWizard } from 'base/wizard';
-import { ExtensionContext } from 'vscode';
 
 export interface PreferenceWizardData {
   module: string;

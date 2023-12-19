@@ -1,5 +1,6 @@
-import { astToPhpClass, parsePhpClass } from 'utils/ast';
 import { TextEditor, commands } from 'vscode';
+import { parsePhpClass } from './reflection/ast';
+import { PhpFile } from './reflection/php-file';
 
 interface EditorContext {
   canGeneratePlugin: boolean;
@@ -35,16 +36,13 @@ const setContext = async (editorContext: EditorContext) => {
 };
 
 const getCanGeneratePlugin = (editor: TextEditor) => {
-  const fullText = editor.document.getText();
-  const ast = parsePhpClass(fullText, editor.document.fileName);
-  const phpClass = astToPhpClass(ast);
+  const phpFile = PhpFile.fromTextEditor(editor);
+  const phpClass = phpFile.classes[0];
 
   const canGeneratePlugin =
-    !phpClass.isFinal &&
-    (!phpClass.implements ||
-      !phpClass.implements.includes(
-        'Magento\\Framework\\ObjectManager\\NoninterceptableInterface'
-      ));
+    !phpClass.ast.isFinal &&
+    (!phpClass.ast.implements ||
+      !phpClass.ast.implements.find((item) => item.name === 'NoninterceptableInterface'));
 
   return canGeneratePlugin;
 };

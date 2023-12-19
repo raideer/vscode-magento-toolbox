@@ -1,34 +1,27 @@
-import { IPhpClass, IPhpMethod } from 'types/reflection';
-import { astToPhpClass, parsePhpClass } from 'utils/ast';
+import { getIdentifierName } from 'base/reflection/ast';
+import { PhpClass } from 'base/reflection/php-class';
+import { PhpFile } from 'base/reflection/php-file';
+import { PhpMethod } from 'base/reflection/php-method';
+import { first } from 'lodash-es';
 import * as vscode from 'vscode';
 
-export const resolvePluginClass = (): IPhpClass | null => {
-  const editor = vscode.window.activeTextEditor;
+export const resolvePluginClass = (editor: vscode.TextEditor): PhpClass | null => {
+  const phpFile = PhpFile.fromTextEditor(editor);
+  const phpClass = first(phpFile.classes)!;
 
-  if (!editor) {
-    vscode.window.showErrorMessage('No active editor');
+  if (!phpClass) {
+    vscode.window.showErrorMessage('No class found');
     return null;
   }
 
-  const selection = editor?.selection;
-  if (!editor || !selection) {
-    vscode.window.showErrorMessage('No selection');
-    return null;
-  }
-
-  const fullText = editor.document.getText();
-  const ast = parsePhpClass(fullText, editor.document.fileName);
-
-  const phpClass = astToPhpClass(ast);
-
-  if (phpClass.isFinal) {
+  if (phpClass.ast.isFinal) {
     vscode.window.showErrorMessage('Cannot generate plugin for final class');
     return null;
   }
 
   if (
-    phpClass.implements &&
-    phpClass.implements.includes('Magento\\Framework\\ObjectManager\\NoninterceptableInterface')
+    phpClass.ast.implements &&
+    phpClass.ast.implements.find((item) => item.name === 'NoninterceptableInterface')
   ) {
     vscode.window.showErrorMessage(
       'Cannot generate plugin for a class that implements NoninterceptableInterface'
@@ -39,7 +32,7 @@ export const resolvePluginClass = (): IPhpClass | null => {
   return phpClass;
 };
 
-export const resolvePluginMethod = (phpClass: IPhpClass): IPhpMethod | null => {
+export const resolvePluginMethod = (phpClass: PhpClass): PhpMethod | null => {
   const editor = vscode.window.activeTextEditor;
 
   if (!editor) {
@@ -56,14 +49,16 @@ export const resolvePluginMethod = (phpClass: IPhpClass): IPhpMethod | null => {
   const wordRange = editor.document.getWordRangeAtPosition(selection.active);
   const word = editor.document.getText(wordRange);
 
-  const method = (phpClass.methods || []).find((m) => m.name === word);
+  const method = phpClass.methods.find((m) => {
+    return m.name === word;
+  });
 
   if (!method) {
     vscode.window.showErrorMessage(`Method ${word} not found in class ${phpClass.name}`);
     return null;
   }
 
-  if (method.visibility !== 'public') {
+  if (method.ast.visibility !== 'public') {
     vscode.window.showErrorMessage('Cannot generate plugin for a private method');
     return null;
   }

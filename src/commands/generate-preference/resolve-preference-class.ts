@@ -1,8 +1,9 @@
-import { IPhpClass } from 'types/reflection';
-import { astToPhpClass, parsePhpClass } from 'utils/ast';
+import { PhpClass } from 'base/reflection/php-class';
+import { PhpFile } from 'base/reflection/php-file';
+import { first } from 'lodash-es';
 import * as vscode from 'vscode';
 
-export const resolvePreferenceClass = (): IPhpClass | null => {
+export const resolvePreferenceClass = (): PhpClass | null => {
   const editor = vscode.window.activeTextEditor;
 
   if (!editor) {
@@ -16,19 +17,21 @@ export const resolvePreferenceClass = (): IPhpClass | null => {
     return null;
   }
 
-  const fullText = editor.document.getText();
+  const phpClass = first(PhpFile.fromTextEditor(editor).classes);
 
-  const ast = parsePhpClass(fullText, editor.document.fileName);
-  const phpClass = astToPhpClass(ast);
+  if (!phpClass) {
+    vscode.window.showErrorMessage('No class found');
+    return null;
+  }
 
-  if (phpClass.isFinal) {
+  if (phpClass.ast.isFinal) {
     vscode.window.showErrorMessage('Cannot create a preference for final class');
     return null;
   }
 
   if (
-    phpClass.implements &&
-    phpClass.implements.includes('Magento\\Framework\\ObjectManager\\NoninterceptableInterface')
+    phpClass.ast.implements &&
+    phpClass.ast.implements.find((item) => item.name === 'NoninterceptableInterface')
   ) {
     vscode.window.showErrorMessage(
       'Cannot create a preference for a class that implements NoninterceptableInterface'

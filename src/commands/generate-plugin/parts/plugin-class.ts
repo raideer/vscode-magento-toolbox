@@ -1,29 +1,31 @@
 import { upperFirst } from 'lodash-es';
-import { IPhpClass, IPhpMethod } from 'types/reflection';
 import indentString from 'indent-string';
 import { PluginWizardData } from '../plugin-wizard';
 import { IFunctionParam, generateFunction } from 'generators/template/function';
 import { IClassUse, generateClass } from 'generators/template/class';
+import { getIdentifierName } from 'base/reflection/ast';
+import { PhpClass } from 'base/reflection/php-class';
+import { PhpMethod } from 'base/reflection/php-method';
 
 const generatePluginClassInner = async (
   data: PluginWizardData,
-  methodClass: IPhpClass,
-  method: IPhpMethod
+  methodClass: PhpClass,
+  method: PhpMethod
 ): Promise<[string, IFunctionParam[]]> => {
-  const pluginMethodName = `${data.type}${upperFirst(method.name)}`;
+  const pluginMethodName = `${data.type}${upperFirst(method.name as string)}`;
 
   const pluginFunctionParams: IFunctionParam[] = [
     {
       name: 'subject',
-      type: methodClass.name!,
+      type: methodClass.name as string,
     },
   ];
 
-  const args = (method.arguments || []).map((argument) => {
+  const args = (method.ast.arguments || []).map((argument) => {
     return {
-      name: argument.name!,
-      type: argument.type!,
-      value: argument.valueRaw,
+      name: getIdentifierName(argument.name),
+      type: argument.type ? getIdentifierName(argument.type) : undefined,
+      value: argument.value ? ((argument as any).value.raw as string) : undefined,
       nullable: argument.nullable,
     };
   });
@@ -64,8 +66,8 @@ const generatePluginClassInner = async (
 
 export const generatePluginClass = async (
   data: PluginWizardData,
-  methodClass: IPhpClass,
-  method: IPhpMethod
+  methodClass: PhpClass,
+  method: PhpMethod
 ) => {
   const [vendor, module] = data.module.split('_');
   const nameParts = data.name.split(/[\\/]+/);
@@ -81,16 +83,18 @@ export const generatePluginClass = async (
   const use: IClassUse[] = pluginFunctionParams
     .filter((param) => param.type)
     .map((param) => {
-      if (methodClass.use && methodClass.use[param.type!]) {
+      const useItem = methodClass.parent.useItems.find((item) => item.name === param.type);
+
+      if (useItem) {
         return {
-          class: methodClass.use[param.type!]!,
+          class: useItem.name,
           alias: param.type!,
         };
       }
 
       if (methodClass.name === param.type) {
         return {
-          class: methodClass.namespace + '\\' + methodClass.name!,
+          class: methodClass.parent.namespace + '\\' + methodClass.name,
           alias: null,
         };
       }

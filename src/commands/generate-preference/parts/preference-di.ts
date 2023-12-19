@@ -3,14 +3,14 @@ import { loadXml } from 'utils/xml';
 import { PreferenceWizardData } from '../preference-wizard';
 import { getModuleUri, getScopedPath } from 'utils/magento';
 import { DiFactory } from 'generators/xml/di';
-import { IPhpClass } from 'types/reflection';
+import { PhpClass } from 'base/reflection/php-class';
 
 /**
  * Generates di.xml for a preference
  */
 export const generatePreferenceDi = async (
   data: PreferenceWizardData,
-  methodClass: IPhpClass,
+  methodClass: PhpClass,
   appCodeUri: Uri
 ) => {
   const moduleDirectory = getModuleUri(appCodeUri, data.module);
@@ -20,7 +20,7 @@ export const generatePreferenceDi = async (
 
   const diGenerator = new DiFactory();
 
-  const forClass = `${methodClass.namespace}\\${methodClass.name}`;
+  const forClass = `${methodClass.parent.namespace}\\${methodClass.name}`;
 
   diGenerator.addPreference(forClass, data.type);
 
