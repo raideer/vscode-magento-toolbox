@@ -1,9 +1,9 @@
-import { Indexer, IndexerData, WorkspaceIndex } from 'base/indexer';
 import { MagentoModule } from './module-indexer';
-import { loadXml, parseXml } from 'utils/xml';
+import { loadXml } from 'utils/xml';
 import { get, trimStart } from 'lodash-es';
 import { removeExtraSlashes } from 'utils/path';
 import { WorkspaceFolder } from 'vscode';
+import { Indexer, WorkspaceIndex } from '.';
 
 export interface Observer {
   event: string;
@@ -11,15 +11,11 @@ export interface Observer {
   module: string;
 }
 
-export interface ObserverIndex {
-  observers: Observer[];
-}
-
-export class ObserverIndexerData implements IndexerData<ObserverIndex> {
-  constructor(public data: ObserverIndex) {}
+export class ObserverIndexerData {
+  constructor(public observers: Observer[]) {}
 
   public getObserverByClass(name: string) {
-    for (const observer of this.data.observers) {
+    for (const observer of this.observers) {
       if (trimStart(removeExtraSlashes(observer.class), '\\') === name) {
         return observer;
       }
@@ -27,29 +23,31 @@ export class ObserverIndexerData implements IndexerData<ObserverIndex> {
   }
 
   public getObserversByEvent(name: string) {
-    return this.data.observers.filter((observer) => observer.event === name);
+    return this.observers.filter((observer) => observer.event === name);
   }
 }
 
-export class ObserverIndexer implements Indexer<ObserverIndex> {
-  public name = 'observers';
-
-  protected data: ObserverIndex = {
-    observers: [],
-  };
+export class ObserverIndexer extends Indexer {
+  protected data = new ObserverIndexerData([]);
 
   public async index(workspaceFolder: WorkspaceFolder, data: Partial<WorkspaceIndex>) {
-    const { modules } = data;
+    const { modules: moduleIndex } = data;
 
-    if (modules) {
-      const promises = Array.from(modules.data.modules.values()).map(async (module) =>
+    if (moduleIndex) {
+      const promises = Array.from(moduleIndex.modules.values()).map(async (module) =>
         this.indexModuleObservers(module)
       );
 
       await Promise.all(promises);
     }
+  }
 
-    return new ObserverIndexerData(this.data);
+  public getData() {
+    return this.data;
+  }
+
+  public getName(): string {
+    return 'observers';
   }
 
   private async indexModuleObservers(module: MagentoModule) {

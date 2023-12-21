@@ -35,8 +35,11 @@ export class PhpFile extends PhpNode<NodeKind.Program> {
 
   public static fromTextEditor(editor: TextEditor) {
     const fullText = editor.document.getText();
-    const ast = parsePhpClass(fullText, editor.document.fileName);
+    return PhpFile.fromText(fullText, editor.document.uri);
+  }
 
-    return new PhpFile(ast, editor.document.uri);
+  public static fromText(text: string, uri: Uri) {
+    const ast = parsePhpClass(text, uri.fsPath);
+    return new PhpFile(ast, uri);
   }
 }

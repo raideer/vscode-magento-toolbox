@@ -1,20 +1,8 @@
 import { Progress, WorkspaceFolder } from 'vscode';
-import { ModuleIndexer, ModuleIndexerData } from './indexers/module-indexer';
-import { ObserverIndexer, ObserverIndexerData } from './indexers/observer-indexer';
-
-export interface Indexer<D = Record<string, any>> {
-  name: string;
-  index(workspaceFolder: WorkspaceFolder, data: Partial<WorkspaceIndex>): Promise<IndexerData<D>>;
-}
-
-export interface IndexerData<D = Record<string, any>> {
-  data: D;
-}
-
-export type WorkspaceIndex = {
-  modules: ModuleIndexerData;
-  observers: ObserverIndexerData;
-};
+import { ModuleIndexer } from './indexers/module-indexer';
+import { ObserverIndexer } from './indexers/observer-indexer';
+import { NamespaceIndexer } from './indexers/namespace/indexer';
+import { Indexer, WorkspaceIndex } from './indexers';
 
 export async function indexWorkspace(
   workspaceFolder: WorkspaceFolder,
@@ -23,7 +11,7 @@ export async function indexWorkspace(
     increment?: number;
   }>
 ): Promise<WorkspaceIndex> {
-  const indexers = [ModuleIndexer, ObserverIndexer];
+  const indexers = [NamespaceIndexer, ModuleIndexer, ObserverIndexer];
 
   progress.report({ message: 'Indexing', increment: 0 });
   const data = {};
@@ -31,8 +19,10 @@ export async function indexWorkspace(
   for (const indexer of indexers) {
     const instance: Indexer = new indexer();
 
-    progress.report({ message: `Indexing ${instance.name}` });
-    data[instance.name] = await instance.index(workspaceFolder, data);
+    progress.report({ message: `Running ${instance.getName()} indexer` });
+
+    await instance.index(workspaceFolder, data);
+    data[instance.getName()] = instance.getData();
   }
 
   progress.report({ increment: 100 });

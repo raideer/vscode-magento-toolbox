@@ -1,4 +1,4 @@
-import { workspace, Uri, RelativePattern } from 'vscode';
+import { workspace, Uri, RelativePattern, WorkspaceFolder } from 'vscode';
 import get from 'lodash-es/get';
 import { uniq } from 'lodash-es';
 import { parseXml } from './xml';
@@ -27,4 +27,26 @@ export function getScopedPath(basePath: string, scope: string, filename: string)
 export function getModuleUri(appCodeUri: Uri, module: string) {
   const [v, m] = module.split('_');
   return Uri.joinPath(appCodeUri, `${v}/${m}`);
+}
+
+export async function resolveMagentoRoot(workspaceFolder: WorkspaceFolder) {
+  const { uri } = workspaceFolder;
+
+  const testPaths = [
+    Uri.joinPath(uri, 'app/etc'),
+    Uri.joinPath(uri, 'bin'),
+    Uri.joinPath(uri, 'var'),
+  ];
+
+  try {
+    const status = await Promise.all(testPaths.map((test) => workspace.fs.stat(test)));
+
+    if (status.every((exists) => exists)) {
+      return uri;
+    }
+  } catch (e) {
+    // Do nothing
+  }
+
+  return null;
 }

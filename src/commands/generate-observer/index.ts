@@ -7,7 +7,7 @@ import { getWorkspaceIndex } from 'utils/extension';
 
 export default async function (...args: any[]) {
   const workspaceIndex = getWorkspaceIndex();
-  const appCodeUri = workspaceIndex.modules.data.appCode;
+  const appCodeUri = workspaceIndex.modules.appCode!;
   const modules = workspaceIndex.modules.getModuleList('app/code');
 
   const eventName = args.length > 0 && isString(args[0]) ? args[0] : undefined;

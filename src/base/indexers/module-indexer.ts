@@ -1,7 +1,8 @@
-import { Indexer, IndexerData } from 'base/indexer';
-import { get, uniqBy } from 'lodash-es';
+import { get } from 'lodash-es';
+import { resolveMagentoRoot } from 'utils/magento';
 import { parseXml } from 'utils/xml';
 import { RelativePattern, Uri, WorkspaceFolder, workspace } from 'vscode';
+import { Indexer } from '.';
 
 export interface MagentoModule {
   name: string;
@@ -18,33 +19,33 @@ export interface ModuleIndex {
   modules: Map<string, MagentoModule>;
 }
 
-export class ModuleIndexerData implements IndexerData<ModuleIndex> {
-  constructor(public data: ModuleIndex) {}
+export class ModuleIndexerData {
+  constructor(
+    public modules: Map<string, MagentoModule> = new Map(),
+    public magentoRoot?: Uri,
+    public appCode?: Uri
+  ) {}
 
   public getModule(name: string) {
-    return this.data.modules.get(name);
+    return this.modules.get(name);
   }
 
   public getModuleList(location?: MagentoModule['location']) {
-    const modules = Array.from(this.data.modules.keys());
+    const modules = Array.from(this.modules.keys());
 
     if (!location) {
       return modules;
     }
 
-    return modules.filter((name) => this.data.modules.get(name)?.location === location);
+    return modules.filter((name) => this.modules.get(name)?.location === location);
   }
 }
 
-export class ModuleIndexer implements Indexer<ModuleIndex> {
-  public name = 'modules';
-
-  protected data: Partial<ModuleIndex> = {
-    modules: new Map(),
-  };
+export class ModuleIndexer extends Indexer {
+  protected data = new ModuleIndexerData();
 
   public async index(workspaceFolder: WorkspaceFolder) {
-    const magentoRoot = await this.resolveMagentoRoot(workspaceFolder);
+    const magentoRoot = await resolveMagentoRoot(workspaceFolder);
 
     if (!magentoRoot) {
       throw new Error('Could not find Magento root directory.');
@@ -54,8 +55,14 @@ export class ModuleIndexer implements Indexer<ModuleIndex> {
     this.data.magentoRoot = magentoRoot;
 
     await this.indexModules(magentoRoot);
+  }
 
-    return new ModuleIndexerData(this.data as ModuleIndex);
+  public getData() {
+    return this.data;
+  }
+
+  public getName(): string {
+    return 'modules';
   }
 
   private async indexModules(root: Uri) {
@@ -87,27 +94,5 @@ export class ModuleIndexer implements Indexer<ModuleIndex> {
     modules.forEach((module) => {
       this.data.modules!.set(module.name, module);
     });
-  }
-
-  private async resolveMagentoRoot(workspaceFolder: WorkspaceFolder) {
-    const { uri } = workspaceFolder;
-
-    const testPaths = [
-      Uri.joinPath(uri, 'app/etc'),
-      Uri.joinPath(uri, 'bin'),
-      Uri.joinPath(uri, 'var'),
-    ];
-
-    try {
-      const status = await Promise.all(testPaths.map((test) => workspace.fs.stat(test)));
-
-      if (status.every((exists) => exists)) {
-        return uri;
-      }
-    } catch (e) {
-      // Do nothing
-    }
-
-    return null;
   }
 }

@@ -38,7 +38,7 @@ export default async function () {
   }
 
   const workspaceIndex = getWorkspaceIndex();
-  const appCodeUri = workspaceIndex.modules.data.appCode;
+  const appCodeUri = workspaceIndex.modules.appCode!;
   const modules = workspaceIndex.modules.getModuleList('app/code');
 
   // Open plugin wizard

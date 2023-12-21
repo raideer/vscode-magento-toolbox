@@ -25,7 +25,7 @@ import { getWorkspaceIndex } from 'utils/extension';
 export default async function () {
   const workspaceIndex = getWorkspaceIndex();
 
-  const appCodeUri = workspaceIndex.modules.data.appCode;
+  const appCodeUri = workspaceIndex.modules.appCode!;
 
   // Load all magento modules in app/code
   const modules = workspaceIndex.modules.getModuleList('app/code');

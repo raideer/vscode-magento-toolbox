@@ -8,6 +8,7 @@ import {
   window,
   MarkdownString,
   ThemeColor,
+  Uri,
 } from 'vscode';
 
 const decorationType = window.createTextEditorDecorationType({
@@ -46,7 +47,17 @@ export function decorateObserverKeys(editor: TextEditor) {
       }
 
       observers.forEach((observer) => {
-        message.appendMarkdown(`- \`${observer.class}\`\n\n`);
+        const namespace = workspaceIndex.namespaces.getNamespace(observer.class);
+
+        let link = observer.class;
+
+        if (namespace) {
+          const observerClass = observer.class.replace(namespace.namespace, '');
+          const fileUri = Uri.joinPath(namespace.uri, `${observerClass}.php`);
+          link = `[${observer.class}](${fileUri})`;
+        }
+
+        message.appendMarkdown(`- ${link}\n\n`);
       });
 
       message.appendMarkdown(
