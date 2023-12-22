@@ -10,6 +10,7 @@ interface ClassNamespace {
   uri: Uri;
   className: string;
   namespace: string;
+  baseNamespace: string;
   subNamespace: string;
 }
 
@@ -29,9 +30,10 @@ export class NamespaceIndexerData {
         const subNamespace = parts.slice(i).join('\\');
 
         return {
-          namespace: namespaceData.namespace,
+          baseNamespace: namespaceData.namespace,
           uri: namespaceData.uri,
           subNamespace,
+          namespace: `${subNamespace}\\${className}`,
           className,
         };
       }

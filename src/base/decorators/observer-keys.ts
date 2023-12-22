@@ -52,10 +52,7 @@ export function decorateObserverKeys(editor: TextEditor) {
         let link = observer.class;
 
         if (namespace) {
-          const fileUri = Uri.joinPath(
-            namespace.uri,
-            `${namespace.subNamespace}\\${namespace.className}.php`
-          );
+          const fileUri = Uri.joinPath(namespace.uri, `${namespace.namespace}.php`);
           link = `[${observer.class}](${fileUri})`;
         }
 
