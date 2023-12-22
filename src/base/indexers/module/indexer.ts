@@ -2,7 +2,7 @@ import { get } from 'lodash-es';
 import { resolveMagentoRoot } from 'utils/magento';
 import { parseXml } from 'utils/xml';
 import { RelativePattern, Uri, WorkspaceFolder, workspace } from 'vscode';
-import { Indexer } from '.';
+import { Indexer } from '..';
 
 export interface MagentoModule {
   name: string;

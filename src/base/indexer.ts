@@ -1,8 +1,8 @@
 import { Progress, WorkspaceFolder } from 'vscode';
-import { ModuleIndexer } from './indexers/module-indexer';
-import { ObserverIndexer } from './indexers/observer-indexer';
 import { NamespaceIndexer } from './indexers/namespace/indexer';
 import { Indexer, WorkspaceIndex } from './indexers';
+import { ModuleIndexer } from './indexers/module/indexer';
+import { ObserverIndexer } from './indexers/observer/indexer';
 
 export async function indexWorkspace(
   workspaceFolder: WorkspaceFolder,

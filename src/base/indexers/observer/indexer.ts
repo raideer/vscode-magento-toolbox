@@ -1,9 +1,9 @@
-import { MagentoModule } from './module-indexer';
 import { loadXml } from 'utils/xml';
 import { get, trimStart } from 'lodash-es';
 import { removeExtraSlashes } from 'utils/path';
 import { WorkspaceFolder } from 'vscode';
-import { Indexer, WorkspaceIndex } from '.';
+import { Indexer, WorkspaceIndex } from '..';
+import { MagentoModule } from '../module/indexer';
 
 export interface Observer {
   event: string;

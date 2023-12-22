@@ -1,7 +1,7 @@
 import { WorkspaceFolder } from 'vscode';
-import { ModuleIndexerData } from './module-indexer';
-import { ObserverIndexerData } from './observer-indexer';
 import { NamespaceIndexerData } from './namespace/data';
+import { ModuleIndexerData } from './module/indexer';
+import { ObserverIndexerData } from './observer/indexer';
 
 export type WorkspaceIndex = {
   modules: ModuleIndexerData;
