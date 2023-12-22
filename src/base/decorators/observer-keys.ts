@@ -47,13 +47,15 @@ export function decorateObserverKeys(editor: TextEditor) {
       }
 
       observers.forEach((observer) => {
-        const namespace = workspaceIndex.namespaces.getNamespace(observer.class);
+        const namespace = workspaceIndex.namespaces.getClassNamespace(observer.class);
 
         let link = observer.class;
 
         if (namespace) {
-          const observerClass = observer.class.replace(namespace.namespace, '');
-          const fileUri = Uri.joinPath(namespace.uri, `${observerClass}.php`);
+          const fileUri = Uri.joinPath(
+            namespace.uri,
+            `${namespace.subNamespace}\\${namespace.className}.php`
+          );
           link = `[${observer.class}](${fileUri})`;
         }
 
