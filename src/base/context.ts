@@ -1,5 +1,4 @@
 import { TextEditor, commands } from 'vscode';
-import { parsePhpClass } from './reflection/ast';
 import { PhpFile } from './reflection/php-file';
 
 interface EditorContext {

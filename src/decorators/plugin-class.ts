@@ -1,4 +1,4 @@
-import { IPlugin } from 'base/indexers/di/indexer';
+import { Plugin } from 'base/indexers/di/indexer';
 import { PhpFile } from 'base/reflection/php-file';
 import { first } from 'lodash-es';
 import { getWorkspaceIndex } from 'utils/extension';
@@ -70,7 +70,7 @@ export async function decoratePluginClass(editor: TextEditor) {
   ]);
 }
 
-async function decoratePluginFunctions(editor: TextEditor, plugin: IPlugin, pluginUri: Uri) {
+async function decoratePluginFunctions(editor: TextEditor, plugin: Plugin, pluginUri: Uri) {
   const pluginMethods = await getPluginMethods(pluginUri);
   const sourceCode = editor.document.getText();
 

@@ -5,13 +5,13 @@ import { Indexer, WorkspaceIndex } from '..';
 import { MagentoModule } from '../module/indexer';
 import { cleanNamespace } from 'utils/magento';
 
-export interface IPreference {
+export interface Preference {
   for: string;
   type: string;
   diUri: Uri;
 }
 
-export interface IPlugin {
+export interface Plugin {
   name: string;
   type: string;
   pluginClass: string;
@@ -19,7 +19,7 @@ export interface IPlugin {
 }
 
 export class DiIndexerData {
-  constructor(public preferences: IPreference[] = [], public plugins: IPlugin[] = []) {}
+  constructor(public preferences: Preference[] = [], public plugins: Plugin[] = []) {}
 
   public getPreferencesFor(name: string) {
     return this.preferences.filter((preference) => preference.for === cleanNamespace(name));
