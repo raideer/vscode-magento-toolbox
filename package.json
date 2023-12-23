@@ -96,6 +96,10 @@
         "title": "Magento Toolbox: Generate an empty di.xml file"
       },
       {
+        "command": "magento-toolbox.generateEmptyConfigXml",
+        "title": "Magento Toolbox: Generate an empty config.xml file"
+      },
+      {
         "command": "magento-toolbox.indexWorkspace",
         "title": "Magento Toolbox: Index workspace"
       }
@@ -134,6 +138,10 @@
         },
         {
           "command": "magento-toolbox.generateEmptyDiXml",
+          "when": "resourceDirname =~ /app\\\\code\\\\\\w+\\\\\\w+/"
+        },
+        {
+          "command": "magento-toolbox.generateEmptyConfigXml",
           "when": "resourceDirname =~ /app\\\\code\\\\\\w+\\\\\\w+/"
         }
       ],

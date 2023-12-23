@@ -8,7 +8,7 @@ export interface DiWizardData {
 
 export const openDiWizard = async (modules: string[], initialModule?: string) => {
   const wizard = new WizardGenerator();
-  wizard.setTitle('Generate di.xml');
+  wizard.setTitle('Generate config.xml');
 
   const fields: WizardField[] = [
     {
