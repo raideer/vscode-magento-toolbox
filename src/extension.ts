@@ -13,6 +13,7 @@ import handleChangeTextEditorSelection from 'events/handleChangeTextEditorSelect
 import generateXmlCatalog from 'commands/generate-xml-catalog';
 import indexWorkspace from 'commands/index-workspace';
 import xmlClassHover from 'hovers/xml-class-hover';
+import generateDataPatch from 'commands/generate-data-patch';
 
 const loadCommands = () => {
   const commands = [
@@ -23,6 +24,7 @@ const loadCommands = () => {
     ['magento-toolbox.generateController', generateController],
     ['magento-toolbox.generateViewModel', generateViewModel],
     ['magento-toolbox.generateXmlCatalog', generateXmlCatalog],
+    ['magento-toolbox.generateDataPatch', generateDataPatch],
   ].map(([commandName, command]) => {
     return vscode.commands.registerCommand(commandName as string, command as any);
   });

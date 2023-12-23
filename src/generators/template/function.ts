@@ -13,7 +13,7 @@ export interface IFunctionVariables {
   name: string;
   docParams: IFunctionParam[];
   returnType: string | null;
-  visibility: 'public' | 'private' | 'protected';
+  visibility: string;
   params: IFunctionParam[];
   data: string;
 }

@@ -1,14 +1,19 @@
 <% if (description || returnType || docParams.length > 0) { -%>
 /**<% if (description) {%>
   * <%= description %>
-  *<% } %>
+<% if (docParams.length > 0) {-%>
+  *
+<% } -%>
+<% } -%>
 <% for (const i in docParams) { -%>
   * @param <%= docParams[i].type %> $<%= docParams[i].name %>
 <% } -%>
 <% if (docParams.length > 0) {-%>
   *
 <% } -%>
-<% if (returnType) {-%>  * @return <%= returnType %><% } %>
+<% if (returnType) {-%>
+  * @return <%= returnType %>
+<% } -%>
   */
 <% } -%>
 <% if (params.length > 0) {-%>

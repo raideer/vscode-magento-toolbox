@@ -88,6 +88,10 @@
         "title": "Magento Toolbox: Generate XML catalog"
       },
       {
+        "command": "magento-toolbox.generateDataPatch",
+        "title": "Magento Toolbox: Generate Data Patch"
+      },
+      {
         "command": "magento-toolbox.indexWorkspace",
         "title": "Magento Toolbox: Index workspace"
       }
