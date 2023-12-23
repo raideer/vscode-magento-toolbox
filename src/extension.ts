@@ -10,11 +10,12 @@ import handleChangeActiveTextEditor from 'base/events/handleChangeActiveTextEdit
 import generateViewModel from 'commands/generate-viewmodel';
 import { ext } from 'base/variables';
 import handleChangeTextEditorSelection from 'base/events/handleChangeTextEditorSelection';
-import { indexWorkspace } from 'base/indexer';
 import generateXmlCatalog from 'commands/generate-xml-catalog';
+import indexWorkspace from 'commands/index-workspace';
 
 const loadCommands = () => {
   const commands = [
+    ['magento-toolbox.indexWorkspace', indexWorkspace],
     ['magento-toolbox.generateModule', generateModule],
     ['magento-toolbox.generateObserver', generateObserver],
     ['magento-toolbox.generateBlock', generateBlock],
@@ -54,30 +55,10 @@ export async function activate(context: vscode.ExtensionContext) {
 
   console.log('[Magento Toolbox] Starting...');
 
-  ext.workspaceIndex = new Map();
-
-  if (vscode.workspace.workspaceFolders) {
-    try {
-      await vscode.window.withProgress(
-        {
-          location: vscode.ProgressLocation.Window,
-          title: 'Magento Toolbox',
-          cancellable: false,
-        },
-        async (progress) => {
-          for (const workspaceFolder of vscode.workspace.workspaceFolders!) {
-            const index = await indexWorkspace(workspaceFolder, progress);
-            ext.workspaceIndex.set(workspaceFolder, index);
-          }
-        }
-      );
-    } catch (e) {
-      console.error('[Magento Toolbox] Error indexing workspace', e);
-      return;
-    }
-  }
-
   loadCommands();
+
+  await vscode.commands.executeCommand('magento-toolbox.indexWorkspace');
+
   loadEvents();
 
   console.log('[Magento Toolbox] Loaded');

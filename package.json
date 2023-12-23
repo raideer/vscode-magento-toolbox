@@ -86,6 +86,10 @@
       {
         "command": "magento-toolbox.generateXmlCatalog",
         "title": "Magento Toolbox: Generate XML catalog"
+      },
+      {
+        "command": "magento-toolbox.indexWorkspace",
+        "title": "Magento Toolbox: Index workspace"
       }
     ],
     "menus": {
