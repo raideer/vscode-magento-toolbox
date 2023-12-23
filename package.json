@@ -92,6 +92,10 @@
         "title": "Magento Toolbox: Generate Data Patch"
       },
       {
+        "command": "magento-toolbox.generateEmptyDiXml",
+        "title": "Magento Toolbox: Generate an empty di.xml file"
+      },
+      {
         "command": "magento-toolbox.indexWorkspace",
         "title": "Magento Toolbox: Index workspace"
       }
@@ -127,6 +131,10 @@
         {
           "command": "magento-toolbox.generateObserver",
           "when": "resourceDirname =~ /app\\\\code\\\\/"
+        },
+        {
+          "command": "magento-toolbox.generateEmptyDiXml",
+          "when": "resourceDirname =~ /app\\\\code\\\\\\w+\\\\\\w+/"
         }
       ],
       "magento-toolbox.submenu": [

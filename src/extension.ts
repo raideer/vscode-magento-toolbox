@@ -14,6 +14,7 @@ import generateXmlCatalog from 'commands/generate-xml-catalog';
 import indexWorkspace from 'commands/index-workspace';
 import xmlClassHover from 'hovers/xml-class-hover';
 import generateDataPatch from 'commands/generate-data-patch';
+import generateEmptyDiXml from 'commands/generate-empty-di-xml';
 
 const loadCommands = () => {
   const commands = [
@@ -25,6 +26,7 @@ const loadCommands = () => {
     ['magento-toolbox.generateViewModel', generateViewModel],
     ['magento-toolbox.generateXmlCatalog', generateXmlCatalog],
     ['magento-toolbox.generateDataPatch', generateDataPatch],
+    ['magento-toolbox.generateEmptyDiXml', generateEmptyDiXml],
   ].map(([commandName, command]) => {
     return vscode.commands.registerCommand(commandName as string, command as any);
   });
