@@ -68,7 +68,6 @@ export const openBlockWizard = async (modules: string[], initialModule?: string)
       placeholder: 'eg. checkout_index_index',
       type: WizardInput.Text,
     },
-
     {
       dependsOn: 'referenceHandle',
       id: 'referenceType',

@@ -3,7 +3,7 @@ import { resolveUriModule } from 'utils/magento';
 import { fileExists, openFile, refreshFileExplorer, writeFile } from 'utils/vscode';
 import { getWorkspaceIndex } from 'utils/extension';
 import { generateTemplate } from 'generators/template/generic';
-import { openConfigXmlWizard } from './wizard';
+import { openLayoutXmlWizard } from './wizard';
 
 export default async function () {
   let defaultModule: string | undefined;
@@ -17,22 +17,25 @@ export default async function () {
   const appCodeUri = workspaceIndex.modules.appCode!;
   const modules = workspaceIndex.modules.getModuleList('app/code');
 
-  const wizardInputData = await openConfigXmlWizard(modules, defaultModule);
+  const wizardInputData = await openLayoutXmlWizard(modules, defaultModule);
 
   const [vendor, module] = wizardInputData.module.split('_');
   const moduleDirectory = vscode.Uri.joinPath(appCodeUri, `${vendor}/${module}`);
 
-  const configXml = await generateTemplate('config-xml');
-  const configXmlUri = vscode.Uri.joinPath(moduleDirectory, 'etc/config.xml');
+  const layoutXml = await generateTemplate('layout-xml');
+  const layoutXmlUri = vscode.Uri.joinPath(
+    moduleDirectory,
+    `view/${wizardInputData.area}/layout/${wizardInputData.layoutName}.xml`
+  );
 
-  const exists = await fileExists(configXmlUri);
+  const exists = await fileExists(layoutXmlUri);
 
   if (exists) {
-    vscode.window.showErrorMessage(`File already exists: ${configXmlUri.fsPath}`);
+    vscode.window.showErrorMessage(`File already exists: ${layoutXmlUri.fsPath}`);
     return;
   }
 
-  await writeFile(configXmlUri, configXml);
+  await writeFile(layoutXmlUri, layoutXml);
   refreshFileExplorer();
-  await openFile(configXmlUri);
+  await openFile(layoutXmlUri);
 }

@@ -2,11 +2,11 @@ import { WizardGenerator } from 'base/wizard';
 import { first } from 'lodash-es';
 import { WizardField, WizardInput } from 'types/wizard';
 
-export interface DiWizardData {
+export interface ConfigXmlWizardData {
   module: string;
 }
 
-export const openDiWizard = async (modules: string[], initialModule?: string) => {
+export const openConfigXmlWizard = async (modules: string[], initialModule?: string) => {
   const wizard = new WizardGenerator();
   wizard.setTitle('Generate config.xml');
 
@@ -25,5 +25,5 @@ export const openDiWizard = async (modules: string[], initialModule?: string) =>
     module: 'required',
   });
 
-  return wizard.open<DiWizardData>();
+  return wizard.open<ConfigXmlWizardData>();
 };

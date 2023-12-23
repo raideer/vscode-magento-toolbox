@@ -100,6 +100,10 @@
         "title": "Magento Toolbox: Generate an empty config.xml file"
       },
       {
+        "command": "magento-toolbox.generateEmptyLayoutXml",
+        "title": "Magento Toolbox: Generate an empty layout.xml file"
+      },
+      {
         "command": "magento-toolbox.indexWorkspace",
         "title": "Magento Toolbox: Index workspace"
       }
@@ -143,6 +147,10 @@
         {
           "command": "magento-toolbox.generateEmptyConfigXml",
           "when": "resourcePath =~ /app\\\\code\\\\\\w+\\\\\\w+\\\\etc/"
+        },
+        {
+          "command": "magento-toolbox.generateEmptyLayoutXml",
+          "when": "resourcePath =~ /app\\\\code\\\\\\w+\\\\\\w+\\\\view/"
         }
       ],
       "magento-toolbox.submenu": [

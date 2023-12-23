@@ -16,6 +16,7 @@ import xmlClassHover from 'hovers/xml-class-hover';
 import generateDataPatch from 'commands/generate-data-patch';
 import generateEmptyDiXml from 'commands/generate-empty-di-xml';
 import generateEmptyConfigXml from 'commands/generate-empty-config-xml';
+import generateEmptyLayoutXml from 'commands/generate-empty-layout-xml';
 
 const loadCommands = () => {
   const commands = [
@@ -29,6 +30,7 @@ const loadCommands = () => {
     ['magento-toolbox.generateDataPatch', generateDataPatch],
     ['magento-toolbox.generateEmptyDiXml', generateEmptyDiXml],
     ['magento-toolbox.generateEmptyConfigXml', generateEmptyConfigXml],
+    ['magento-toolbox.generateEmptyLayoutXml', generateEmptyLayoutXml],
   ].map(([commandName, command]) => {
     return vscode.commands.registerCommand(commandName as string, command as any);
   });
