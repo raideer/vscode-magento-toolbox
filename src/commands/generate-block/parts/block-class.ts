@@ -1,8 +1,8 @@
 import { generateClass } from 'generators/template/class';
-import { IBlockWizardBlockData, IBlockWizardLayoutHandleData } from '../block-wizard';
+import { BlockWizardBlockData, BlockWizardLayoutHandleData } from '../block-wizard';
 
-export const generateBlockClass = async (
-  data: IBlockWizardBlockData | IBlockWizardLayoutHandleData,
+export const generateBlockClassPart = async (
+  data: BlockWizardBlockData | BlockWizardLayoutHandleData,
   blockName: string
 ) => {
   const [vendor, module] = data.module.split('_');
@@ -17,11 +17,11 @@ export const generateBlockClass = async (
         ? {
             class: `Magento\\Framework\\View\\Element\\Template`,
             alias: null,
-        }
+          }
         : {
             class: `Magento\\Backend\\Block\\Template`,
             alias: null,
-        },
+          },
     ],
     className: blockName,
     classExtends: 'Template',

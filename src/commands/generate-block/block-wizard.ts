@@ -2,25 +2,25 @@ import { WizardGenerator } from 'base/wizard';
 import { first } from 'lodash-es';
 import { WizardField, WizardInput } from 'types/wizard';
 
-interface IBlockWizardBaseData {
+interface BlockWizardData {
   module: string;
   blockName: string;
   referenceHandle: boolean;
   scope: string;
 }
 
-export interface IBlockWizardBlockData extends IBlockWizardBaseData {
+export interface BlockWizardBlockData extends BlockWizardData {
   referenceHandle: false;
 }
 
-export interface IBlockWizardLayoutHandleData extends IBlockWizardBaseData {
+export interface BlockWizardLayoutHandleData extends BlockWizardData {
   referenceHandle: true;
   layoutHandle: string;
   referenceType: 'container' | 'block';
   referenceName: string;
 }
 
-export const blockWizard = async (modules: string[], initialModule?: string) => {
+export const openBlockWizard = async (modules: string[], initialModule?: string) => {
   const wizard = new WizardGenerator();
   wizard.setTitle('Generate a new block');
   wizard.setDescription('Create a new block class and register it in the layout.');
@@ -102,5 +102,5 @@ export const blockWizard = async (modules: string[], initialModule?: string) => 
     referenceName: [{ required_if: ['referenceHandle', true] }],
   });
 
-  return wizard.open();
+  return wizard.open<BlockWizardBlockData | BlockWizardLayoutHandleData>();
 };

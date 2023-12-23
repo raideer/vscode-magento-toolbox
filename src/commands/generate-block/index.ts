@@ -1,11 +1,11 @@
 import * as vscode from 'vscode';
 import { resolveUriModule } from 'utils/magento';
 import { capitalize, snakeCase } from 'lodash-es';
-import { blockWizard } from './block-wizard';
-import { generateBlockClass } from './parts/block-class';
-import { generateBlockLayoutHandle } from './parts/block-layout-handle';
+import { BlockWizardBlockData, BlockWizardLayoutHandleData, openBlockWizard } from './block-wizard';
+import { generateBlockClassPart } from './parts/block-class';
+import { generateBlockLayoutHandlePart } from './parts/block-layout-handle';
 import { openFile, refreshFileExplorer, writeFile } from 'utils/vscode';
-import { generateBlockLayoutTemplate } from './parts/block-layout-template';
+import { generateBlockLayoutTemplatePart } from './parts/block-layout-template';
 import { getWorkspaceIndex } from 'utils/extension';
 
 /**
@@ -29,55 +29,90 @@ export default async function () {
   const appCodeUri = workspaceIndex.modules.appCode!;
   const modules = workspaceIndex.modules.getModuleList('app/code');
 
-  // Open block wizard
-  const data = await blockWizard(modules, defaultModule);
+  const wizardInputData = await openBlockWizard(modules, defaultModule);
 
-  const [vendor, module] = data.module.split('_');
+  const [vendor, module] = wizardInputData.module.split('_');
   const moduleDirectory = vscode.Uri.joinPath(appCodeUri, `${vendor}/${module}`);
 
-  // Generate block class
-  const blockParts = data.blockName.split('/');
-  let blockName = blockParts.pop() as string;
-  blockName = blockName.replace('Block', '');
-  blockName = `${capitalize(blockName)}Block`;
+  const { blockClassName, blockPath } = getBlockClassName(wizardInputData);
 
-  const blockClass = await generateBlockClass(data, blockName);
-  let blockScope = data.scope === 'frontend' ? `Block` : 'Block/Adminhtml';
+  const blockClassUri = await generateBlockClass(
+    wizardInputData,
+    blockClassName,
+    blockPath,
+    moduleDirectory
+  );
 
-  if (blockParts.length) {
-    blockScope = `${blockScope}/${blockParts.join('/')}`;
+  await generateBlockLayoutHandle(wizardInputData, blockClassName, moduleDirectory);
+
+  vscode.window.showInformationMessage(`Generated a Block: ${wizardInputData.blockName}`);
+  refreshFileExplorer();
+  openFile(blockClassUri);
+}
+
+async function generateBlockClass(
+  wizardInputData: BlockWizardBlockData | BlockWizardLayoutHandleData,
+  blockClassName: string,
+  blockPath: string,
+  moduleDirectory: vscode.Uri
+) {
+  const blockClass = await generateBlockClassPart(wizardInputData, blockClassName);
+  let blockScope = wizardInputData.scope === 'frontend' ? `Block` : 'Block/Adminhtml';
+
+  if (blockPath) {
+    blockScope = `${blockScope}/${blockPath}`;
   }
 
-  const blockPath = vscode.Uri.joinPath(moduleDirectory, `${blockScope}/${blockName}.php`);
+  const blockClassUri = vscode.Uri.joinPath(moduleDirectory, `${blockScope}/${blockClassName}.php`);
 
-  await writeFile(blockPath, blockClass);
+  await writeFile(blockClassUri, blockClass);
 
-  // Generate layout handle
-  if (data.referenceHandle) {
+  return blockClassUri;
+}
+
+async function generateBlockLayoutHandle(
+  wizardInputData: BlockWizardBlockData | BlockWizardLayoutHandleData,
+  blockClassName: string,
+  moduleDirectory: vscode.Uri
+) {
+  if (wizardInputData.referenceHandle) {
     // Generate view/scope/layout/layout_handle_name.xml
     const layoutHandleUri = vscode.Uri.joinPath(
       moduleDirectory,
-      `view/${data.scope}/layout/${data.layoutHandle}.xml`
+      `view/${wizardInputData.scope}/layout/${wizardInputData.layoutHandle}.xml`
     );
 
-    const blockTemplateName = snakeCase(data.blockName);
-    const eventsXml = await generateBlockLayoutHandle(data, appCodeUri, blockName);
+    const blockTemplateName = snakeCase(wizardInputData.blockName);
+    const eventsXml = await generateBlockLayoutHandlePart(
+      wizardInputData,
+      moduleDirectory,
+      blockClassName
+    );
 
     await writeFile(layoutHandleUri, eventsXml);
 
     // Generate block template
-    const template = await generateBlockLayoutTemplate(data.module, blockName);
+    const template = await generateBlockLayoutTemplatePart(wizardInputData.module, blockClassName);
 
     await writeFile(
       vscode.Uri.joinPath(
         moduleDirectory,
-        `view/${data.scope}/templates/${blockTemplateName}.phtml`
+        `view/${wizardInputData.scope}/templates/${blockTemplateName}.phtml`
       ),
       template
     );
   }
+}
 
-  vscode.window.showInformationMessage(`Generated a Block: ${data.blockName}`);
-  refreshFileExplorer();
-  openFile(blockPath);
+function getBlockClassName(wizardInputData: BlockWizardBlockData | BlockWizardLayoutHandleData) {
+  const blockParts = wizardInputData.blockName.split('/');
+
+  let blockName = blockParts.pop() as string;
+  blockName = blockName.replace('Block', '');
+  blockName = `${capitalize(blockName)}Block`;
+
+  return {
+    blockClassName: blockName,
+    blockPath: blockParts.join('/'),
+  };
 }

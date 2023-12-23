@@ -4,10 +4,10 @@ import { capitalize, snakeCase } from 'lodash-es';
 import { controllerWizard } from './controller-wizard';
 import { generateControllerClass } from './parts/controller-class';
 import { generateFrontendRoutes } from './parts/frontend-routes';
-import { generateBlockClass } from 'commands/generate-block/parts/block-class';
+import { generateBlockClassPart } from 'commands/generate-block/parts/block-class';
 import { openFile, refreshFileExplorer, writeFile } from 'utils/vscode';
-import { generateBlockLayoutHandle } from 'commands/generate-block/parts/block-layout-handle';
-import { generateBlockLayoutTemplate } from 'commands/generate-block/parts/block-layout-template';
+import { generateBlockLayoutHandlePart } from 'commands/generate-block/parts/block-layout-handle';
+import { generateBlockLayoutTemplatePart } from 'commands/generate-block/parts/block-layout-template';
 import { ext } from 'base/variables';
 import { getWorkspaceIndex } from 'utils/extension';
 
@@ -65,7 +65,7 @@ export default async function () {
 
   if (data.generateTemplate) {
     // Generate block class
-    const blockClass = await generateBlockClass(
+    const blockClass = await generateBlockClassPart(
       {
         module: data.module,
         blockName: actionName,
@@ -95,7 +95,7 @@ export default async function () {
     );
 
     const blockTemplateName = snakeCase(data.actionName);
-    const eventsXml = await generateBlockLayoutHandle(
+    const eventsXml = await generateBlockLayoutHandlePart(
       {
         module: data.module,
         blockName: data.actionName,
@@ -112,7 +112,7 @@ export default async function () {
     await writeFile(layoutHandleUri, eventsXml);
 
     // Generate block template
-    const template = await generateBlockLayoutTemplate(data.module, data.actionName);
+    const template = await generateBlockLayoutTemplatePart(data.module, data.actionName);
 
     await writeFile(
       vscode.Uri.joinPath(
