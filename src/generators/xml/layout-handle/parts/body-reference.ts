@@ -1,4 +1,3 @@
-import { IXmlPart } from 'types/generator';
 import { LayoutBodyBlock } from './body-block';
 import { XmlPart } from 'generators/xml/generator';
 

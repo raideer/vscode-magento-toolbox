@@ -2,10 +2,10 @@ import { Uri, window } from 'vscode';
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
-import { IWizard, IWizardField } from 'types/wizard';
+import { Wizard, WizardField } from 'types/wizard';
 import { ext } from './variables';
 
-export function openWizard<T = any>(wizard: IWizard): Promise<T> {
+export function openWizard<T = any>(wizard: Wizard): Promise<T> {
   return new Promise((resolve, reject) => {
     const panel = window.createWebviewPanel(
       'magentoToolboxDialog',
@@ -60,7 +60,7 @@ export function openWizard<T = any>(wizard: IWizard): Promise<T> {
 }
 
 export class WizardGenerator {
-  private wizard: IWizard = {
+  private wizard: Wizard = {
     title: '',
     fields: [],
   };
@@ -73,11 +73,11 @@ export class WizardGenerator {
     this.wizard.description = description;
   }
 
-  addField(field: IWizardField) {
+  addField(field: WizardField) {
     this.wizard.fields.push(field);
   }
 
-  setFields(fields: IWizardField[]) {
+  setFields(fields: WizardField[]) {
     this.wizard.fields = fields;
   }
 

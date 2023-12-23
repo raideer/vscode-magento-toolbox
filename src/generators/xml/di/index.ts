@@ -3,8 +3,7 @@ import { mergeXml } from 'utils/xml/merge';
 import { DiType } from './parts/type';
 import { DiPreference } from './parts/preference';
 import { DiTypePlugin } from './parts/type-plugin';
-import { IXmlFactory } from 'types/generator';
-import { XmlGenerator } from '../generator';
+import { XmlFactory, XmlGenerator } from '../generator';
 
 type DiItem = DiType | DiPreference;
 
@@ -14,8 +13,8 @@ class Di extends XmlGenerator<DiItem> {
   }
 }
 
-export class DiFactory implements IXmlFactory {
-  public generator = new Di();
+export class DiFactory implements XmlFactory {
+  protected generator = new Di();
 
   addType(type: DiType) {
     this.generator.addItem(type);

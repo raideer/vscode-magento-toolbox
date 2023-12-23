@@ -1,6 +1,6 @@
 import { WizardGenerator } from 'base/wizard';
 import { first } from 'lodash-es';
-import { IWizardField, WizardInput } from 'types/wizard';
+import { WizardField, WizardInput } from 'types/wizard';
 
 interface IBlockWizardBaseData {
   module: string;
@@ -25,7 +25,7 @@ export const blockWizard = async (modules: string[], initialModule?: string) => 
   wizard.setTitle('Generate a new block');
   wizard.setDescription('Create a new block class and register it in the layout.');
 
-  const fields: IWizardField[] = [
+  const fields: WizardField[] = [
     {
       id: 'module',
       label: 'Module*',

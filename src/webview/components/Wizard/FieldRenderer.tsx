@@ -1,12 +1,12 @@
 import { useFormikContext } from 'formik';
 import { useMemo } from 'react';
-import { IWizardField, WizardInput } from 'types/wizard';
+import { WizardField, WizardInput } from 'types/wizard';
 import { Checkbox } from '../Form/Checkbox';
 import { Select } from '../Form/Select';
 import { TextInput } from '../Form/TextInput';
 
 interface Props {
-  field: IWizardField;
+  field: WizardField;
   className?: string;
 }
 

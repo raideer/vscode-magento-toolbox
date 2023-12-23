@@ -31,15 +31,9 @@ export const generateBlockLayoutHandle = async (
     blockTemplateName,
     `${vendor}_${module}::${blockTemplateName}.phtml`
   );
-  const container = new LayoutBodyReference(
-    data.referenceType,
-    data.referenceName,
-    [
-      block
-    ]
-  )
+  const container = new LayoutBodyReference(data.referenceType, data.referenceName, [block]);
   const body = new LayoutBody([container]);
-  layoutHandle.generator.addItem(body);
+  layoutHandle.addItem(body);
 
   return layoutHandle.toString(existing);
 };

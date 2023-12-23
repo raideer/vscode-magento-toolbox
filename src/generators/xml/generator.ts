@@ -1,24 +1,27 @@
-import { IXmlGenerator, IXmlPart } from "types/generator";
+export interface XmlFactory {
+  toObject(): Object;
+  toString(existing?: Object | null): string;
+}
 
 /**
  * Represents a part of XML document.
- * 
+ *
  * Examples:
- * 
+ *
  * <example name="pluginName" type="pluginType">
  *   foobar
  * </example>
- * 
+ *
  * - "example": key
  * - "name", "type": attributes
  * - "foobar": value
- * 
+ *
  */
-export abstract class XmlPart implements IXmlPart {
+export abstract class XmlPart {
   constructor(
     protected attributes: Record<string, string> = {},
-    protected children: IXmlPart[] = [],
-    protected value?: string | IXmlPart[]
+    protected children: XmlPart[] = [],
+    protected value?: string | XmlPart[]
   ) {}
 
   public setAttribute(name: string, value: string) {
@@ -29,7 +32,7 @@ export abstract class XmlPart implements IXmlPart {
     this.children.push(child);
   }
 
-  public setValue(value: string | IXmlPart[]) {
+  public setValue(value: string | XmlPart[]) {
     this.value = value;
   }
 
@@ -67,11 +70,8 @@ export abstract class XmlPart implements IXmlPart {
 /**
  * Generates XML object and string from XmlParts
  */
-export abstract class XmlGenerator<T extends IXmlPart> implements IXmlGenerator {
-  constructor(
-    protected items: T[] = [],
-    protected xsdPath?: string
-  ){}
+export abstract class XmlGenerator<T extends XmlPart> {
+  constructor(protected items: T[] = [], protected xsdPath?: string) {}
 
   public addItem(item: T) {
     this.items.push(item);
@@ -84,7 +84,7 @@ export abstract class XmlGenerator<T extends IXmlPart> implements IXmlGenerator 
   public toXmlObject(rootElement: string) {
     const head = {
       $: {
-        'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance'
+        'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
       },
     };
 
@@ -99,11 +99,11 @@ export abstract class XmlGenerator<T extends IXmlPart> implements IXmlGenerator 
           if (!acc[item.getKey()]) {
             acc[item.getKey()] = [];
           }
-    
+
           acc[item.getKey()].push(item.toXmlObject());
-    
+
           return acc;
-        }, {})
+        }, {}),
       },
     };
 

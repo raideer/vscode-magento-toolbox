@@ -1,48 +1,48 @@
 import { ErrorMessages, Rules } from 'validatorjs';
 
-export interface IWizard {
+export interface Wizard {
   title: string;
   description?: string;
-  fields: IWizardField[];
+  fields: WizardField[];
   validationSchema?: any;
   validation?: Rules;
   validationMessages?: ErrorMessages;
 }
 
-export type IWizardField =
-  | IWizardTextField
-  | IWizardNumberField
-  | IWizardSelectField
-  | IWizardReadonlyField
-  | IWizardCheckboxField;
+export type WizardField =
+  | WizardTextField
+  | WizardNumberField
+  | WizardSelectField
+  | WizardReadonlyField
+  | WizardCheckboxField;
 
-export interface IWizardTextField extends IWizardGenericField {
+export interface WizardTextField extends WizardGenericField {
   type: WizardInput.Text;
   placeholder?: string;
 }
 
-export interface IWizardNumberField extends IWizardGenericField {
+export interface WizardNumberField extends WizardGenericField {
   type: WizardInput.Number;
   placeholder?: string;
 }
 
-export interface IWizardReadonlyField extends IWizardGenericField {
+export interface WizardReadonlyField extends WizardGenericField {
   type: WizardInput.Readonly;
   placeholder?: string;
 }
 
-export interface IWizardSelectField extends IWizardGenericField {
+export interface WizardSelectField extends WizardGenericField {
   type: WizardInput.Select;
-  options: IWizardSelectOption[];
+  options: WizardSelectOption[];
   multiple?: boolean;
   search?: boolean;
 }
 
-export interface IWizardCheckboxField extends IWizardGenericField {
+export interface WizardCheckboxField extends WizardGenericField {
   type: WizardInput.Checkbox;
 }
 
-export interface IWizardGenericField {
+export interface WizardGenericField {
   id: string;
   label: string;
   description?: string[];
@@ -58,7 +58,7 @@ export enum WizardInput {
   Readonly = 'readonly',
 }
 
-export interface IWizardSelectOption {
+export interface WizardSelectOption {
   label: string;
   value: string;
 }

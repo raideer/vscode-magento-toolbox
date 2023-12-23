@@ -1,7 +1,6 @@
 import { WizardGenerator } from 'base/wizard';
 import { first } from 'lodash-es';
-import { IWizardField, WizardInput } from 'types/wizard';
-import { ExtensionContext } from 'vscode';
+import { WizardField, WizardInput } from 'types/wizard';
 
 export interface IViewModelWizardBlockData {
   module: string;
@@ -15,7 +14,7 @@ export const viewModelWizard = async (modules: string[], initialModule?: string)
   wizard.setTitle('Generate a new View Model');
   wizard.setDescription('Create a new View Model class.');
 
-  const fields: IWizardField[] = [
+  const fields: WizardField[] = [
     {
       id: 'module',
       label: 'Module*',

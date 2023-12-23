@@ -1,12 +1,12 @@
 import clsx from 'clsx';
 import { useField } from 'formik';
-import { IWizardSelectOption } from 'types/wizard';
+import { WizardSelectOption } from 'types/wizard';
 import ReactSelect from 'react-select';
 
 interface Props {
   name: string;
   description?: string[];
-  options: IWizardSelectOption[];
+  options: WizardSelectOption[];
   multiple?: boolean;
   search?: boolean;
 }
