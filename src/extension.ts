@@ -1,15 +1,15 @@
 import * as vscode from 'vscode';
 
+import { ext } from 'base/variables';
 import generatePlugin from 'commands/generate-plugin';
 import generatePreference from 'commands/generate-preference';
 import generateModule from './commands/generate-module';
 import generateObserver from './commands/generate-observer';
 import generateBlock from './commands/generate-block';
 import generateController from './commands/generate-controller';
-import handleChangeActiveTextEditor from 'base/events/handleChangeActiveTextEditor';
+import handleChangeActiveTextEditor from 'events/handleChangeActiveTextEditor';
 import generateViewModel from 'commands/generate-viewmodel';
-import { ext } from 'base/variables';
-import handleChangeTextEditorSelection from 'base/events/handleChangeTextEditorSelection';
+import handleChangeTextEditorSelection from 'events/handleChangeTextEditorSelection';
 import generateXmlCatalog from 'commands/generate-xml-catalog';
 import indexWorkspace from 'commands/index-workspace';
 
