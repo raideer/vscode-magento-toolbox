@@ -31,10 +31,7 @@ export class NamespaceIndexer extends Indexer {
 
           paths.forEach((path) => {
             const uri = Uri.joinPath(file, '..', path);
-            this.data.namespaces.set(namespace, {
-              uri,
-              namespace,
-            });
+            this.saveNamespace(namespace, uri);
           });
         }
       } else if (composer.autoload['psr-0']) {
@@ -45,14 +42,24 @@ export class NamespaceIndexer extends Indexer {
 
           paths.forEach((path) => {
             const uri = Uri.joinPath(file, '..', path, namespace.replace('\\\\', '/'));
-            this.data.namespaces.set(namespace, {
-              uri,
-              namespace,
-            });
+            this.saveNamespace(namespace, uri);
           });
         }
       }
     }
+  }
+
+  private saveNamespace(namespace: string, uri: Uri) {
+    if (this.data.namespaces.has(namespace)) {
+      const namespaceData = this.data.namespaces.get(namespace)!;
+      namespaceData.directories.push(uri);
+      return;
+    }
+
+    this.data.namespaces.set(namespace, {
+      directories: [uri],
+      namespace,
+    });
   }
 
   public getData() {
@@ -63,11 +70,9 @@ export class NamespaceIndexer extends Indexer {
     return 'namespaces';
   }
 
-  private async saveModuleNamespaces(composer: any) {}
-
   private async discoverComposerConfigs(root: Uri) {
     const pattern = new RelativePattern(root, '**/composer.json');
-    const files = await workspace.findFiles(pattern);
+    const files = await workspace.findFiles(pattern, 'dev/**');
 
     return files;
   }

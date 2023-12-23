@@ -47,15 +47,14 @@ export async function decoratePluginClass(editor: TextEditor) {
   message.isTrusted = true;
 
   const promises = plugins.map(async (plugin) => {
-    const namespace = workspaceIndex.namespaces.getClassNamespace(plugin.pluginClass);
+    const namespace = await workspaceIndex.namespaces.getClassNamespace(plugin.pluginClass);
 
     let link = plugin.pluginClass;
 
     if (namespace) {
-      const fileUri = Uri.joinPath(namespace.uri, `${namespace.namespace}.php`);
-      link = `[${plugin.pluginClass}](${fileUri})`;
+      link = `[${plugin.pluginClass}](${namespace.fileUri})`;
 
-      await decoratePluginFunctions(editor, plugin, fileUri);
+      await decoratePluginFunctions(editor, plugin, namespace.fileUri);
     }
 
     message.appendMarkdown(`- ${link} [(di.xml)](${plugin.diUri})\n`);

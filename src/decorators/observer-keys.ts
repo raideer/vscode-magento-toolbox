@@ -17,7 +17,7 @@ const decorationType = window.createTextEditorDecorationType({
   borderColor: new ThemeColor('editor.selectionBackground'),
 });
 
-export function decorateObserverKeys(editor: TextEditor) {
+export async function decorateObserverKeys(editor: TextEditor) {
   const sourceCode = editor.document.getText();
   const regex = /->dispatch\([\n\s]*['"](\w+)['"](?!\s*\.)/;
   const offset = 12;
@@ -46,18 +46,17 @@ export function decorateObserverKeys(editor: TextEditor) {
         message.appendMarkdown(`Observers listening to this event:\n\n`);
       }
 
-      observers.forEach((observer) => {
-        const namespace = workspaceIndex.namespaces.getClassNamespace(observer.class);
+      for (const observer of observers) {
+        const namespace = await workspaceIndex.namespaces.getClassNamespace(observer.class);
 
         let link = observer.class;
 
         if (namespace) {
-          const fileUri = Uri.joinPath(namespace.uri, `${namespace.namespace}.php`);
-          link = `[${observer.class}](${fileUri})`;
+          link = `[${observer.class}](${namespace.fileUri})`;
         }
 
         message.appendMarkdown(`- ${link}\n\n`);
-      });
+      }
 
       message.appendMarkdown(
         `[Create Observer](command:magento-toolbox.generateObserver?${encodeURIComponent(

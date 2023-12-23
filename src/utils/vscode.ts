@@ -1,6 +1,8 @@
 import { OpenDialogOptions, Uri, commands, window, workspace } from 'vscode';
 import { ExecOptions, exec } from 'child_process';
 
+const fileExistsCache = new Map<Uri, boolean>();
+
 export async function openTextDialog(prompt: string, placeHolder?: string, value?: string) {
   const result = await window.showInputBox({
     prompt,
@@ -56,11 +58,21 @@ export function getActiveWorkspaceFolder() {
   return workspace.getWorkspaceFolder(window.activeTextEditor.document.uri);
 }
 
-export function fileExists(uri: Uri) {
-  return workspace.fs.stat(uri).then(
-    () => true,
-    () => false
-  );
+export async function fileExists(uri: Uri, skipCache = false) {
+  if (!skipCache && fileExistsCache.has(uri)) {
+    return fileExistsCache.get(uri)!;
+  }
+
+  return workspace.fs
+    .stat(uri)
+    .then(
+      () => true,
+      () => false
+    )
+    .then((exists) => {
+      fileExistsCache.set(uri, exists);
+      return exists;
+    });
 }
 
 export function readFile(uri: Uri) {

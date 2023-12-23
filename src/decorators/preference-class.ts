@@ -7,7 +7,7 @@ const decorationType = window.createTextEditorDecorationType({
   borderColor: new ThemeColor('editor.selectionBackground'),
 });
 
-export function decoratePreferenceClass(editor: TextEditor) {
+export async function decoratePreferenceClass(editor: TextEditor) {
   const namespaceMatch = getClassAndNamespace(editor);
 
   if (!namespaceMatch) {
@@ -36,18 +36,17 @@ export function decoratePreferenceClass(editor: TextEditor) {
   message.appendMarkdown(`Interface implementations:\n`);
   message.isTrusted = true;
 
-  preferences.forEach((preference) => {
-    const namespace = workspaceIndex.namespaces.getClassNamespace(preference.type);
+  for (const preference of preferences) {
+    const namespace = await workspaceIndex.namespaces.getClassNamespace(preference.type);
 
     let link = preference.type;
 
     if (namespace) {
-      const fileUri = Uri.joinPath(namespace.uri, `${namespace.namespace}.php`);
-      link = `[${preference.type}](${fileUri})`;
+      link = `[${preference.type}](${namespace.fileUri})`;
     }
 
     message.appendMarkdown(`- ${link} [(di.xml)](${preference.diUri})\n`);
-  });
+  }
 
   editor.setDecorations(decorationType, [
     {

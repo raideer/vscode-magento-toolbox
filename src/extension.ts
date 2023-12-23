@@ -12,6 +12,7 @@ import generateViewModel from 'commands/generate-viewmodel';
 import handleChangeTextEditorSelection from 'events/handleChangeTextEditorSelection';
 import generateXmlCatalog from 'commands/generate-xml-catalog';
 import indexWorkspace from 'commands/index-workspace';
+import xmlClassHover from 'hovers/xml-class-hover';
 
 const loadCommands = () => {
   const commands = [
@@ -50,6 +51,10 @@ const loadEvents = () => {
   handleChangeActiveTextEditor(vscode.window.activeTextEditor);
 };
 
+const loadHoverProviders = () => {
+  xmlClassHover();
+};
+
 export async function activate(context: vscode.ExtensionContext) {
   ext.context = context;
 
@@ -60,6 +65,7 @@ export async function activate(context: vscode.ExtensionContext) {
   await vscode.commands.executeCommand('magento-toolbox.indexWorkspace');
 
   loadEvents();
+  loadHoverProviders();
 
   console.log('[Magento Toolbox] Loaded');
 }
