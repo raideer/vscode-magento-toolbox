@@ -2,11 +2,13 @@ import { WorkspaceFolder } from 'vscode';
 import { NamespaceIndexerData } from './namespace/data';
 import { ModuleIndexerData } from './module/indexer';
 import { ObserverIndexerData } from './observer/indexer';
+import { DiIndexerData } from './di/indexer';
 
 export type WorkspaceIndex = {
   modules: ModuleIndexerData;
   observers: ObserverIndexerData;
   namespaces: NamespaceIndexerData;
+  di: DiIndexerData;
 };
 
 export abstract class Indexer<D = any> {

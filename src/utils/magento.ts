@@ -1,6 +1,6 @@
 import { workspace, Uri, RelativePattern, WorkspaceFolder } from 'vscode';
 import get from 'lodash-es/get';
-import { uniq } from 'lodash-es';
+import { lowerFirst, trimStart, uniq } from 'lodash-es';
 import { parseXml } from './xml';
 import { ext } from 'base/variables';
 
@@ -29,6 +29,10 @@ export function getModuleUri(appCodeUri: Uri, module: string) {
   return Uri.joinPath(appCodeUri, `${v}/${m}`);
 }
 
+export function cleanNamespace(namespace: string) {
+  return trimStart(namespace, '\\');
+}
+
 export async function resolveMagentoRoot(workspaceFolder: WorkspaceFolder) {
   const { uri } = workspaceFolder;
 
@@ -49,4 +53,12 @@ export async function resolveMagentoRoot(workspaceFolder: WorkspaceFolder) {
   }
 
   return null;
+}
+
+export function isPluginMethod(method: string) {
+  return /^around|^before|^after/.test(method);
+}
+
+export function pluginMethodToMethodName(method: string) {
+  return lowerFirst(method.replace(/^around|^before|^after/, ''));
 }

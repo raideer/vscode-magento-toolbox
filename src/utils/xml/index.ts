@@ -1,4 +1,5 @@
-import { Uri, workspace } from 'vscode';
+import { readFile } from 'utils/vscode';
+import { Uri } from 'vscode';
 import { Builder, parseString } from 'xml2js';
 
 export async function parseXml(xml: string): Promise<null | Object> {
@@ -17,11 +18,9 @@ export async function loadXml(uri: Uri) {
   let xml: null | Object = null;
 
   try {
-    xml = await workspace.fs
-      .readFile(uri)
-      .then((buffer) => parseXml(buffer.toString()));
+    xml = await readFile(uri).then((string) => parseXml(string));
   } catch (e) {
-    // File does not exist
+    // Do nothing
   }
 
   return xml;

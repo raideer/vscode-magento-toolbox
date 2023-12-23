@@ -63,6 +63,10 @@ export function fileExists(uri: Uri) {
   );
 }
 
+export function readFile(uri: Uri) {
+  return workspace.fs.readFile(uri).then((buffer) => buffer.toString());
+}
+
 export async function execCommand(command: string, options: ExecOptions = {}) {
   return new Promise((resolve, reject) => {
     exec(command, options, (err, stdout, stderr) => {

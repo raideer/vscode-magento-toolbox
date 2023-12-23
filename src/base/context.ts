@@ -39,6 +39,10 @@ const getCanGeneratePlugin = (editor: TextEditor) => {
   const phpFile = PhpFile.fromTextEditor(editor);
   const phpClass = phpFile.classes[0];
 
+  if (!phpClass) {
+    return false;
+  }
+
   const canGeneratePlugin =
     !phpClass.ast.isFinal &&
     (!phpClass.ast.implements ||

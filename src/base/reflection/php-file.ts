@@ -6,6 +6,8 @@ import { TextEditor, Uri } from 'vscode';
 import { PhpNode } from './php-node';
 import { PhpUseItem } from './php-use';
 import { Memoize } from 'typescript-memoize';
+import { loadXml } from 'utils/xml';
+import { readFile } from 'utils/vscode';
 
 export class PhpFile extends PhpNode<NodeKind.Program> {
   constructor(ast: Program, public uri: Uri) {
@@ -41,5 +43,10 @@ export class PhpFile extends PhpNode<NodeKind.Program> {
   public static fromText(text: string, uri: Uri) {
     const ast = parsePhpClass(text, uri.fsPath);
     return new PhpFile(ast, uri);
+  }
+
+  public static async fromUri(uri: Uri) {
+    const text = await readFile(uri);
+    return PhpFile.fromText(text, uri);
   }
 }
