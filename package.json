@@ -130,19 +130,19 @@
       "magento-toolbox.explorer-submenu": [
         {
           "command": "magento-toolbox.generateModule",
-          "when": "resourceDirname =~ /app/"
+          "when": "resourcePath =~ /app/"
         },
         {
           "command": "magento-toolbox.generateObserver",
-          "when": "resourceDirname =~ /app\\\\code\\\\/"
+          "when": "resourcePath =~ /app\\\\code\\\\/"
         },
         {
           "command": "magento-toolbox.generateEmptyDiXml",
-          "when": "resourceDirname =~ /app\\\\code\\\\\\w+\\\\\\w+/"
+          "when": "resourcePath =~ /app\\\\code\\\\\\w+\\\\\\w+\\\\etc/"
         },
         {
           "command": "magento-toolbox.generateEmptyConfigXml",
-          "when": "resourceDirname =~ /app\\\\code\\\\\\w+\\\\\\w+/"
+          "when": "resourcePath =~ /app\\\\code\\\\\\w+\\\\\\w+\\\\etc/"
         }
       ],
       "magento-toolbox.submenu": [
