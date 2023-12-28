@@ -104,6 +104,10 @@
         "title": "Magento Toolbox: Generate an empty layout.xml file"
       },
       {
+        "command": "magento-toolbox.generateEmptyRoutesXml",
+        "title": "Magento Toolbox: Generate an empty routes.xml file"
+      },
+      {
         "command": "magento-toolbox.indexWorkspace",
         "title": "Magento Toolbox: Index workspace"
       }
@@ -151,6 +155,10 @@
         {
           "command": "magento-toolbox.generateEmptyLayoutXml",
           "when": "resourcePath =~ /app\\\\code\\\\\\w+\\\\\\w+\\\\view/"
+        },
+        {
+          "command": "magento-toolbox.generateEmptyRoutesXml",
+          "when": "resourcePath =~ /app\\\\code\\\\\\w+\\\\\\w+\\\\etc/"
         }
       ],
       "magento-toolbox.submenu": [

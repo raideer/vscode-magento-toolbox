@@ -1,7 +1,7 @@
 import { mergeXml } from 'utils/xml/merge';
 import { Builder } from 'xml2js';
 
-export interface IRoutesXmlVariables {
+export interface RoutesXmlVariables {
   routeName: string;
   frontName: string;
   module: string;
@@ -12,7 +12,7 @@ export interface IRoutesXmlVariables {
 /**
  * Generates routes.xml file
  */
-export function generateRoutesXml(variables: IRoutesXmlVariables, initialObject: any = {}) {
+export function generateRoutesXml(variables: RoutesXmlVariables, initialObject: any = {}) {
   const xmlBuilder = new Builder({
     xmldec: {
       version: '1.0',
@@ -62,7 +62,5 @@ export function generateRoutesXml(variables: IRoutesXmlVariables, initialObject:
     },
   };
 
-  return xmlBuilder.buildObject(
-    mergeXml(initialObject, routesXmlObject)
-  );
+  return xmlBuilder.buildObject(mergeXml(initialObject, routesXmlObject));
 }
