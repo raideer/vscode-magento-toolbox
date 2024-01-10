@@ -23,7 +23,7 @@ export class NamespaceIndexerData {
     const classNamespace = trimStart(namespace, '\\');
     const parts = classNamespace.split('\\');
 
-    for (let i = parts.length; i > 0; i--) {
+    for (let i = parts.length; i >= 0; i--) {
       const baseNamespace = parts.slice(0, i).join('\\') + '\\';
 
       if (!this.namespaces.has(baseNamespace)) {

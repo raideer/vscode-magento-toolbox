@@ -142,23 +142,23 @@
         },
         {
           "command": "magento-toolbox.generateObserver",
-          "when": "resourcePath =~ /app\\\\code\\\\/"
+          "when": "resourcePath =~ /app\\/code\\//"
         },
         {
           "command": "magento-toolbox.generateEmptyDiXml",
-          "when": "resourcePath =~ /app\\\\code\\\\\\w+\\\\\\w+\\\\etc/"
+          "when": "resourcePath =~ /app\\/code\\/\\w+\\/\\w+\\/etc/"
         },
         {
           "command": "magento-toolbox.generateEmptyConfigXml",
-          "when": "resourcePath =~ /app\\\\code\\\\\\w+\\\\\\w+\\\\etc/"
+          "when": "resourcePath =~ /app\\/code\\/\\w+\\/\\w+\\/etc/"
         },
         {
           "command": "magento-toolbox.generateEmptyLayoutXml",
-          "when": "resourcePath =~ /app\\\\code\\\\\\w+\\\\\\w+\\\\view/"
+          "when": "resourcePath =~ /app\\/code\\/\\w+\\/\\w+\\/view/"
         },
         {
           "command": "magento-toolbox.generateEmptyRoutesXml",
-          "when": "resourcePath =~ /app\\\\code\\\\\\w+\\\\\\w+\\\\etc/"
+          "when": "resourcePath =~ /app\\/code\\/\\w+\\/\\w+\\/etc/"
         }
       ],
       "magento-toolbox.submenu": [

@@ -34,7 +34,9 @@ export class NamespaceIndexer extends Indexer {
             this.saveNamespace(namespace, uri);
           });
         }
-      } else if (composer.autoload['psr-0']) {
+      }
+
+      if (composer.autoload['psr-0']) {
         for (const namespace in composer.autoload['psr-0']) {
           const path = composer.autoload['psr-0'][namespace];
 
@@ -50,15 +52,17 @@ export class NamespaceIndexer extends Indexer {
   }
 
   private saveNamespace(namespace: string, uri: Uri) {
-    if (this.data.namespaces.has(namespace)) {
-      const namespaceData = this.data.namespaces.get(namespace)!;
+    const key = namespace === '' ? '\\' : namespace;
+
+    if (this.data.namespaces.has(key)) {
+      const namespaceData = this.data.namespaces.get(key)!;
       namespaceData.directories.push(uri);
       return;
     }
 
-    this.data.namespaces.set(namespace, {
+    this.data.namespaces.set(key, {
       directories: [uri],
-      namespace,
+      namespace: key,
     });
   }
 
