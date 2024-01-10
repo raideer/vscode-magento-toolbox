@@ -58,7 +58,8 @@ export class NamespaceIndexerData {
 
   private async getFileDirectory(namespace: string, directories: Uri[]) {
     for (const directory of directories) {
-      const fileUri = Uri.joinPath(directory, `${namespace}.php`);
+      const classPath = namespace.replace(/\\/g, '/');
+      const fileUri = Uri.joinPath(directory, `${classPath}.php`);
       const exists = await fileExists(fileUri);
 
       if (exists) {
