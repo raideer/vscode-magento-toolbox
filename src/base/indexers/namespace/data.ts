@@ -41,7 +41,8 @@ export class NamespaceIndexerData {
         continue;
       }
 
-      const fileUri = Uri.joinPath(uri, `${namespace}.php`);
+      const classPath = namespace.replace(/\\/g, '/');
+      const fileUri = Uri.joinPath(uri, `${classPath}.php`);
 
       return {
         baseNamespace: namespaceData.namespace,
