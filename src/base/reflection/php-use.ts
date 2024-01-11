@@ -9,6 +9,13 @@ export class PhpUseItem extends PhpNode<NodeKind.UseItem> {
     super(ast);
   }
 
+  public get fullName() {
+    if (this.ast.alias) {
+      return this.ast.alias.name;
+    }
+    return this.ast.name;
+  }
+
   public get name() {
     if (this.ast.alias) {
       return this.ast.alias.name;

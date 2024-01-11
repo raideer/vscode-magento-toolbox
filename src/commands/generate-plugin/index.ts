@@ -47,7 +47,7 @@ export default async function () {
 
   // Module directory to generate plugin in
   const moduleDirectory = vscode.Uri.joinPath(appCodeUri, `${vendor}/${module}`);
-  const subjectClass = `${phpClass.name}\\${phpClass.name}`;
+  const subjectClass = `${phpClass.parent.namespace}\\${phpClass.name}`;
 
   const { pluginClass, namespace } = await generatePluginClass(data, phpClass, method);
 

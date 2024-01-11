@@ -87,7 +87,7 @@ export const generatePluginClass = async (
 
       if (useItem) {
         return {
-          class: useItem.name,
+          class: useItem.fullName,
           alias: param.type!,
         };
       }
@@ -99,11 +99,9 @@ export const generatePluginClass = async (
         };
       }
 
-      return {
-        class: param.type!,
-        alias: null,
-      };
-    });
+      return null;
+    })
+    .filter((item) => item !== null) as IClassUse[];
 
   const pluginClass = await generateClass({
     namespace,
