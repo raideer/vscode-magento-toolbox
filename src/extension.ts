@@ -18,6 +18,7 @@ import generateEmptyDiXml from 'commands/generate-empty-di-xml';
 import generateEmptyConfigXml from 'commands/generate-empty-config-xml';
 import generateEmptyLayoutXml from 'commands/generate-empty-layout-xml';
 import generateEmptyRoutesXml from 'commands/generate-empty-routes-xml';
+import handleSaveTextDocument from 'events/handleSaveTextDocument';
 
 const loadCommands = () => {
   const commands = [
@@ -57,6 +58,8 @@ const loadEvents = () => {
   ext.context.subscriptions.push(
     vscode.window.onDidChangeTextEditorSelection(handleChangeTextEditorSelection)
   );
+
+  ext.context.subscriptions.push(vscode.workspace.onDidSaveTextDocument(handleSaveTextDocument));
 
   handleChangeActiveTextEditor(vscode.window.activeTextEditor);
 };
