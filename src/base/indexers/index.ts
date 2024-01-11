@@ -1,4 +1,4 @@
-import { WorkspaceFolder } from 'vscode';
+import { Progress, WorkspaceFolder } from 'vscode';
 import { NamespaceIndexerData } from './namespace/data';
 import { ModuleIndexerData } from './module/indexer';
 import { ObserverIndexerData } from './observer/indexer';
@@ -15,7 +15,11 @@ export abstract class Indexer<D = any> {
   public abstract getName(): string;
   public abstract index(
     workspaceFolder: WorkspaceFolder,
-    data: Partial<WorkspaceIndex>
+    data: Partial<WorkspaceIndex>,
+    progress: Progress<{
+      message?: string;
+      increment?: number;
+    }>
   ): Promise<void>;
   public abstract getData(): D;
 }
