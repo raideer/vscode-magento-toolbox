@@ -6,8 +6,8 @@ import { TextEditor, Uri } from 'vscode';
 import { PhpNode } from './php-node';
 import { PhpUseItem } from './php-use';
 import { Memoize } from 'typescript-memoize';
-import { loadXml } from 'utils/xml';
 import { readFile } from 'utils/vscode';
+import { PhpInterface } from './php-interface';
 
 export class PhpFile extends PhpNode<NodeKind.Program> {
   constructor(ast: Program, public uri: Uri) {
@@ -28,6 +28,11 @@ export class PhpFile extends PhpNode<NodeKind.Program> {
   @Memoize()
   public get classes() {
     return this.searchAst(NodeKind.Class).map((ast) => new PhpClass(ast, this));
+  }
+
+  @Memoize()
+  public get interfaces() {
+    return this.searchAst(NodeKind.Interface).map((ast) => new PhpInterface(ast, this));
   }
 
   @Memoize()

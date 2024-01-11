@@ -1,5 +1,6 @@
 import {
   Class,
+  Interface,
   Engine,
   Identifier,
   Method,
@@ -21,6 +22,7 @@ export enum NodeKind {
   Program = 'program',
   Namespace = 'namespace',
   Class = 'class',
+  Interface = 'interface',
   UseGroup = 'usegroup',
   UseItem = 'useitem',
   Method = 'method',
@@ -38,6 +40,8 @@ export type KindType<K> = K extends NodeKind.Program
   ? UseGroup
   : K extends NodeKind.UseItem
   ? UseItem
+  : K extends NodeKind.Interface
+  ? Interface
   : never;
 
 export const searchAst = <K extends NodeKind>(ast: Node | Node[], kind: K): KindType<K>[] => {

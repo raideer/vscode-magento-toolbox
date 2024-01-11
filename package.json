@@ -168,7 +168,7 @@
         },
         {
           "command": "magento-toolbox.generatePreference",
-          "when": "magento-toolbox.canGeneratePlugin"
+          "when": "magento-toolbox.canGeneratePreference"
         },
         {
           "command": "magento-toolbox.generateObserver",

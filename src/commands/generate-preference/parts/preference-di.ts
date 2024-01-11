@@ -4,13 +4,14 @@ import { PreferenceWizardData } from '../preference-wizard';
 import { getModuleUri, getScopedPath } from 'utils/magento';
 import { DiFactory } from 'generators/xml/di';
 import { PhpClass } from 'base/reflection/php-class';
+import { PhpInterface } from 'base/reflection/php-interface';
 
 /**
  * Generates di.xml for a preference
  */
 export const generatePreferenceDi = async (
   data: PreferenceWizardData,
-  methodClass: PhpClass,
+  methodClass: PhpClass | PhpInterface,
   appCodeUri: Uri
 ) => {
   const moduleDirectory = getModuleUri(appCodeUri, data.module);

@@ -3,10 +3,12 @@ import { PhpFile } from './reflection/php-file';
 
 interface EditorContext {
   canGeneratePlugin: boolean;
+  canGeneratePreference: boolean;
   canGenerateObserver: boolean;
 }
 const defaultEditorContext: EditorContext = Object.freeze({
   canGeneratePlugin: false,
+  canGeneratePreference: false,
   canGenerateObserver: false,
 });
 
@@ -20,6 +22,7 @@ export async function updateContext(type: 'editor' | 'selection', editor?: TextE
 
   if (type === 'editor') {
     currentContext.canGeneratePlugin = getCanGeneratePlugin(editor);
+    currentContext.canGeneratePreference = getCanGeneratePreference(editor);
   }
 
   await setContext(currentContext);
@@ -38,14 +41,40 @@ const getCanGeneratePlugin = (editor: TextEditor) => {
   const phpFile = PhpFile.fromTextEditor(editor);
   const phpClass = phpFile.classes[0];
 
-  if (!phpClass) {
-    return false;
+  if (phpClass) {
+    const canGeneratePlugin =
+      !phpClass.ast.isFinal &&
+      (!phpClass.ast.implements ||
+        !phpClass.ast.implements.find((item) => item.name === 'NoninterceptableInterface'));
+
+    return canGeneratePlugin;
   }
 
-  const canGeneratePlugin =
-    !phpClass.ast.isFinal &&
-    (!phpClass.ast.implements ||
-      !phpClass.ast.implements.find((item) => item.name === 'NoninterceptableInterface'));
+  return false;
+};
 
-  return canGeneratePlugin;
+const getCanGeneratePreference = (editor: TextEditor) => {
+  const phpFile = PhpFile.fromTextEditor(editor);
+  const phpClass = phpFile.classes[0];
+
+  if (phpClass) {
+    const canGeneratePlugin =
+      !phpClass.ast.isFinal &&
+      (!phpClass.ast.implements ||
+        !phpClass.ast.implements.find((item) => item.name === 'NoninterceptableInterface'));
+
+    return canGeneratePlugin;
+  }
+
+  const phpInterface = phpFile.interfaces[0];
+
+  if (phpInterface) {
+    const canGeneratePlugin =
+      !phpInterface.ast.extends ||
+      !phpInterface.ast.extends.find((item) => item.name === 'NoninterceptableInterface');
+
+    return canGeneratePlugin;
+  }
+
+  return false;
 };

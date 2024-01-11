@@ -1,9 +1,10 @@
 import { PhpClass } from 'base/reflection/php-class';
 import { PhpFile } from 'base/reflection/php-file';
+import { PhpInterface } from 'base/reflection/php-interface';
 import { first } from 'lodash-es';
 import * as vscode from 'vscode';
 
-export const resolvePreferenceClass = (): PhpClass | null => {
+export const resolvePreferenceClass = (): PhpClass | PhpInterface | null => {
   const editor = vscode.window.activeTextEditor;
 
   if (!editor) {
@@ -17,13 +18,24 @@ export const resolvePreferenceClass = (): PhpClass | null => {
     return null;
   }
 
-  const phpClass = first(PhpFile.fromTextEditor(editor).classes);
+  const phpFile = PhpFile.fromTextEditor(editor);
+  const phpClass = first(phpFile.classes);
 
-  if (!phpClass) {
-    vscode.window.showErrorMessage('No class found');
-    return null;
+  if (phpClass) {
+    return validatePhpClass(phpClass);
   }
 
+  const phpInterface = first(phpFile.interfaces);
+
+  if (phpInterface) {
+    return validatePhpInterface(phpInterface);
+  }
+
+  vscode.window.showErrorMessage('No class or interface found');
+  return null;
+};
+
+const validatePhpClass = (phpClass: PhpClass) => {
   if (phpClass.ast.isFinal) {
     vscode.window.showErrorMessage('Cannot create a preference for final class');
     return null;
@@ -40,4 +52,18 @@ export const resolvePreferenceClass = (): PhpClass | null => {
   }
 
   return phpClass;
+};
+
+const validatePhpInterface = (phpInterface: PhpInterface) => {
+  if (
+    phpInterface.ast.extends &&
+    phpInterface.ast.extends.find((item) => item.name === 'NoninterceptableInterface')
+  ) {
+    vscode.window.showErrorMessage(
+      'Cannot create a preference for a interface that extends NoninterceptableInterface'
+    );
+    return null;
+  }
+
+  return phpInterface;
 };
