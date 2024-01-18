@@ -112,6 +112,10 @@
         "title": "Magento Toolbox: Generate an empty system.xml file"
       },
       {
+        "command": "magento-toolbox.generateEmptyCrontabXml",
+        "title": "Magento Toolbox: Generate an empty crontab.xml file"
+      },
+      {
         "command": "magento-toolbox.indexWorkspace",
         "title": "Magento Toolbox: Index workspace"
       }
@@ -166,6 +170,10 @@
         },
         {
           "command": "magento-toolbox.generateEmptySystemXml",
+          "when": "resourcePath =~ /app(\\/|\\\\)code(\\/|\\\\)\\w+(\\/|\\\\)\\w+(\\/|\\\\)etc/"
+        },
+        {
+          "command": "magento-toolbox.generateEmptyCrontabXml",
           "when": "resourcePath =~ /app(\\/|\\\\)code(\\/|\\\\)\\w+(\\/|\\\\)\\w+(\\/|\\\\)etc/"
         }
       ],

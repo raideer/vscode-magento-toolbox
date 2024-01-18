@@ -20,6 +20,7 @@ import generateEmptyLayoutXml from 'commands/generate-empty-layout-xml';
 import generateEmptyRoutesXml from 'commands/generate-empty-routes-xml';
 import handleSaveTextDocument from 'events/handleSaveTextDocument';
 import generateEmptySystemXml from 'commands/generate-empty-system-xml';
+import generateEmptyCrontabXml from 'commands/generate-empty-crontab-xml';
 
 const loadCommands = () => {
   const commands = [
@@ -36,6 +37,7 @@ const loadCommands = () => {
     ['magento-toolbox.generateEmptyLayoutXml', generateEmptyLayoutXml],
     ['magento-toolbox.generateEmptyRoutesXml', generateEmptyRoutesXml],
     ['magento-toolbox.generateEmptySystemXml', generateEmptySystemXml],
+    ['magento-toolbox.generateEmptyCrontabXml', generateEmptyCrontabXml],
   ].map(([commandName, command]) => {
     return vscode.commands.registerCommand(commandName as string, command as any);
   });
