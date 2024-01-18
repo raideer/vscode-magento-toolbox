@@ -108,6 +108,10 @@
         "title": "Magento Toolbox: Generate an empty routes.xml file"
       },
       {
+        "command": "magento-toolbox.generateEmptySystemXml",
+        "title": "Magento Toolbox: Generate an empty system.xml file"
+      },
+      {
         "command": "magento-toolbox.indexWorkspace",
         "title": "Magento Toolbox: Index workspace"
       }
@@ -158,6 +162,10 @@
         },
         {
           "command": "magento-toolbox.generateEmptyRoutesXml",
+          "when": "resourcePath =~ /app(\\/|\\\\)code(\\/|\\\\)\\w+(\\/|\\\\)\\w+(\\/|\\\\)etc/"
+        },
+        {
+          "command": "magento-toolbox.generateEmptySystemXml",
           "when": "resourcePath =~ /app(\\/|\\\\)code(\\/|\\\\)\\w+(\\/|\\\\)\\w+(\\/|\\\\)etc/"
         }
       ],
