@@ -1,7 +1,7 @@
 {
   "name": "magento-toolbox",
   "displayName": "Magento Toolbox",
-  "description": "Tools for working with Magento 2",
+  "description": "Magento 2 code generation, inspection and utility tools",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.63.0"
@@ -9,7 +9,7 @@
   "categories": [
     "Other"
   ],
-  "publisher": "raideer",
+  "publisher": "kristofersdev",
   "activationEvents": [
     "workspaceContains:**/app/etc/env.php",
     "workspaceContains:**/app/etc/di.xml",
