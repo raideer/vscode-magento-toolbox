@@ -42,14 +42,20 @@ export async function resolveMagentoRoot(workspaceFolder: WorkspaceFolder) {
     Uri.joinPath(uri, 'var'),
   ];
 
-  try {
-    const status = await Promise.all(testPaths.map((test) => workspace.fs.stat(test)));
+  const status = await Promise.all(
+    testPaths.map(async (test) => {
+      try {
+        await workspace.fs.stat(test);
+      } catch (e) {
+        return false;
+      }
 
-    if (status.every((exists) => exists)) {
-      return uri;
-    }
-  } catch (e) {
-    // Do nothing
+      return true;
+    })
+  );
+
+  if (status.every((exists) => exists)) {
+    return uri;
   }
 
   return null;

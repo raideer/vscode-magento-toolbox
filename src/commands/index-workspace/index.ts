@@ -9,22 +9,23 @@ export default async function () {
     return;
   }
 
-  try {
-    await window.withProgress(
-      {
-        location: ProgressLocation.Window,
-        title: 'Magento Toolbox',
-        cancellable: false,
-      },
-      async (progress) => {
-        for (const workspaceFolder of workspace.workspaceFolders!) {
+  await window.withProgress(
+    {
+      location: ProgressLocation.Window,
+      title: 'Magento Toolbox',
+      cancellable: false,
+    },
+    async (progress) => {
+      for (const workspaceFolder of workspace.workspaceFolders!) {
+        console.log('[Magento Toolbox] Indexing workspace', workspaceFolder.name);
+
+        try {
           const index = await indexWorkspace(workspaceFolder, progress);
           ext.workspaceIndex.set(workspaceFolder, index);
+        } catch (e) {
+          console.error('[Magento Toolbox] Error indexing workspace', e);
         }
       }
-    );
-  } catch (e) {
-    console.error('[Magento Toolbox] Error indexing workspace', e);
-    return;
-  }
+    }
+  );
 }
