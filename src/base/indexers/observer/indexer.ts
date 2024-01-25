@@ -1,7 +1,7 @@
 import { loadXml } from 'utils/xml';
 import { get, trimStart } from 'lodash-es';
 import { removeExtraSlashes } from 'utils/path';
-import { WorkspaceFolder } from 'vscode';
+import { RelativePattern, Uri, WorkspaceFolder, workspace } from 'vscode';
 import { Indexer, WorkspaceIndex } from '..';
 import { MagentoModule } from '../module/indexer';
 
@@ -51,11 +51,15 @@ export class ObserverIndexer extends Indexer {
   }
 
   private async indexModuleObservers(module: MagentoModule) {
-    const eventsXmlPath = module.path.with({
-      path: module.path.path + '/etc/events.xml',
-    });
+    const pattern = new RelativePattern(module.path, 'etc/**/events.xml');
 
-    const eventsXml = await loadXml(eventsXmlPath);
+    const eventsXmlFiles = await workspace.findFiles(pattern);
+
+    return Promise.all(eventsXmlFiles.map(async (file) => this.processConfig(file, module)));
+  }
+
+  private async processConfig(uri: Uri, module: MagentoModule) {
+    const eventsXml = await loadXml(uri);
 
     if (!eventsXml) {
       return;
