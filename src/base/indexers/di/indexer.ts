@@ -1,6 +1,6 @@
 import { loadXml } from 'utils/xml';
 import { get } from 'lodash-es';
-import { Uri, WorkspaceFolder } from 'vscode';
+import { RelativePattern, Uri, WorkspaceFolder, workspace } from 'vscode';
 import { Indexer, WorkspaceIndex } from '..';
 import { MagentoModule } from '../module/indexer';
 import { cleanNamespace } from 'utils/magento';
@@ -54,18 +54,22 @@ export class DiIndexer extends Indexer {
   }
 
   private async indexModuleDi(module: MagentoModule) {
-    const diXmlPath = module.path.with({
-      path: module.path.path + '/etc/di.xml',
-    });
+    const pattern = new RelativePattern(module.path, 'etc/**/di.xml');
 
-    const diXml = await loadXml(diXmlPath);
+    const diXmlFiles = await workspace.findFiles(pattern);
+
+    return Promise.all(diXmlFiles.map(async (file) => this.processXml(file)));
+  }
+
+  private async processXml(uri: Uri) {
+    const diXml = await loadXml(uri);
 
     if (!diXml) {
       return;
     }
 
-    this.indexPreferences(diXml, diXmlPath);
-    this.indexTypes(diXml, diXmlPath);
+    this.indexPreferences(diXml, uri);
+    this.indexTypes(diXml, uri);
   }
 
   private indexPreferences(diXml: Object, diXmlPath: Uri) {
