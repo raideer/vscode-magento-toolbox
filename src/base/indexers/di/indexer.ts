@@ -1,8 +1,7 @@
 import { loadXml } from 'utils/xml';
 import { get } from 'lodash-es';
 import { RelativePattern, Uri, WorkspaceFolder, workspace } from 'vscode';
-import { Indexer, WorkspaceIndex } from '..';
-import { MagentoModule } from '../module/indexer';
+import { Indexer } from '..';
 import { cleanNamespace } from 'utils/magento';
 
 export interface Preference {
@@ -33,16 +32,11 @@ export class DiIndexerData {
 export class DiIndexer extends Indexer {
   protected data = new DiIndexerData();
 
-  public async index(workspaceFolder: WorkspaceFolder, data: Partial<WorkspaceIndex>) {
-    const { modules: moduleIndex } = data;
+  public async index(workspaceFolder: WorkspaceFolder) {
+    const pattern = new RelativePattern(workspaceFolder.uri, 'etc/**/di.xml');
+    const diXmlFiles = await workspace.findFiles(pattern);
 
-    if (moduleIndex) {
-      const promises = Array.from(moduleIndex.modules.values()).map(async (module) =>
-        this.indexModuleDi(module)
-      );
-
-      await Promise.all(promises);
-    }
+    await Promise.all(diXmlFiles.map(async (file) => this.processXml(file)));
   }
 
   public getData() {
@@ -51,14 +45,6 @@ export class DiIndexer extends Indexer {
 
   public getName(): string {
     return 'di';
-  }
-
-  private async indexModuleDi(module: MagentoModule) {
-    const pattern = new RelativePattern(module.path, 'etc/**/di.xml');
-
-    const diXmlFiles = await workspace.findFiles(pattern);
-
-    return Promise.all(diXmlFiles.map(async (file) => this.processXml(file)));
   }
 
   private async processXml(uri: Uri) {

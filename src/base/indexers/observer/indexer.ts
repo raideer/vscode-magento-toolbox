@@ -2,13 +2,11 @@ import { loadXml } from 'utils/xml';
 import { get, trimStart } from 'lodash-es';
 import { removeExtraSlashes } from 'utils/path';
 import { RelativePattern, Uri, WorkspaceFolder, workspace } from 'vscode';
-import { Indexer, WorkspaceIndex } from '..';
-import { MagentoModule } from '../module/indexer';
+import { Indexer } from '..';
 
 export interface Observer {
   event: string;
   class: string;
-  module: string;
 }
 
 export class ObserverIndexerData {
@@ -30,16 +28,12 @@ export class ObserverIndexerData {
 export class ObserverIndexer extends Indexer {
   protected data = new ObserverIndexerData([]);
 
-  public async index(workspaceFolder: WorkspaceFolder, data: Partial<WorkspaceIndex>) {
-    const { modules: moduleIndex } = data;
+  public async index(workspaceFolder: WorkspaceFolder) {
+    const pattern = new RelativePattern(workspaceFolder.uri, 'etc/**/events.xml');
 
-    if (moduleIndex) {
-      const promises = Array.from(moduleIndex.modules.values()).map(async (module) =>
-        this.indexModuleObservers(module)
-      );
+    const eventsXmlFiles = await workspace.findFiles(pattern);
 
-      await Promise.all(promises);
-    }
+    await Promise.all(eventsXmlFiles.map(async (file) => this.processConfig(file)));
   }
 
   public getData() {
@@ -50,15 +44,7 @@ export class ObserverIndexer extends Indexer {
     return 'observers';
   }
 
-  private async indexModuleObservers(module: MagentoModule) {
-    const pattern = new RelativePattern(module.path, 'etc/**/events.xml');
-
-    const eventsXmlFiles = await workspace.findFiles(pattern);
-
-    return Promise.all(eventsXmlFiles.map(async (file) => this.processConfig(file, module)));
-  }
-
-  private async processConfig(uri: Uri, module: MagentoModule) {
+  private async processConfig(uri: Uri) {
     const eventsXml = await loadXml(uri);
 
     if (!eventsXml) {
@@ -78,7 +64,6 @@ export class ObserverIndexer extends Indexer {
           this.data.observers.push({
             event: event.$.name,
             class: observerClass,
-            module: module.name,
           });
         }
       }

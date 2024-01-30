@@ -22,7 +22,9 @@ export async function indexWorkspace(
 
     progress.report({ message: `Running ${instance.getName()} indexer` });
 
-    await instance.index(workspaceFolder, data, progress);
+    const timerName = workspaceFolder.name + instance.getName();
+    await instance.index(workspaceFolder, progress);
+
     data[instance.getName()] = instance.getData();
   }
 

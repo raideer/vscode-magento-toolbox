@@ -1,7 +1,7 @@
 import { Progress, RelativePattern, Uri, WorkspaceFolder, workspace } from 'vscode';
 import { resolveMagentoRoot } from 'utils/magento';
 import { NamespaceIndexerData } from './data';
-import { Indexer, WorkspaceIndex } from '..';
+import { Indexer } from '..';
 import { isArray } from 'lodash-es';
 
 export class NamespaceIndexer extends Indexer {
@@ -9,7 +9,6 @@ export class NamespaceIndexer extends Indexer {
 
   public async index(
     workspaceFolder: WorkspaceFolder,
-    _data: Partial<WorkspaceIndex>,
     progress: Progress<{
       message?: string;
       increment?: number;
