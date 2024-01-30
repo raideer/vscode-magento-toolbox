@@ -2,7 +2,7 @@
   "name": "magento-toolbox",
   "displayName": "Magento Toolbox",
   "description": "Magento 2 code generation, inspection and utility tools",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "engines": {
     "vscode": "^1.63.0"
   },
