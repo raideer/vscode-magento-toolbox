@@ -1,13 +1,13 @@
 import * as vscode from 'vscode';
-import { resolvePluginClass, resolvePluginMethod } from './resolve-plugin-method';
-import { pluginWizard } from './plugin-wizard';
-import { generatePluginClass } from './parts/plugin-class';
-import { generatePluginDi } from './parts/plugin-di';
 import { openFile, writeFile } from 'utils/vscode';
 import { getWorkspaceIndex } from 'utils/extension';
 import { NodeKind, getIdentifierName, parsePhpClass, searchAst } from 'base/reflection/ast';
 import { first } from 'lodash-es';
 import { PhpFile } from 'base/reflection/php-file';
+import { generatePluginDi } from './parts/plugin-di';
+import { generatePluginClass } from './parts/plugin-class';
+import { pluginWizard } from './plugin-wizard';
+import { resolvePluginClass, resolvePluginMethod } from './resolve-plugin-method';
 
 export default async function () {
   const editor = vscode.window.activeTextEditor;

@@ -1,4 +1,3 @@
-import { ext } from 'base/variables';
 import { getWorkspaceIndex } from 'utils/extension';
 import {
   DecorationOptions,
@@ -8,7 +7,6 @@ import {
   window,
   MarkdownString,
   ThemeColor,
-  Uri,
 } from 'vscode';
 
 const decorationType = window.createTextEditorDecorationType({
@@ -26,6 +24,7 @@ export async function decorateObserverKeys(editor: TextEditor) {
 
   const sourceCodeArr = sourceCode.split('\n');
 
+  // eslint-disable-next-line no-plusplus
   for (let line = 0; line < sourceCodeArr.length; line++) {
     const match = sourceCodeArr[line].match(regex);
 

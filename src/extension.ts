@@ -3,10 +3,6 @@ import * as vscode from 'vscode';
 import { ext } from 'base/variables';
 import generatePlugin from 'commands/generate-plugin';
 import generatePreference from 'commands/generate-preference';
-import generateModule from './commands/generate-module';
-import generateObserver from './commands/generate-observer';
-import generateBlock from './commands/generate-block';
-import generateController from './commands/generate-controller';
 import handleChangeActiveTextEditor from 'events/handleChangeActiveTextEditor';
 import generateViewModel from 'commands/generate-viewmodel';
 import handleChangeTextEditorSelection from 'events/handleChangeTextEditorSelection';
@@ -21,6 +17,10 @@ import generateEmptyRoutesXml from 'commands/generate-empty-routes-xml';
 import handleSaveTextDocument from 'events/handleSaveTextDocument';
 import generateEmptySystemXml from 'commands/generate-empty-system-xml';
 import generateEmptyCrontabXml from 'commands/generate-empty-crontab-xml';
+import generateController from './commands/generate-controller';
+import generateBlock from './commands/generate-block';
+import generateObserver from './commands/generate-observer';
+import generateModule from './commands/generate-module';
 
 const loadCommands = () => {
   const commands = [
@@ -42,7 +42,7 @@ const loadCommands = () => {
     return vscode.commands.registerCommand(commandName as string, command as any);
   });
 
-  ext.context.subscriptions.push(...commands);
+  ext.context!.subscriptions.push(...commands);
 
   const textEditorCommands = [
     ['magento-toolbox.generatePlugin', generatePlugin],
@@ -51,19 +51,19 @@ const loadCommands = () => {
     return vscode.commands.registerTextEditorCommand(commandName as string, command as any);
   });
 
-  ext.context.subscriptions.push(...textEditorCommands);
+  ext.context!.subscriptions.push(...textEditorCommands);
 };
 
 const loadEvents = () => {
-  ext.context.subscriptions.push(
+  ext.context!.subscriptions.push(
     vscode.window.onDidChangeActiveTextEditor(handleChangeActiveTextEditor)
   );
 
-  ext.context.subscriptions.push(
+  ext.context!.subscriptions.push(
     vscode.window.onDidChangeTextEditorSelection(handleChangeTextEditorSelection)
   );
 
-  ext.context.subscriptions.push(vscode.workspace.onDidSaveTextDocument(handleSaveTextDocument));
+  ext.context!.subscriptions.push(vscode.workspace.onDidSaveTextDocument(handleSaveTextDocument));
 
   handleChangeActiveTextEditor(vscode.window.activeTextEditor);
 };

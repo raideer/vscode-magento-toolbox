@@ -1,12 +1,12 @@
 import { Program } from 'php-parser';
-import { NodeKind, parsePhpClass, searchAst } from './ast';
 import { first } from 'lodash-es';
-import { PhpClass } from './php-class';
 import { TextEditor, Uri } from 'vscode';
-import { PhpNode } from './php-node';
-import { PhpUseItem } from './php-use';
 import { Memoize } from 'typescript-memoize';
 import { readFile } from 'utils/vscode';
+import { NodeKind, parsePhpClass, searchAst } from './ast';
+import { PhpClass } from './php-class';
+import { PhpNode } from './php-node';
+import { PhpUseItem } from './php-use';
 import { PhpInterface } from './php-interface';
 
 export class PhpFile extends PhpNode<NodeKind.Program> {

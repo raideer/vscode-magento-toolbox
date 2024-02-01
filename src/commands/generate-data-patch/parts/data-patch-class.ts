@@ -1,7 +1,7 @@
 import { generateClass } from 'generators/template/class';
-import { DataPatchWizardData } from '../data-patch-wizard';
 import { generateFunction } from 'generators/template/function';
 import indentString from 'indent-string';
+import { DataPatchWizardData } from '../data-patch-wizard';
 
 export const generateDataPatchClassPart = async (data: DataPatchWizardData) => {
   const [vendor, module] = data.module.split('_');

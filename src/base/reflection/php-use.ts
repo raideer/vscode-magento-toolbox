@@ -1,8 +1,8 @@
 import { UseItem } from 'php-parser';
+import { last } from 'lodash-es';
 import { NodeKind } from './ast';
 import { PhpNode } from './php-node';
 import { PhpFile } from './php-file';
-import { last } from 'lodash-es';
 
 export class PhpUseItem extends PhpNode<NodeKind.UseItem> {
   constructor(ast: UseItem, public parent: PhpFile) {

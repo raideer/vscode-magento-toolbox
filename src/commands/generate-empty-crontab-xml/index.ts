@@ -2,8 +2,8 @@ import * as vscode from 'vscode';
 import { resolveUriModule } from 'utils/magento';
 import { fileExists, openFile, refreshFileExplorer, writeFile } from 'utils/vscode';
 import { getWorkspaceIndex } from 'utils/extension';
-import { openCrontabXmlWizard } from './wizard';
 import { generateTemplate } from 'generators/template/generic';
+import { openCrontabXmlWizard } from './wizard';
 
 export default async function () {
   let defaultModule: string | undefined;

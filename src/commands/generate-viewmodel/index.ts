@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
 import { resolveUriModule } from 'utils/magento';
 import { openFile, refreshFileExplorer, writeFile } from 'utils/vscode';
+import { getWorkspaceIndex } from 'utils/extension';
 import { viewModelWizard } from './viewmodel-wizard';
 import { generateViewModelClass } from './parts/view-model-class';
-import { getWorkspaceIndex } from 'utils/extension';
 
 /**
  * Generates a ViewModel class.

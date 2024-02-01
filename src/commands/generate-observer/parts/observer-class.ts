@@ -1,8 +1,7 @@
-
 import indentString from 'indent-string';
-import { ObserverWizardData } from '../observer-wizard';
 import { generateFunction } from 'generators/template/function';
 import { generateClass } from 'generators/template/class';
+import { ObserverWizardData } from '../observer-wizard';
 
 export const generateObserverClass = async (data: ObserverWizardData) => {
   const [vendor, module] = data.module.split('_');
@@ -31,8 +30,8 @@ export const generateObserverClass = async (data: ObserverWizardData) => {
     use: [
       {
         class: `Magento\\Framework\\Event\\Observer`,
-        alias: null
-      }
+        alias: null,
+      },
     ],
     className: data.observerName,
     classExtends: null,

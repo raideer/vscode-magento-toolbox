@@ -1,12 +1,12 @@
 import * as vscode from 'vscode';
 import { getModuleUri } from 'utils/magento';
 import { generateModuleXml } from 'generators/generateModuleXml';
-import { moduleWizard } from './module-wizard';
 import { openFile, refreshFileExplorer, writeFile } from 'utils/vscode';
 import { generateModuleRegistration } from 'generators/template/registration';
 import { generateLicense } from 'generators/template/license';
 import { generateComposerJson } from 'generators/json/composer';
 import { getWorkspaceIndex } from 'utils/extension';
+import { moduleWizard } from './module-wizard';
 
 export default async function () {
   const workspaceIndex = getWorkspaceIndex();

@@ -1,8 +1,8 @@
 import { Progress, RelativePattern, Uri, WorkspaceFolder, workspace } from 'vscode';
 import { resolveMagentoRoot } from 'utils/magento';
-import { NamespaceIndexerData } from './data';
-import { Indexer } from '..';
 import { isArray } from 'lodash-es';
+import { NamespaceIndexerData } from './data';
+import { Indexer } from '../indexer';
 
 export class NamespaceIndexer extends Indexer {
   protected data = new NamespaceIndexerData();
@@ -28,6 +28,7 @@ export class NamespaceIndexer extends Indexer {
 
     const promises = files.map(async (file) => {
       await this.processComposerConfig(file);
+      // eslint-disable-next-line no-plusplus
       progress.report({ message: `Running ${this.getName()} indexer (${++i}/${files.length})` });
     });
 
@@ -44,8 +45,8 @@ export class NamespaceIndexer extends Indexer {
 
     if (composer.autoload['psr-4']) {
       for (const namespace in composer.autoload['psr-4']) {
-        const path = composer.autoload['psr-4'][namespace];
-        const paths = isArray(path) ? path : [path];
+        const autoloadPath = composer.autoload['psr-4'][namespace];
+        const paths = isArray(autoloadPath) ? autoloadPath : [autoloadPath];
 
         paths.forEach((path) => {
           const uri = Uri.joinPath(file, '..', path);
@@ -56,9 +57,9 @@ export class NamespaceIndexer extends Indexer {
 
     if (composer.autoload['psr-0']) {
       for (const namespace in composer.autoload['psr-0']) {
-        const path = composer.autoload['psr-0'][namespace];
+        const autoloadPath = composer.autoload['psr-0'][namespace];
 
-        const paths = isArray(path) ? path : [path];
+        const paths = isArray(autoloadPath) ? autoloadPath : [autoloadPath];
 
         paths.forEach((path) => {
           const uri = Uri.joinPath(file, '..', path, namespace.replace('\\\\', '/'));

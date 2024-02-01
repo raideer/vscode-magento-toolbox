@@ -2,8 +2,8 @@ import * as vscode from 'vscode';
 import { resolveUriModule } from 'utils/magento';
 import { fileExists, openFile, refreshFileExplorer, writeFile } from 'utils/vscode';
 import { getWorkspaceIndex } from 'utils/extension';
-import { openRoutesXmlWizard } from './wizard';
 import { generateRoutesXml } from 'generators/generateRoutesXml';
+import { openRoutesXmlWizard } from './wizard';
 
 export default async function () {
   let defaultModule: string | undefined;

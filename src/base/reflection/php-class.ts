@@ -1,8 +1,8 @@
 import { Memoize } from 'typescript-memoize';
+import { Class } from 'php-parser';
 import { NodeKind, getIdentifierName } from './ast';
 import { PhpMethod } from './php-method';
 import { PhpNode } from './php-node';
-import { Class } from 'php-parser';
 import { PhpFile } from './php-file';
 
 export class PhpClass extends PhpNode<NodeKind.Class> {

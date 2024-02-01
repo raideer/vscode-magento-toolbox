@@ -1,12 +1,12 @@
 import * as vscode from 'vscode';
 import { resolveUriModule } from 'utils/magento';
 import { capitalize, snakeCase } from 'lodash-es';
+import { openFile, refreshFileExplorer, writeFile } from 'utils/vscode';
+import { getWorkspaceIndex } from 'utils/extension';
 import { BlockWizardBlockData, BlockWizardLayoutHandleData, openBlockWizard } from './block-wizard';
 import { generateBlockClassPart } from './parts/block-class';
 import { generateBlockLayoutHandlePart } from './parts/block-layout-handle';
-import { openFile, refreshFileExplorer, writeFile } from 'utils/vscode';
 import { generateBlockLayoutTemplatePart } from './parts/block-layout-template';
-import { getWorkspaceIndex } from 'utils/extension';
 
 /**
  * Generates a block

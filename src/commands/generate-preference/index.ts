@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
 import { getModuleUri, getScopedPath } from 'utils/magento';
+import { getWorkspaceIndex } from 'utils/extension';
 import { resolvePreferenceClass } from './resolve-preference-class';
 import { preferenceWizard } from './preference-wizard';
 import { generatePreferenceDi } from './parts/preference-di';
-import { getWorkspaceIndex } from 'utils/extension';
 
 export default async function () {
   const phpClassOrInterface = resolvePreferenceClass();

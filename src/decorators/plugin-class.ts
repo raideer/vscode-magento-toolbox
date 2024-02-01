@@ -1,4 +1,4 @@
-import { Plugin } from 'base/indexers/di/indexer';
+import { Plugin } from 'base/indexers/di/data';
 import { PhpFile } from 'base/reflection/php-file';
 import { first } from 'lodash-es';
 import { getWorkspaceIndex } from 'utils/extension';
@@ -47,14 +47,14 @@ export async function decoratePluginClass(editor: TextEditor) {
   message.isTrusted = true;
 
   const promises = plugins.map(async (plugin) => {
-    const namespace = await workspaceIndex.namespaces.getClassNamespace(plugin.pluginClass);
+    const classNamespace = await workspaceIndex.namespaces.getClassNamespace(plugin.pluginClass);
 
     let link = plugin.pluginClass;
 
-    if (namespace) {
-      link = `[${plugin.pluginClass}](${namespace.fileUri})`;
+    if (classNamespace) {
+      link = `[${plugin.pluginClass}](${classNamespace.fileUri})`;
 
-      await decoratePluginFunctions(editor, plugin, namespace.fileUri);
+      await decoratePluginFunctions(editor, plugin, classNamespace.fileUri);
     }
 
     message.appendMarkdown(`- ${link} [(di.xml)](${plugin.diUri})\n`);

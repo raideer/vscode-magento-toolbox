@@ -2,7 +2,7 @@ import { readFile } from 'utils/vscode';
 import { Uri } from 'vscode';
 import { Builder, parseString } from 'xml2js';
 
-export async function parseXml(xml: string): Promise<null | Object> {
+export async function parseXml(xml: string): Promise<null | Record<string, any>> {
   return new Promise((resolve, reject) => {
     parseString(xml, (err, result) => {
       if (err) {
@@ -15,7 +15,7 @@ export async function parseXml(xml: string): Promise<null | Object> {
 }
 
 export async function loadXml(uri: Uri) {
-  let xml: null | Object = null;
+  let xml: null | Record<string, any> = null;
 
   try {
     xml = await readFile(uri).then((string) => parseXml(string));
@@ -26,7 +26,7 @@ export async function loadXml(uri: Uri) {
   return xml;
 }
 
-export function buildXml(object: Object) {
+export function buildXml(object: Record<string, any>) {
   const xmlBuilder = new Builder({
     xmldec: {
       version: '1.0',

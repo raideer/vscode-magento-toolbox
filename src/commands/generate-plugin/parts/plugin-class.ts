@@ -1,11 +1,11 @@
 import { upperFirst } from 'lodash-es';
 import indentString from 'indent-string';
-import { PluginWizardData } from '../plugin-wizard';
 import { IFunctionParam, generateFunction } from 'generators/template/function';
 import { IClassUse, generateClass } from 'generators/template/class';
 import { getIdentifierName } from 'base/reflection/ast';
 import { PhpClass } from 'base/reflection/php-class';
 import { PhpMethod } from 'base/reflection/php-method';
+import { PluginWizardData } from '../plugin-wizard';
 
 const generatePluginClassInner = async (
   data: PluginWizardData,
@@ -94,7 +94,7 @@ export const generatePluginClass = async (
 
       if (methodClass.name === param.type) {
         return {
-          class: methodClass.parent.namespace + '\\' + methodClass.name,
+          class: `${methodClass.parent.namespace}\\${methodClass.name}`,
           alias: null,
         };
       }

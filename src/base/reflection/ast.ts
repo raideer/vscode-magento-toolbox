@@ -1,17 +1,6 @@
-import {
-  Class,
-  Interface,
-  Engine,
-  Identifier,
-  Method,
-  Namespace,
-  Node,
-  Program,
-  UseGroup,
-  UseItem,
-} from 'php-parser';
+import * as php from 'php-parser';
 
-const parser = new Engine({
+const parser = new php.Engine({
   ast: {
     withPositions: true,
     extractDoc: true,
@@ -29,19 +18,19 @@ export enum NodeKind {
 }
 
 export type KindType<K> = K extends NodeKind.Program
-  ? Program
+  ? php.Program
   : K extends NodeKind.Namespace
-  ? Namespace
+  ? php.Namespace
   : K extends NodeKind.Class
-  ? Class
+  ? php.Class
   : K extends NodeKind.Method
-  ? Method
+  ? php.Method
   : K extends NodeKind.UseGroup
-  ? UseGroup
+  ? php.UseGroup
   : K extends NodeKind.UseItem
-  ? UseItem
+  ? php.UseItem
   : K extends NodeKind.Interface
-  ? Interface
+  ? php.Interface
   : never;
 
 export const searchAst = <K extends NodeKind>(ast: Node | Node[], kind: K): KindType<K>[] => {
@@ -75,7 +64,7 @@ export const parsePhpClass = (code: string, filename = 'file.php') => {
   return parser.parseCode(code, filename);
 };
 
-export const getIdentifierName = (node: Identifier | string) => {
+export const getIdentifierName = (node: php.Identifier | string) => {
   if (typeof node === 'string') {
     return node;
   }

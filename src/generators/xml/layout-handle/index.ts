@@ -22,7 +22,7 @@ export class LayoutHandleFactory implements XmlFactory {
     return this.generator.toXmlObject('page');
   }
 
-  toString(existing?: Object | null) {
+  toString(existing?: Record<string, any> | null) {
     if (!existing) {
       return buildXml(this.toObject());
     }

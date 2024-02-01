@@ -1,17 +1,16 @@
-import { workspace, Uri, RelativePattern, WorkspaceFolder } from 'vscode';
+import { workspace, Uri, WorkspaceFolder } from 'vscode';
 import get from 'lodash-es/get';
-import { lowerFirst, trimStart, uniq } from 'lodash-es';
+import { lowerFirst, trimStart } from 'lodash-es';
 import { parseXml } from './xml';
-import { ext } from 'base/variables';
 
 export const MAGENTO_ROOT_KEY = 'magentoToolbox/magentoRoot';
 
 export async function resolveUriModule(uri: Uri) {
-  const baseModulePath = uri.fsPath.match(/(.+app\/code\/[^\/]+\/[^\/]+)/);
+  const baseModulePath = uri.fsPath.match(/(.+app\/code\/[^/]+\/[^/]+)/);
 
   if (!baseModulePath) return null;
 
-  const moduleXmlUri = Uri.file(baseModulePath[1] + '/etc/module.xml');
+  const moduleXmlUri = Uri.file(`${baseModulePath[1]}/etc/module.xml`);
 
   const moduleXml = await workspace.fs.readFile(moduleXmlUri);
   const xml = await parseXml(moduleXml.toString());

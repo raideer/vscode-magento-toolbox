@@ -1,6 +1,6 @@
-import { clone, get, isArray, isObject, isString, merge, mergeWith, over } from 'lodash-es';
+import { get, isArray, isObject, isString } from 'lodash-es';
 
-const getObjectId: (object:any) => [string | null, string | null] = (object) => {
+const getObjectId: (object: any) => [string | null, string | null] = (object) => {
   for (const path of ['$.id', '$.name']) {
     const id = get(object, path);
 
@@ -10,21 +10,21 @@ const getObjectId: (object:any) => [string | null, string | null] = (object) => 
   }
 
   return [null, null];
-}
+};
 
-export function mergeXml(initial: Record<string, any>, target: Record<string, any>) {
-  const result = {...initial }
+export function mergeXml(initialXml: Record<string, any>, target: Record<string, any>) {
+  const result = { ...initialXml };
 
-  for (let key in target) {
+  for (const key in target) {
     const value = target[key];
     const initialValue = result[key];
 
     // If the key does not exist in the initial object, just add it
-    if (initialValue=== undefined) {
+    if (initialValue === undefined) {
       result[key] = value;
       continue;
     }
-    
+
     // If is string, overwrite the value
     if (isString(value)) {
       result[key] = value;
@@ -33,7 +33,6 @@ export function mergeXml(initial: Record<string, any>, target: Record<string, an
 
     // If is object, merge it
     if (isObject(value) && !isArray(value)) {
-      
       result[key] = mergeXml(result[key], value);
       continue;
     }
@@ -41,10 +40,10 @@ export function mergeXml(initial: Record<string, any>, target: Record<string, an
     if (isArray(value)) {
       let original = initialValue;
       const arrayElements: any[] = [];
-      
+
       // loop through it and merge objects with same id
       value.forEach((item, i) => {
-        const [itemId, idPath] = getObjectId(item)
+        const [itemId, idPath] = getObjectId(item);
 
         if (!itemId) {
           arrayElements.push(item);
@@ -60,14 +59,14 @@ export function mergeXml(initial: Record<string, any>, target: Record<string, an
           }
 
           return true;
-        })
+        });
 
         if (initial) {
           return arrayElements.push(mergeXml(initial, item));
-        } 
+        }
 
         arrayElements.push(item);
-      })
+      });
 
       // Add remaining initial elements
       result[key] = [...arrayElements, ...original];

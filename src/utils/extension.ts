@@ -8,7 +8,7 @@ export function getWorkspaceIndex() {
     throw new Error('No active workspace folder');
   }
 
-  const workspaceIndex = ext.workspaceIndex.get(workspaceFolder);
+  const workspaceIndex = ext.workspaceIndex!.get(workspaceFolder);
 
   if (!workspaceIndex) {
     throw new Error('No workspace index');

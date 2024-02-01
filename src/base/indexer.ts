@@ -1,9 +1,10 @@
 import { Progress, WorkspaceFolder } from 'vscode';
 import { NamespaceIndexer } from './indexers/namespace/indexer';
-import { Indexer, WorkspaceIndex } from './indexers';
+import { WorkspaceIndex } from './indexers';
 import { ModuleIndexer } from './indexers/module/indexer';
 import { ObserverIndexer } from './indexers/observer/indexer';
 import { DiIndexer } from './indexers/di/indexer';
+import { Indexer } from './indexers/indexer';
 
 export async function indexWorkspace(
   workspaceFolder: WorkspaceFolder,
@@ -18,6 +19,7 @@ export async function indexWorkspace(
   const data = {};
 
   for (const indexer of indexers) {
+    // eslint-disable-next-line new-cap
     const instance: Indexer = new indexer();
 
     progress.report({ message: `Running ${instance.getName()} indexer` });

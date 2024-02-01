@@ -16,11 +16,11 @@ export function openWizard<T = any>(wizard: Wizard): Promise<T> {
       }
     );
 
-    const scriptPath = Uri.file(path.join(ext.context.extensionPath, 'dist', 'webview.js'));
+    const scriptPath = Uri.file(path.join(ext.context!.extensionPath, 'dist', 'webview.js'));
     const scriptSrc = panel.webview.asWebviewUri(scriptPath);
 
     let template = fs.readFileSync(
-      `${ext.context.extensionPath}/templates/webview/index.html`,
+      `${ext.context!.extensionPath}/templates/webview/index.html`,
       'utf8'
     );
     template = template.replace('{{APP_SCRIPT}}', scriptSrc.toString());

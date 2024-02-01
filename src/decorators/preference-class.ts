@@ -37,12 +37,12 @@ export async function decoratePreferenceClass(editor: TextEditor) {
   message.isTrusted = true;
 
   for (const preference of preferences) {
-    const namespace = await workspaceIndex.namespaces.getClassNamespace(preference.type);
+    const classNamespace = await workspaceIndex.namespaces.getClassNamespace(preference.type);
 
     let link = preference.type;
 
-    if (namespace) {
-      link = `[${preference.type}](${namespace.fileUri})`;
+    if (classNamespace) {
+      link = `[${preference.type}](${classNamespace.fileUri})`;
     }
 
     message.appendMarkdown(`- ${link} [(di.xml)](${preference.diUri})\n`);

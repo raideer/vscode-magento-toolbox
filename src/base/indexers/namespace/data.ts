@@ -19,12 +19,13 @@ interface ClassNamespace {
 export class NamespaceIndexerData {
   public namespaces = new Map<string, Namespace>();
 
-  public async getClassNamespace(namespace: string): Promise<ClassNamespace | null> {
-    const classNamespace = trimStart(namespace, '\\');
+  public async getClassNamespace(ns: string): Promise<ClassNamespace | null> {
+    const classNamespace = trimStart(ns, '\\');
     const parts = classNamespace.split('\\');
 
+    // eslint-disable-next-line no-plusplus
     for (let i = parts.length; i >= 0; i--) {
-      const baseNamespace = parts.slice(0, i).join('\\') + '\\';
+      const baseNamespace = `${parts.slice(0, i).join('\\')}\\`;
 
       if (!this.namespaces.has(baseNamespace)) {
         continue;

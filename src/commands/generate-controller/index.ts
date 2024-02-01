@@ -1,15 +1,14 @@
 import * as vscode from 'vscode';
 import { resolveUriModule } from 'utils/magento';
 import { capitalize, snakeCase } from 'lodash-es';
-import { controllerWizard } from './controller-wizard';
-import { generateControllerClass } from './parts/controller-class';
-import { generateFrontendRoutes } from './parts/frontend-routes';
 import { generateBlockClassPart } from 'commands/generate-block/parts/block-class';
 import { openFile, refreshFileExplorer, writeFile } from 'utils/vscode';
 import { generateBlockLayoutHandlePart } from 'commands/generate-block/parts/block-layout-handle';
 import { generateBlockLayoutTemplatePart } from 'commands/generate-block/parts/block-layout-template';
-import { ext } from 'base/variables';
 import { getWorkspaceIndex } from 'utils/extension';
+import { generateFrontendRoutes } from './parts/frontend-routes';
+import { generateControllerClass } from './parts/controller-class';
+import { controllerWizard } from './controller-wizard';
 
 /**
  * Generates a controller

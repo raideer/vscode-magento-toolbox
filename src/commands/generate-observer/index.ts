@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
+import { isString } from 'lodash-es';
+import { getWorkspaceIndex } from 'utils/extension';
 import { observerWizard } from './observer-wizard';
 import { generateObserverEvents } from './parts/observer-events';
 import { generateObserverClass } from './parts/observer-class';
-import { isString } from 'lodash-es';
-import { getWorkspaceIndex } from 'utils/extension';
 
 export default async function (...args: any[]) {
   const workspaceIndex = getWorkspaceIndex();

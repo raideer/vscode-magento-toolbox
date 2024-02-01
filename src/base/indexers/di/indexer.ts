@@ -1,33 +1,8 @@
 import { loadXml } from 'utils/xml';
 import { get } from 'lodash-es';
 import { RelativePattern, Uri, WorkspaceFolder, workspace } from 'vscode';
-import { Indexer } from '..';
-import { cleanNamespace } from 'utils/magento';
-
-export interface Preference {
-  for: string;
-  type: string;
-  diUri: Uri;
-}
-
-export interface Plugin {
-  name: string;
-  type: string;
-  pluginClass: string;
-  diUri: Uri;
-}
-
-export class DiIndexerData {
-  constructor(public preferences: Preference[] = [], public plugins: Plugin[] = []) {}
-
-  public getPreferencesFor(name: string) {
-    return this.preferences.filter((preference) => preference.for === cleanNamespace(name));
-  }
-
-  public getPluginsByType(name: string) {
-    return this.plugins.filter((plugin) => plugin.type === cleanNamespace(name));
-  }
-}
+import { DiIndexerData } from './data';
+import { Indexer } from '../indexer';
 
 export class DiIndexer extends Indexer {
   protected data = new DiIndexerData();
@@ -58,7 +33,7 @@ export class DiIndexer extends Indexer {
     this.indexTypes(diXml, uri);
   }
 
-  private indexPreferences(diXml: Object, diXmlPath: Uri) {
+  private indexPreferences(diXml: Record<string, any>, diXmlPath: Uri) {
     const preferences = get(diXml, 'config.preference', []);
 
     for (const preference of preferences) {
@@ -72,7 +47,7 @@ export class DiIndexer extends Indexer {
     }
   }
 
-  private indexTypes(diXml: Object, diXmlPath: Uri) {
+  private indexTypes(diXml: Record<string, any>, diXmlPath: Uri) {
     const types = get(diXml, 'config.type', []);
 
     for (const type of types) {
@@ -80,7 +55,7 @@ export class DiIndexer extends Indexer {
     }
   }
 
-  private indexTypePlugins(type: Object, diXmlPath: Uri) {
+  private indexTypePlugins(type: Record<string, any>, diXmlPath: Uri) {
     const plugins = get(type, 'plugin', []);
 
     for (const plugin of plugins) {

@@ -1,14 +1,11 @@
-import { LayoutBodyReference } from "./body-reference";
-import { XmlPart } from "generators/xml/generator";
+import { XmlPart } from 'generators/xml/generator';
+import { LayoutBodyReference } from './body-reference';
 
 type LayoutBodyChildren = LayoutBodyReference;
 
 export class LayoutBody extends XmlPart {
   constructor(children: LayoutBodyChildren[] = []) {
-    super(
-      {},
-      children
-    );
+    super({}, children);
   }
 
   getKey() {

@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
 import { resolveUriModule } from 'utils/magento';
 import { getWorkspaceIndex } from 'utils/extension';
+import { openFile, refreshFileExplorer, writeFile } from 'utils/vscode';
 import { DataPatchWizardData, openDataPatchWizard } from './data-patch-wizard';
 import { generateDataPatchClassPart } from './parts/data-patch-class';
-import { openFile, refreshFileExplorer, writeFile } from 'utils/vscode';
 
 /**
  * Generates a data patch

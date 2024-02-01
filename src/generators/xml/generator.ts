@@ -1,6 +1,6 @@
 export interface XmlFactory {
-  toObject(): Object;
-  toString(existing?: Object | null): string;
+  toObject(): Record<string, any>;
+  toString(existing?: Record<string, any> | null): string;
 }
 
 /**

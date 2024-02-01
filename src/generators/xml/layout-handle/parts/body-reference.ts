@@ -1,5 +1,5 @@
-import { LayoutBodyBlock } from './body-block';
 import { XmlPart } from 'generators/xml/generator';
+import { LayoutBodyBlock } from './body-block';
 
 type ReferenceContainerChildren = LayoutBodyBlock;
 

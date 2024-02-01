@@ -21,7 +21,7 @@ export default async function () {
 
         try {
           const index = await indexWorkspace(workspaceFolder, progress);
-          ext.workspaceIndex.set(workspaceFolder, index);
+          ext.workspaceIndex!.set(workspaceFolder, index);
         } catch (e) {
           console.error('[Magento Toolbox] Error indexing workspace', e);
         }

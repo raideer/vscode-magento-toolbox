@@ -61,7 +61,7 @@ export default async function () {
     }
 
     for (const resource of component.resource) {
-      let location = resource.$.location;
+      let { location } = resource.$;
       location = location.replace('$PROJECT_DIR$', workspaceUri.fsPath);
       xmlCatalog.catalog.system.push({
         $: {
