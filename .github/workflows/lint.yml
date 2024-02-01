@@ -1,8 +1,8 @@
-name: ci
+name: lint
 on: [push, pull_request]
 
 jobs:
-  test:
+  lint:
     runs-on: ubuntu-latest
 
     steps:
