@@ -29,10 +29,8 @@ export class ObserverIndexer extends Indexer {
   protected data = new ObserverIndexerData([]);
 
   public async index(workspaceFolder: WorkspaceFolder) {
-    const pattern = new RelativePattern(workspaceFolder.uri, 'etc/**/events.xml');
-
+    const pattern = new RelativePattern(workspaceFolder.uri, '**/events.xml');
     const eventsXmlFiles = await workspace.findFiles(pattern);
-
     await Promise.all(eventsXmlFiles.map(async (file) => this.processConfig(file)));
   }
 

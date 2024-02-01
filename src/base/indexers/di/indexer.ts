@@ -33,7 +33,7 @@ export class DiIndexer extends Indexer {
   protected data = new DiIndexerData();
 
   public async index(workspaceFolder: WorkspaceFolder) {
-    const pattern = new RelativePattern(workspaceFolder.uri, 'etc/**/di.xml');
+    const pattern = new RelativePattern(workspaceFolder.uri, '**/etc/di.xml');
     const diXmlFiles = await workspace.findFiles(pattern);
 
     await Promise.all(diXmlFiles.map(async (file) => this.processXml(file)));
