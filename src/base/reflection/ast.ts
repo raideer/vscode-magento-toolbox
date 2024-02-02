@@ -33,7 +33,7 @@ export type KindType<K> = K extends NodeKind.Program
   ? php.Interface
   : never;
 
-export const searchAst = <K extends NodeKind>(ast: Node | Node[], kind: K): KindType<K>[] => {
+export const searchAst = <K extends NodeKind>(ast: any, kind: K): KindType<K>[] => {
   const results: KindType<K>[] = [];
 
   const search = (node: any) => {
