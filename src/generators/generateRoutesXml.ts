@@ -1,5 +1,5 @@
+import { buildXml } from 'utils/xml';
 import { mergeXml } from 'utils/xml/merge';
-import { Builder } from 'xml2js';
 
 export interface RoutesXmlVariables {
   routeName: string;
@@ -13,17 +13,6 @@ export interface RoutesXmlVariables {
  * Generates routes.xml file
  */
 export function generateRoutesXml(variables: RoutesXmlVariables, initialObject: any = {}) {
-  const xmlBuilder = new Builder({
-    xmldec: {
-      version: '1.0',
-    },
-    renderOpts: {
-      pretty: true,
-      indent: '    ',
-      newline: '\n',
-    },
-  });
-
   const before = variables.before
     ? {
         before: variables.before,
@@ -62,5 +51,5 @@ export function generateRoutesXml(variables: RoutesXmlVariables, initialObject: 
     },
   };
 
-  return xmlBuilder.buildObject(mergeXml(initialObject, routesXmlObject));
+  return buildXml(mergeXml(initialObject, routesXmlObject));
 }
