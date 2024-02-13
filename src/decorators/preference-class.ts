@@ -33,7 +33,13 @@ export async function decoratePreferenceClass(editor: TextEditor) {
   );
 
   const message = new MarkdownString(`**Magento Toolbox:**\n\n`);
-  message.appendMarkdown(`Interface implementations:\n`);
+
+  if (classType === 'interface') {
+    message.appendMarkdown(`Interface implementations:\n`);
+  } else {
+    message.appendMarkdown(`Class preferences:\n`);
+  }
+
   message.isTrusted = true;
 
   for (const preference of preferences) {
