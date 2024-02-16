@@ -11,6 +11,7 @@ import { PreferenceWizardData } from '../preference-wizard';
  */
 export const generatePreferenceDi = async (
   data: PreferenceWizardData,
+  preferenceType: string,
   methodClass: PhpClass | PhpInterface,
   appCodeUri: Uri
 ) => {
@@ -18,12 +19,10 @@ export const generatePreferenceDi = async (
 
   const configLocation = getScopedPath('etc', data.scope, 'di.xml');
   const existing = await loadXml(Uri.joinPath(moduleDirectory, configLocation));
+  const forClass = `${methodClass.parent.namespace}\\${methodClass.name}`;
 
   const diGenerator = new DiFactory();
 
-  const forClass = `${methodClass.parent.namespace}\\${methodClass.name}`;
-
-  diGenerator.addPreference(forClass, data.type);
-
+  diGenerator.addPreference(forClass, preferenceType);
   return diGenerator.toString(existing);
 };
