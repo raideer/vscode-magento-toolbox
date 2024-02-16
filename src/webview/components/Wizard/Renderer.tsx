@@ -14,11 +14,11 @@ interface Props {
 export const Renderer: React.FC<Props> = ({ wizard, vscode }) => {
   const initialValues: FormikValues = wizard.fields.reduce((acc: FormikValues, field) => {
     if (field.type === WizardInput.Select && field.multiple) {
-      acc[field.id] = field.initialValue || [];
+      acc[field.id] = field.initialValue ?? [];
       return acc;
     }
 
-    acc[field.id] = field.initialValue || '';
+    acc[field.id] = field.initialValue ?? '';
     return acc;
   }, {});
 
