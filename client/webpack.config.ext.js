@@ -10,12 +10,12 @@ const path = require('path');
 const extensionConfig = {
   target: 'node', // vscode extensions run in a Node.js-context 📖 -> https://webpack.js.org/configuration/node/
   mode: 'development',
-
+  context: __dirname,
   entry: {
     extension: './src/extension.ts',
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, '../dist'),
     filename: '[name].js',
     libraryTarget: 'commonjs2',
   },

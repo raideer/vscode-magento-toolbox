@@ -17,19 +17,13 @@
 			],
 			"preLaunchTask": "${defaultBuildTask}"
 		},
-		{
-			"name": "Extension Tests",
-			"type": "extensionHost",
-			"request": "launch",
-			"args": [
-				"--extensionDevelopmentPath=${workspaceFolder}",
-				"--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
-			],
-			"outFiles": [
-				"${workspaceFolder}/out/**/*.js",
-				"${workspaceFolder}/dist/**/*.js"
-			],
-			"preLaunchTask": "tasks: watch-tests"
-		}
+    {
+      "type": "node",
+      "request": "attach",
+      "name": "Attach to Server",
+      "port": 6009,
+      "restart": true,
+      "outFiles": ["${workspaceRoot}/server/out/**/*.js"]
+    },
 	]
 }

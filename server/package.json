@@ -1,0 +1,17 @@
+{
+  "name": "magento-toolbox-language-server",
+  "description": "Magento2 Language Server",
+  "version": "0.0.1",
+  "license": "MIT",
+  "engines": {
+    "node": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/raideer/vscode-magento-toolbox.git"
+  },
+  "dependencies": {
+    "vscode-languageserver": "^8.1.0",
+    "vscode-languageserver-textdocument": "^1.0.8"
+  }
+}

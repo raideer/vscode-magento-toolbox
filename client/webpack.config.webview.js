@@ -9,12 +9,12 @@ const path = require('path');
 const webviewConfig = {
   target: 'node',
   mode: 'development',
-
+  context: __dirname,
   entry: {
     webview: './src/webview/index.tsx',
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, '../dist'),
     filename: '[name].js',
   },
   resolve: {
