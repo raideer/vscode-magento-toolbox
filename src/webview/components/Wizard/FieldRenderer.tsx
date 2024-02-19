@@ -56,7 +56,7 @@ export const FieldRenderer: React.FC<Props> = ({ field, className }) => {
     return null;
   }, []);
 
-  if (field.dependsOn && !values[field.dependsOn]) {
+  if (field.dependsOn && values[field.dependsOn.field] !== field.dependsOn.value) {
     return null;
   }
 

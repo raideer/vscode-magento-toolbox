@@ -62,14 +62,20 @@ export const openBlockWizard = async (modules: string[], initialModule?: string)
       type: WizardInput.Checkbox,
     },
     {
-      dependsOn: 'referenceHandle',
+      dependsOn: {
+        field: 'referenceHandle',
+        value: true,
+      },
       id: 'layoutHandle',
       label: 'Layout handle*',
       placeholder: 'eg. checkout_index_index',
       type: WizardInput.Text,
     },
     {
-      dependsOn: 'referenceHandle',
+      dependsOn: {
+        field: 'referenceHandle',
+        value: true,
+      },
       id: 'referenceType',
       label: 'Reference type',
       type: WizardInput.Select,
@@ -85,7 +91,10 @@ export const openBlockWizard = async (modules: string[], initialModule?: string)
       ],
     },
     {
-      dependsOn: 'referenceHandle',
+      dependsOn: {
+        field: 'referenceHandle',
+        value: true,
+      },
       id: 'referenceName',
       label: 'Reference name*',
       placeholder: 'eg. content',

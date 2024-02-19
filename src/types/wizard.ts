@@ -42,12 +42,17 @@ export interface WizardCheckboxField extends WizardGenericField {
   type: WizardInput.Checkbox;
 }
 
+type FieldValue = string | number | boolean;
+
 export interface WizardGenericField {
   id: string;
   label: string;
   description?: string[];
-  initialValue?: string;
-  dependsOn?: string;
+  initialValue?: FieldValue;
+  dependsOn?: {
+    field: string;
+    value: FieldValue;
+  };
 }
 
 export enum WizardInput {

@@ -90,14 +90,20 @@ export const moduleWizard = async (modules: string[]) => {
         type: WizardInput.Checkbox,
       },
       {
-        dependsOn: 'composer',
+        dependsOn: {
+          field: 'composer',
+          value: true,
+        },
         id: 'composerName',
         label: 'Package name*',
         placeholder: 'module/name',
         type: WizardInput.Text,
       },
       {
-        dependsOn: 'composer',
+        dependsOn: {
+          field: 'composer',
+          value: true,
+        },
         id: 'composerDescription',
         label: 'Package description',
         type: WizardInput.Text,
