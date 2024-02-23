@@ -17,6 +17,7 @@ import generateEmptyRoutesXml from 'commands/generate-empty-routes-xml';
 import handleSaveTextDocument from 'events/handleSaveTextDocument';
 import generateEmptySystemXml from 'commands/generate-empty-system-xml';
 import generateEmptyCrontabXml from 'commands/generate-empty-crontab-xml';
+import { activateLs, deactivateLs } from 'base/language-server';
 import generateController from './commands/generate-controller';
 import generateBlock from './commands/generate-block';
 import generateObserver from './commands/generate-observer';
@@ -77,6 +78,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   console.log('[Magento Toolbox] Starting...');
 
+  await activateLs();
   loadCommands();
 
   await vscode.commands.executeCommand('magento-toolbox.indexWorkspace');
@@ -87,4 +89,6 @@ export async function activate(context: vscode.ExtensionContext) {
   console.log('[Magento Toolbox] Loaded');
 }
 
-export function deactivate() {}
+export function deactivate() {
+  return deactivateLs();
+}

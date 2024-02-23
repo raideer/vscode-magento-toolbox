@@ -5,7 +5,6 @@
     "lib": ["ES2020", "dom"],
     "jsx": "react-jsx",
     "sourceMap": true,
-    "rootDir": "src",
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "src",

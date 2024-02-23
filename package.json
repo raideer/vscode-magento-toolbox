@@ -196,15 +196,19 @@
   "scripts": {
     "vscode:prepublish": "yarn run package",
     "compile": "webpack",
-    "watch": "webpack --watch",
+    "watch": "concurrently \"yarn run watch:client\" \"yarn run watch:server\"",
+    "watch:client": "webpack --watch",
+    "watch:server": "tsc -p server -w",
     "package": "webpack --mode production --devtool hidden-source-map",
     "deploy:local": "vsce package -o dist/magento-toolbox.vsix --yarn && code --install-extension dist/magento-toolbox.vsix --force",
-    "lint": "eslint src --ext ts",
+    "lint": "yarn lint:client",
+    "lint:client": "eslint src --ext ts",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
     "prettier:fix": "prettier --write .",
     "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
-    "test": "node ./out/test/runTest.js"
+    "test": "node ./out/test/runTest.js",
+    "postinstall": "cd server && yarn install && cd .."
   },
   "devDependencies": {
     "@githubocto/tailwind-vscode": "^1.0.4",
@@ -224,6 +228,7 @@
     "@typescript-eslint/eslint-plugin": "^5.1.0",
     "@typescript-eslint/parser": "^5.1.0",
     "@vscode/test-electron": "^2.2.0",
+    "concurrently": "^8.2.2",
     "css-loader": "^6.5.1",
     "eslint": "^8.1.0",
     "eslint-config-airbnb": "^19.0.2",
@@ -264,6 +269,7 @@
     "react-select": "^5.8.0",
     "typescript-memoize": "^1.1.1",
     "validatorjs": "^3.22.1",
+    "vscode-languageclient": "^9.0.1",
     "xml2js": "^0.5.0"
   },
   "resolutions": {
