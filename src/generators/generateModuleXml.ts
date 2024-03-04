@@ -1,4 +1,4 @@
-import { Builder } from 'xml2js';
+import { buildXml } from 'utils/xml';
 
 export interface IModuleXmlVariables {
   moduleName: string;
@@ -10,17 +10,6 @@ export interface IModuleXmlVariables {
  * Generates module.xml file
  */
 export function generateModuleXml(variables: IModuleXmlVariables) {
-  const xmlBuilder = new Builder({
-    xmldec: {
-      version: '1.0',
-    },
-    renderOpts: {
-      pretty: true,
-      indent: '    ',
-      newline: '\n',
-    },
-  });
-
   const moduleXmlObject: any = {
     config: {
       $: {
@@ -45,5 +34,5 @@ export function generateModuleXml(variables: IModuleXmlVariables) {
     };
   }
 
-  return xmlBuilder.buildObject(moduleXmlObject);
+  return buildXml(moduleXmlObject);
 }
