@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { useField } from 'formik';
 import { WizardSelectOption } from 'types/wizard';
 import ReactSelect from 'react-select';
+import { isArray } from 'lodash-es';
 
 interface Props {
   name: string;
@@ -19,8 +20,14 @@ export const Select: React.FC<Props> = ({ description, children, options, ...pro
       <span className="mb-2">{children}</span>
       <ReactSelect
         name={field.name}
-        value={options ? options.find(option => option.value === field.value) : ''}
-        onChange={(option: any) => form.setValue(option.value)}
+        value={options ? options.find((option) => option.value === field.value) : ''}
+        onChange={(option: any) => {
+          if (isArray(option)) {
+            form.setValue(option.map((o) => o.value));
+          } else {
+            form.setValue(option.value);
+          }
+        }}
         onBlur={field.onBlur}
         isMulti={props.multiple}
         unstyled
@@ -40,7 +47,8 @@ export const Select: React.FC<Props> = ({ description, children, options, ...pro
               'border-vscode-input-background': !meta.touched || !meta.error,
               'border-vscode-inputValidation-errorBorder': meta.touched && meta.error,
             }),
-          option: ({ isFocused }) => clsx('p-1', { 'bg-vscode-inputOption-activeBackground': isFocused }),
+          option: ({ isFocused }) =>
+            clsx('p-1', { 'bg-vscode-inputOption-activeBackground': isFocused }),
         }}
         isSearchable={props.search}
         options={options}
