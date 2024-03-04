@@ -1,5 +1,5 @@
+import { buildXml } from 'utils/xml';
 import { mergeXml } from 'utils/xml/merge';
-import { Builder } from 'xml2js';
 
 export interface IEventsXmlVariables {
   eventName: string;
@@ -11,17 +11,6 @@ export interface IEventsXmlVariables {
  * Generates events.xml file
  */
 export function generateEventsXml(variables: IEventsXmlVariables, initialObject: any = {}) {
-  const xmlBuilder = new Builder({
-    xmldec: {
-      version: '1.0',
-    },
-    renderOpts: {
-      pretty: true,
-      indent: '    ',
-      newline: '\n',
-    },
-  });
-
   const moduleXmlObject: any = mergeXml(initialObject, {
     config: {
       $: {
@@ -46,5 +35,5 @@ export function generateEventsXml(variables: IEventsXmlVariables, initialObject:
     },
   });
 
-  return xmlBuilder.buildObject(moduleXmlObject);
+  return buildXml(moduleXmlObject);
 }

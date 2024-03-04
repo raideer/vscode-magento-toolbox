@@ -1,10 +1,14 @@
 import { readFile } from 'utils/vscode';
 import { Uri } from 'vscode';
-import { Builder, parseString } from 'xml2js';
+import { Builder, ParserOptions, parseString } from 'xml2js';
+
+const PARSE_OPTIONS: ParserOptions = {
+  preserveChildrenOrder: true,
+};
 
 export async function parseXml(xml: string): Promise<null | Record<string, any>> {
   return new Promise((resolve, reject) => {
-    parseString(xml, (err, result) => {
+    parseString(xml, PARSE_OPTIONS, (err, result) => {
       if (err) {
         reject(err);
       } else {
