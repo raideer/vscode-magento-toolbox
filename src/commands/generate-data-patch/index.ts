@@ -43,7 +43,7 @@ async function generateDataPatchClass(
 
   const dataPatchClassUri = vscode.Uri.joinPath(
     moduleDirectory,
-    `Setup/Data/Patch/${wizardInputData.patchName}.php`
+    `Setup/Patch/Data/${wizardInputData.patchName}.php`
   );
 
   await writeFile(dataPatchClassUri, part);
