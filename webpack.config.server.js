@@ -12,11 +12,10 @@ const extensionConfig = {
   mode: 'development',
 
   entry: {
-    extension: './src/extension.ts',
     server: './server/src/server.ts',
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'server/out'),
     filename: '[name].js',
     libraryTarget: 'commonjs2',
   },
@@ -27,7 +26,10 @@ const extensionConfig = {
   resolve: {
     // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader
     extensions: ['.ts', '.js', '.tsx'],
-    modules: [path.resolve(__dirname, 'src'), path.resolve(__dirname, 'node_modules')],
+    modules: [
+      path.resolve(__dirname, 'server/src'),
+      path.resolve(__dirname, 'server/node_modules'),
+    ],
   },
   module: {
     rules: [
@@ -37,6 +39,9 @@ const extensionConfig = {
         use: [
           {
             loader: 'ts-loader',
+            options: {
+              configFile: 'server/tsconfig.json',
+            },
           },
         ],
       },

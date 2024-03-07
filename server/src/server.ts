@@ -9,11 +9,12 @@ import {
 
 import { TextDocument } from 'vscode-languageserver-textdocument';
 import { handleCodeCompletion } from './handler/completion-handler';
+import { indexWorkspace } from './indexer';
 
 const connection = createConnection(ProposedFeatures.all);
 const documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 
-connection.onInitialize((params: InitializeParams) => {
+connection.onInitialize(async (params: InitializeParams) => {
   const result: InitializeResult = {
     capabilities: {
       definitionProvider: true,
@@ -23,6 +24,14 @@ connection.onInitialize((params: InitializeParams) => {
       textDocumentSync: TextDocumentSyncKind.Incremental,
     },
   };
+
+  const workspaceFolders = params.workspaceFolders ?? [];
+
+  await Promise.all(
+    workspaceFolders.map((workspace) => {
+      return indexWorkspace(workspace);
+    })
+  );
 
   return result;
 });

@@ -9,14 +9,23 @@
     "compile": "tsc -b",
     "watch": "tsc -b -w"
   },
+  "types": "index.d.ts",
   "dependencies": {
     "@xml-tools/parser": "^1.0.11",
+    "glob": "^10.3.10",
     "lodash-es": "^4.17.21",
+    "tree-sitter": "^0.20.6",
+    "tree-sitter-html": "^0.20.1",
+    "tree-sitter-php": "^0.22.0",
     "vscode-languageserver": "^9.0.1",
-    "vscode-languageserver-textdocument": "^1.0.11"
+    "vscode-languageserver-textdocument": "^1.0.11",
+    "web-tree-sitter": "^0.21.0"
   },
   "devDependencies": {
+    "@types/lodash-es": "^4.17.12",
     "@types/node": "^20.5.7",
+    "tree-sitter-cli": "^0.21.0",
+    "tree-sitter-typescript": "^0.20.5",
     "typescript": "^5.2.2"
   }
 }
