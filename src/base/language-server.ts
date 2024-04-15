@@ -1,31 +1,36 @@
 import * as path from 'path';
 
 import {
+  Executable,
   LanguageClient,
   LanguageClientOptions,
   ServerOptions,
-  TransportKind,
 } from 'vscode-languageclient/node';
 import { ext } from './variables';
 
 let client: LanguageClient;
 
 export async function activateLs() {
-  // The server is implemented in node
-  const serverModule = ext.context!.asAbsolutePath(path.join('server', 'out', 'server.js'));
+  const lsPath = ext.context!.asAbsolutePath(
+    path.join('..', 'magento-language-server', 'bin', 'magento2ls')
+  );
 
-  const debugOptions = { execArgv: ['--nolazy', '--inspect=6009'] };
+  const debugOptions = {
+    env: {
+      XDEBUG_MODE: 'debug',
+    },
+  };
 
   // If the extension is launched in debug mode then the debug server options are used
   // Otherwise the run options are used
   const serverOptions: ServerOptions = {
-    run: { module: serverModule, transport: TransportKind.ipc },
+    run: { command: 'php', args: [lsPath, 'language-server'] },
     debug: {
-      module: serverModule,
-      transport: TransportKind.ipc,
+      command: 'php',
+      args: ['-dxdebug.start_with_request=1', lsPath, 'language-server'],
       options: debugOptions,
     },
-  };
+  } as { run: Executable; debug: Executable };
 
   // Options to control the language client
   const clientOptions: LanguageClientOptions = {

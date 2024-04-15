@@ -225,9 +225,8 @@ npm manifest:
     "scripts": {
       "vscode:prepublish": "yarn run package",
       "compile": "webpack",
-      "watch": "yarn run watch:client & yarn run watch:server",
+      "watch": "yarn run watch:client",
       "watch:client": "webpack --watch",
-      "watch:server": "tsc -p server -w",
       "package": "webpack --mode production --devtool hidden-source-map",
       "deploy:local": "vsce package -o dist/magento-toolbox.vsix --yarn && code --install-extension dist/magento-toolbox.vsix --force",
       "lint": "eslint src --ext ts",
@@ -236,7 +235,6 @@ npm manifest:
       "prettier:fix": "prettier --write .",
       "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
       "test": "node ./out/test/runTest.js",
-      "postinstall": "cd server && yarn install && cd .."
     },
     "devDependencies": {
       "@githubocto/tailwind-vscode": "^1.0.4",

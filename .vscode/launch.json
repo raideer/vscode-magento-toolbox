@@ -17,14 +17,5 @@
 			],
 			"preLaunchTask": "${defaultBuildTask}"
 		},
-    {
-      "type": "node",
-      "request": "attach",
-      "name": "Attach to Server",
-      "port": 6009,
-      "restart": true,
-      "outFiles": ["${workspaceRoot}/server/out/**/*.js"],
-      "trace": true
-    },
 	]
 }

@@ -1,13 +1,301 @@
-// Place your settings in this file to overwrite default and user settings.
 {
-    "files.exclude": {
-        "out": false, // set this to true to hide the "out" folder with the compiled JS files
-        "dist": false // set this to true to hide the "dist" folder with the compiled JS files
+    "git.confirmSync": false,
+    "git.autofetch": true,
+    "editor.suggestSelection": "first",
+    "cSpell.userWords": [
+        "Adminhtml",
+        "Amasty",
+        "Anonymizer",
+        "Anonymizing",
+        "choosable",
+        "Cliniko",
+        "clsx",
+        "configurator",
+        "Creditmemo",
+        "encryptor",
+        "Favourite",
+        "Favourites",
+        "formik",
+        "imageable",
+        "kibana",
+        "Kristofers",
+        "Magebit",
+        "magento",
+        "Meds",
+        "nodemon",
+        "Ozolins",
+        "prefetch",
+        "sagepay",
+        "Teleporter",
+        "tkclocks",
+        "unblacklist",
+        "unwhitelist",
+        "uppy",
+        "Urql"
+    ],
+    "sync.autoUpload": true,
+    "sync.gist": "ffd8572c4e2c3424183feb79a3dc42da",
+    "yaml.schemas": {
+        "file:///home/kristofers/.vscode/extensions/atlassian.atlascode-2.8.6/resources/schemas/pipelines-schema.json": "bitbucket-pipelines.yml"
     },
-    "search.exclude": {
-        "out": true, // set this to false to include "out" folder in search results
-        "dist": true // set this to false to include "dist" folder in search results
+    "git.enableSmartCommit": true,
+    "[vue]": {
+        "editor.defaultFormatter": "octref.vetur"
     },
-    // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
-    "typescript.tsc.autoDetect": "off"
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit",
+        "source.fixAll.stylelint": "explicit"
+    },
+    "typescript.suggest.paths": false,
+    "vetur.format.defaultFormatter.js": "prettier-eslint",
+    "vetur.format.defaultFormatter.html": "js-beautify-html",
+    "vetur.format.defaultFormatter.ts": "prettier-tslint",
+    "eslint.format.enable": true,
+    "eslint.lintTask.enable": true,
+    "php-cs-fixer.executablePath": "${extensionPath}/php-cs-fixer.phar",
+    "php-cs-fixer.lastDownload": 1712776873501,
+    "phpcs.standard": "PSR2",
+    "search.useIgnoreFiles": false,
+    "[jsonc]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "php-cs-fixer.rules": "@PSR2",
+    "stylelint.packageManager": "yarn",
+    "psi-header.variables": [
+        ["company", "Magebit"],
+        ["companyweb", "https://magebit.com/"],
+        ["author", "Kristofers Ozolins"],
+        ["authoremail", "info@magebit.com"]
+    ],
+    "debug.javascript.usePreview": true,
+    "psi-header.lang-config": [
+        {
+            "language": "php",
+            "begin": "<?php declare(strict_types=1); \n/**",
+            "prefix": " * ",
+            "end": " */",
+            "blankLinesAfter": 1,
+            "forceToTop": false
+        }
+    ],
+    "psi-header.templates": [
+        {
+            "language": "php",
+            "template": [
+                "This file is part of the Magebit_Package package",
+                "",
+                "DISCLAIMER",
+                "",
+                "Do not edit or add to this file if you wish to upgrade Magebit_Package",
+                "to newer versions in the future.",
+                "",
+                "@copyright Copyright (c) <<year>> <<company>> (<<companyweb>>)",
+                "@author    <<author>> <<<authoremail>>>",
+                "@license   GNU General Public License (\"GPL\") v3.0",
+                "",
+                "For the full copyright and license information, please view the LICENSE",
+                "file that was distributed with this source code."
+            ]
+        }
+    ],
+    "prettier.packageManager": "yarn",
+    "prettier.singleQuote": true,
+    "prettier.vueIndentScriptAndStyle": true,
+    "eslint.packageManager": "yarn",
+    "[javascript]": {
+        "editor.defaultFormatter": "vscode.typescript-language-features"
+    },
+    "yaml.customTags": [
+        "!And",
+        "!If",
+        "!Not",
+        "!Equals",
+        "!Or",
+        "!FindInMap sequence",
+        "!Base64",
+        "!Cidr",
+        "!Ref",
+        "!Sub",
+        "!GetAtt",
+        "!GetAZs",
+        "!ImportValue",
+        "!Select",
+        "!Select sequence",
+        "!Split",
+        "!Join sequence"
+    ],
+    // Enable/disable default YAML formatter (requires restart)
+    "yaml.format.enable": true,
+    "[yaml]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "javascript.updateImportsOnFileMove.enabled": "never",
+    "[scss]": {
+        "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+    },
+    "tabnine.experimentalAutoImports": true,
+    "prettier.requireConfig": true,
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+    },
+    "typescript.updateImportsOnFileMove.enabled": "never",
+    "liquid.format": true,
+    "intelephense.environment.phpVersion": "7.4.0",
+    "intelephense.format.enable": false,
+    "[php]": {
+        "editor.defaultFormatter": "junstyle.php-cs-fixer"
+    },
+    "[typescript]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+    },
+    "vetur.validation.templateProps": true,
+    "php-cs-fixer.onsave": true,
+    "security.workspace.trust.untrustedFiles": "open",
+    "workbench.startupEditor": "none",
+    "editor.semanticTokenColorCustomizations": null,
+    "php-cs-fixer.allowRisky": true,
+    "files.associations": {
+        "*.phtml": "php"
+    },
+    "editor.inlineSuggest.enabled": true,
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": false,
+        "markdown": false,
+        "scminput": false,
+        "yaml": true,
+        "typescript": true,
+        "html": false,
+        "typescriptreact": true,
+        "php": true
+    },
+    "bracket-pair-colorizer-2.depreciation-notice": false,
+    "debug.onTaskErrors": "debugAnyway",
+    "debug.focusWindowOnBreak": false,
+    "githubPullRequests.createOnPublishBranch": "never",
+    "githubPullRequests.pullBranch": "never",
+    "editor.stickyScroll.enabled": true,
+    "editor.guides.bracketPairs": true,
+    "database-client.showFilter": true,
+    "[graphql]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[postcss]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "redhat.telemetry.enabled": true,
+    "editor.accessibilitySupport": "off",
+    "workbench.colorTheme": "One Dark Pro Darker",
+    "editor.fontFamily": " 'Droid Sans Mono', 'monospace', monospace",
+    "git.openRepositoryInParentFolders": "never",
+    "githubPullRequests.fileListLayout": "flat",
+    "update.showReleaseNotes": false,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "vim.smartRelativeLine": true,
+    "editor.cursorSurroundingLines": 9,
+    "vim.easymotion": true,
+    "vim.incsearch": true,
+    "vim.hlsearch": true,
+    "vim.highlightedyank.enable": true,
+    "vim.highlightedyank.duration": 250,
+    "vim.useSystemClipboard": true,
+    "vim.normalModeKeyBindings": [
+        {
+            "before": ["g", "p", "d"],
+            "commands": ["editor.action.peekDefinition"]
+        },
+        {
+            "before": ["g", "h"],
+            "commands": ["editor.action.showDefinitionPreviewHover"]
+        },
+        {
+            "before": ["g", "i"],
+            "commands": ["editor.action.goToImplementation"]
+        },
+        {
+            "before": ["g", "p", "i"],
+            "commands": ["editor.action.peekImplementation"]
+        },
+        {
+            "before": ["g", "q"],
+            "commands": ["editor.action.quickFix"]
+        },
+        {
+            "before": ["g", "r"],
+            "commands": ["editor.action.referenceSearch.trigger"]
+        },
+        {
+            "before": ["g", "t"],
+            "commands": ["editor.action.goToTypeDefinition"]
+        },
+        {
+            "before": ["g", "p", "t"],
+            "commands": ["editor.action.peekTypeDefinition"]
+        },
+        {
+            "before": ["<leader>", "e"],
+            "commands": ["workbench.view.explorer"]
+        },
+        {
+            "before": ["<leader>", "f", "f"],
+            "commands": ["binocular.searchFile"]
+        },
+        {
+            "before": ["<leader>", "f", "c"],
+            "commands": ["binocular.searchFileContent"]
+        },
+        {
+            "before": ["<leader>", "f", "d"],
+            "commands": ["binocular.searchDirectory"]
+        },
+        {
+            "before": ["<leader>", "f", "h"],
+            "commands": ["binocular.searchHistory"]
+        },
+        {
+            "before": ["<leader>", "f", "g"],
+            "commands": ["binocular.searchGitFoldersConfiguredFolders"]
+        }
+    ],
+    "macros": {
+        "saveAndExitVimInsertMode": [
+            "workbench.action.files.save",
+            "extension.vim_escape"
+        ]
+    },
+    "extensions.experimental.affinity": {
+        "vscodevim.vim": 1
+    },
+    "editor.minimap.enabled": false,
+    "security.allowedUNCHosts": [
+        "wsl.localhost"
+    ],
+    "workbench.iconTheme": "vscode-icons",
+    "terminal.integrated.profiles.linux": {
+        "bash": {
+            "path": "bash",
+            "icon": "terminal-bash"
+        },
+        "zsh": {
+            "path": "zsh"
+        },
+        "fish": {
+            "path": "fish"
+        },
+        "tmux": {
+            "path": "tmux",
+            "icon": "terminal-tmux"
+        },
+        "pwsh": {
+            "path": "pwsh",
+            "icon": "terminal-powershell"
+        }
+    },
 }

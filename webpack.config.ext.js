@@ -13,7 +13,6 @@ const extensionConfig = {
 
   entry: {
     extension: './src/extension.ts',
-    server: './server/src/server.ts',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),

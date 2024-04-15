@@ -201,12 +201,7 @@
     "deploy:local": "vsce package -o dist/magento-toolbox.vsix --yarn && code --install-extension dist/magento-toolbox.vsix --force",
     "lint": "yarn lint:client",
     "lint:client": "eslint src --ext ts",
-    "compile-tests": "tsc -p . --outDir out",
-    "watch-tests": "tsc -p . -w --outDir out",
-    "prettier:fix": "prettier --write .",
-    "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
-    "test": "node ./out/test/runTest.js",
-    "postinstall": "cd server && yarn install && cd .."
+    "prettier:fix": "prettier --write ."
   },
   "devDependencies": {
     "@githubocto/tailwind-vscode": "^1.0.4",
