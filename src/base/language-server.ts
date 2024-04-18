@@ -18,6 +18,8 @@ export async function activateLs() {
   const debugOptions = {
     env: {
       XDEBUG_MODE: 'debug',
+      HOME: process.env.HOME,
+      XDG_CACHE_HOME: process.env.XDG_CACHE_HOME,
     },
   };
 
