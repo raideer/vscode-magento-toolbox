@@ -73,4 +73,6 @@ export default async function () {
 
   await writeFile(path, pluginClass);
   await openFile(path);
+
+  vscode.commands.executeCommand('magento-toolbox.indexWorkspace');
 }

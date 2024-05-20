@@ -44,4 +44,5 @@ export default async function () {
   await writeFile(routesXmlUri, routesXml);
   refreshFileExplorer();
   await openFile(routesXmlUri);
+  vscode.commands.executeCommand('magento-toolbox.indexWorkspace');
 }

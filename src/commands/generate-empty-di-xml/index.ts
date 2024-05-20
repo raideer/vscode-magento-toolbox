@@ -35,4 +35,5 @@ export default async function () {
   await writeFile(diXmlUri, diXml);
   refreshFileExplorer();
   await openFile(diXmlUri);
+  vscode.commands.executeCommand('magento-toolbox.indexWorkspace');
 }

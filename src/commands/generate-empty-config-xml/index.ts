@@ -35,4 +35,5 @@ export default async function () {
   await writeFile(configXmlUri, configXml);
   refreshFileExplorer();
   await openFile(configXmlUri);
+  vscode.commands.executeCommand('magento-toolbox.indexWorkspace');
 }

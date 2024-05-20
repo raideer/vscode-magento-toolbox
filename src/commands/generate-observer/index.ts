@@ -40,4 +40,6 @@ export default async function (...args: any[]) {
   await vscode.workspace.openTextDocument(observerClassPath).then((doc) => {
     vscode.window.showTextDocument(doc);
   });
+
+  vscode.commands.executeCommand('magento-toolbox.indexWorkspace');
 }

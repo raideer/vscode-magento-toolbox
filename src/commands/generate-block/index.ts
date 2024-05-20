@@ -48,6 +48,7 @@ export default async function () {
   vscode.window.showInformationMessage(`Generated a Block: ${wizardInputData.blockName}`);
   refreshFileExplorer();
   openFile(blockClassUri);
+  vscode.commands.executeCommand('magento-toolbox.indexWorkspace');
 }
 
 async function generateBlockClass(

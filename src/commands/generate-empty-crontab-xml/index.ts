@@ -35,4 +35,5 @@ export default async function () {
   await writeFile(crontabXmlUri, crontabXml);
   refreshFileExplorer();
   await openFile(crontabXmlUri);
+  vscode.commands.executeCommand('magento-toolbox.indexWorkspace');
 }
