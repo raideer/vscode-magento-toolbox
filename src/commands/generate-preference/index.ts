@@ -47,4 +47,5 @@ export default async function () {
   const diXmlPath = vscode.Uri.joinPath(moduleDirectory, diLocation);
 
   await writeFile(diXmlPath, diXml);
+  vscode.commands.executeCommand('magento-toolbox.indexWorkspace');
 }

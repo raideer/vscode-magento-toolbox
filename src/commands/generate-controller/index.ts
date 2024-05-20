@@ -124,4 +124,5 @@ export default async function () {
 
   openFile(controllerPath);
   refreshFileExplorer();
+  vscode.commands.executeCommand('magento-toolbox.indexWorkspace');
 }

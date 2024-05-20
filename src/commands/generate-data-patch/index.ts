@@ -33,6 +33,7 @@ export default async function () {
   vscode.window.showInformationMessage(`Generated a Data Patch: ${wizardInputData.patchName}`);
   refreshFileExplorer();
   openFile(uri);
+  vscode.commands.executeCommand('magento-toolbox.indexWorkspace');
 }
 
 async function generateDataPatchClass(

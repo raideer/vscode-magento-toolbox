@@ -39,4 +39,5 @@ export default async function () {
   vscode.window.showInformationMessage(`Generated a ViewModel: ${data.name}`);
   refreshFileExplorer();
   openFile(path);
+  vscode.commands.executeCommand('magento-toolbox.indexWorkspace');
 }

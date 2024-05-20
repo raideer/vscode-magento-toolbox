@@ -60,4 +60,5 @@ export default async function () {
   vscode.window.showInformationMessage(`Generated module: ${moduleName}`);
   refreshFileExplorer();
   await openFile(moduleXmlPath);
+  vscode.commands.executeCommand('magento-toolbox.indexWorkspace');
 }
